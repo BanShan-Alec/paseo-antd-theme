@@ -53,7 +53,7 @@ describe("claude → antd light token mapping", () => {
   });
 
   it("pins the Claude palette", () => {
-    expect(light.colorPrimary).toBe("#D97757");
+    expect(light.colorPrimary).toBe("#C6613F");
     expect(light.colorSuccess).toBe("#467650");
     expect(light.colorWarning).toBe("#806340");
     expect(light.colorError).toBe("#a14b43");
@@ -81,7 +81,16 @@ describe("claude → antd light token mapping", () => {
   });
 
   it("derives coherent hover/active states around each pinned base", () => {
-    for (const family of ["colorPrimary", "colorSuccess", "colorWarning", "colorError"]) {
+    // Primary solid buttons darken on hover/active so the white label keeps
+    // its contrast; the status families keep the lighter-hover convention.
+    const primaryBase = light.colorPrimary as string;
+    const primaryHover = light.colorPrimaryHover as string;
+    const primaryActive = light.colorPrimaryActive as string;
+    expect(new Set([primaryBase, primaryHover, primaryActive]).size).toBe(3);
+    expect(luminance(primaryHover)).toBeLessThan(luminance(primaryBase));
+    expect(luminance(primaryActive)).toBeLessThan(luminance(primaryHover));
+
+    for (const family of ["colorSuccess", "colorWarning", "colorError"]) {
       const base = light[family] as string;
       const hover = light[`${family}Hover`] as string;
       const active = light[`${family}Active`] as string;
@@ -114,7 +123,7 @@ describe("claude → antd light token mapping", () => {
   it("uses soft elevation rather than the paseo flat chrome", () => {
     expect(String(light.boxShadow)).toContain("rgba(31, 30, 29");
     expect(claudeLightTheme.components?.Button?.primaryShadow).not.toBe("none");
-    expect(claudeLightTheme.components?.Button?.primaryColor).toBe(claudeLight.foreground);
+    expect(claudeLightTheme.components?.Button?.primaryColor).toBe("#FFFFFF");
   });
 });
 
@@ -175,10 +184,15 @@ describe("claude light contrast", () => {
     }
   });
 
-  it("primary button text clears 4.5:1 on clay", () => {
-    // The reason Button.primaryColor is pinned to ink instead of white.
-    expect(contrast(claudeLight.foreground, claudeLight.accent)).toBeGreaterThanOrEqual(4.5);
+  it("uses the official clay with a documented white-label exception", () => {
+    // Claude's site accepts white on #C6613F at 4.05:1. Hover/active darken
+    // so the label clears 4.5 there.
+    expect(claudeLight.accent).toBe("#C6613F");
+    expect(claudeLightTheme.components?.Button?.primaryColor).toBe("#FFFFFF");
+    expect(contrast("#ffffff", claudeLight.accent)).toBeGreaterThanOrEqual(3);
     expect(contrast("#ffffff", claudeLight.accent)).toBeLessThan(4.5);
+    expect(contrast("#ffffff", light.colorPrimaryHover as string)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast("#ffffff", light.colorPrimaryActive as string)).toBeGreaterThanOrEqual(4.5);
   });
 
   it("danger/solid buttons keep white text above 4.5:1", () => {
@@ -237,7 +251,7 @@ describe("claude light contrast", () => {
   });
 
   it("selection is not the paseo white overlay", () => {
-    expect(claudeLight.selection).toContain("rgba(217, 119, 87");
+    expect(claudeLight.selection).toContain("rgba(198, 97, 63");
   });
 });
 

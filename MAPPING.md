@@ -89,7 +89,7 @@ Claude 品牌表面 + Claude Code 信号色 + paseo 归一化状态色（OKLCH L
 
 | antd token | 类型 | 值 | paseo 来源 | 说明 |
 | --- | --- | --- | --- | --- |
-| `colorPrimary` | seed | `#D97757` | `accent` |  |
+| `colorPrimary` | seed | `#C6613F` | `accent` | Claude's site interactive clay (#C6613F); brand-palette #D97757 is the lighter decorative variant. |
 | `colorSuccess` | seed | `#467650` | `statusSuccess` | Paseo's normalized rule re-solved at L*=0.52, C=55% gamut max. |
 | `colorWarning` | seed | `#806340` | `statusWarning` |  |
 | `colorError` | seed | `#a14b43` | `statusDanger` |  |

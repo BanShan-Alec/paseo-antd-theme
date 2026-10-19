@@ -2,9 +2,12 @@
  * Claude light design tokens.
  *
  * Provenance:
- *   surfaces / neutrals / clay — Anthropic brand palette
+ *   surfaces / neutrals — Anthropic brand palette
  *     ivory #FAF9F5, warm gray 150 #F0EEE6, warm gray 250 #DEDCD1,
- *     ink #141413, clay #D97757, oat #E3DACC.
+ *     ink #141413, oat #E3DACC.
+ *   clay — #C6613F, the interactive clay used on Claude's site (the brand
+ *     palette's #D97757 is its lighter decorative variant). White text on it
+ *     is 4.05:1, the theme's one documented contrast exception.
  *   signals — Claude Code's official light TUI theme
  *     success #2C7A39, error #AB2B3F, warning #966C1E, suggestion #5769F7,
  *     diff line fills #69DB7C / #FFA8B4, selection #B4D5FF. The CLI defines
@@ -60,7 +63,7 @@ export const claudeLight = {
   border: "#DEDCD1",
   borderAccent: "#E7E4DA",
 
-  accent: "#D97757", // clay — fills
+  accent: "#C6613F", // Claude's site interactive clay; brand-palette #D97757 is the lighter variant
   accentText: "#A94F33", // clay darkened for text (5.17:1 on ivory)
   link: "#4B5BD8", // Claude suggestion hue, darkened from #5769F7
   linkHover: "#3640B3",
@@ -78,7 +81,7 @@ export const claudeLight = {
 
   // ::selection — clay tint instead of paseo's white overlay, which is
   // invisible on a light surface.
-  selection: "rgba(217, 119, 87, 0.32)",
+  selection: "rgba(198, 97, 63, 0.32)",
 } as const;
 
 /** The full status families (bg/border/hover/text slots) for the theme layer. */

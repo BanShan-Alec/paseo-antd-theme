@@ -27,23 +27,24 @@ type AntdComponents = NonNullable<ThemeConfig["components"]>;
 // text slot is pinned explicitly.
 // ---------------------------------------------------------------------------
 
-const primaryRamp = generate(claudeLight.accent);
-
 const primaryPalette: LightFamily = {
   base: claudeLight.accent,
-  // Same OKLCH hue (39.1°) and 55% chroma as the status families. The
-  // `generate()` light end (#fff6f0) is too close to the container to make
-  // selected states or the focus ring visible.
+  // Same OKLCH hue (39°) and 55% chroma as the status families. The
+  // `generate()` light end is too close to the container to make selected
+  // states or the focus ring visible.
   bg: "#f6e8e3",
   bgHover: "#f2dcd5",
   border: "#edccc1",
   borderHover: "#e7bcae",
-  hover: primaryRamp[4],
-  active: primaryRamp[6],
-  // Clay is only 2.96:1 on ivory, so primary *text* takes the darkened clay.
+  // The solid primary button carries a white label. The base is the one
+  // documented brand exception (4.05:1); hover/active darken so white stays
+  // above 4.5 there (4.92 / 5.72).
+  hover: "#B4543A",
+  active: "#A64B32",
+  // Clay as text needs the darker text-safe tone (5.17:1 on ivory).
   text: claudeLight.accentText,
-  textHover: primaryRamp[7],
-  textActive: primaryRamp[8],
+  textHover: "#8C3C2A",
+  textActive: "#66251A",
 };
 
 const linkRamp = generate(claudeLight.link);
@@ -112,7 +113,13 @@ const SHADOW = {
 
 const lightMappings: readonly TokenMapping[] = [
   // Seeds
-  { antdToken: "colorPrimary", kind: "seed", value: claudeLight.accent, paseoToken: "accent" },
+  {
+    antdToken: "colorPrimary",
+    kind: "seed",
+    value: claudeLight.accent,
+    paseoToken: "accent",
+    note: "Claude's site interactive clay (#C6613F); brand-palette #D97757 is the lighter decorative variant.",
+  },
   {
     antdToken: "colorSuccess",
     kind: "seed",
@@ -397,9 +404,8 @@ const lightComponents: AntdComponents = {
   Tabs: {
     itemColor: claudeLight.foregroundMuted,
     itemSelectedColor: claudeLight.accentText,
-    // #B3583E clears the 3:1 non-text threshold; the clay fill itself is
-    // only 2.96:1 on ivory.
-    inkBarColor: primaryRamp[6],
+    // The 2px ink bar is non-text: #C6613F clears the 3:1 threshold (3.85:1).
+    inkBarColor: claudeLight.accent,
   },
   Card: { headerBg: "#F5F3EC" },
   // antd 6.6's css-var mode does not emit the Alert component-token default,
@@ -409,16 +415,17 @@ const lightComponents: AntdComponents = {
   // cast only satisfies antd's `number`-typed component-token declaration.
   Alert: { borderRadius: "12px" as unknown as number },
   Input: {
-    hoverBorderColor: primaryRamp[6],
-    activeBorderColor: primaryRamp[7],
+    hoverBorderColor: claudeLight.accent,
+    activeBorderColor: claudeLight.accentText,
   },
   Modal: { contentBg: claudeLight.surface2, headerBg: claudeLight.surface2 },
   Message: { contentBg: claudeLight.surface2 },
   Notification: { colorBgElevated: claudeLight.surface2 },
   Button: {
-    // Clay with a white label is 3.12:1; ink is 5.90:1. Danger keeps white
-    // (5.53:1 on #a14b43) through the global colorTextLightSolid.
-    primaryColor: claudeLight.foreground,
+    // The one intentional contrast exception: white on #C6613F is 4.05:1
+    // (Claude's site accepts it). Hover/active darken to #B4543A / #A64B32,
+    // where white clears 4.5. Danger keeps white via colorTextLightSolid.
+    primaryColor: "#FFFFFF",
     primaryShadow: SHADOW.buttonPrimary,
     defaultShadow: SHADOW.buttonDefault,
     dangerShadow: SHADOW.buttonDanger,

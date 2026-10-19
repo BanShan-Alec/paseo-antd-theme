@@ -434,8 +434,8 @@ export function ComponentsSection({ isLight }: { isLight: boolean }) {
           <Paragraph type="secondary" style={{ fontSize: 12, marginBottom: 0 }}>
             {isLight ? (
               <>
-                选中项文字用 <code>accentText</code>、ink bar 用压暗 clay——clay 本身在浅色上作为文字只有
-                2.96:1。
+                选中项文字用 <code>accentText</code>、ink bar 用 clay——clay 本身在浅色上作为文字只有
+                3.85:1。
               </>
             ) : (
               <>
