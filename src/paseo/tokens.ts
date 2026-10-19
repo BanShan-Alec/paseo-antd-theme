@@ -7,8 +7,8 @@
  *   fonts — packages/app/src/styles/theme.ts:635-645
  *
  * Only the values the minimal scheme configures are kept; the full-fidelity
- * version (component tokens, custom tokens, the whole surface ladder) is
- * backed up in ../paseo-antd-theme-full.
+ * version (component tokens, custom tokens, the whole surface ladder) lives
+ * in ../paseo-full/.
  */
 
 export const paseoDark = {

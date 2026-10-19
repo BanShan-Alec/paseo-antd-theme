@@ -2,8 +2,8 @@
 
 把 [Paseo](https://github.com/getpaseo/paseo) 的配色以**最小配置**整合为 **antd v6** 的深色主题：五个颜色族 + 三个背景色，其余全部交给 antd 以 paseo 的种子色自行派生。浅色模式用 antd 默认主题，仅字体栈与深色一致。
 
-> 完整保真方案（48 个 token + 组件 token + 自定义 token + 派生 token 登记）备份在
-> `../paseo-antd-theme-full/`，含 `package-lock.json` 可完整复现。
+> 完整保真方案（48 个 token + 11 组组件 token + 26 个自定义 token + 派生 token 登记）在
+> `src/paseo-full/`，demo 中可切换对比，两套方案各有测试覆盖。
 
 ```tsx
 import { ConfigProvider } from "antd";
