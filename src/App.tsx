@@ -20,7 +20,7 @@ import {
 import * as minimal from "./paseo/theme";
 import * as full from "./paseo-full/theme";
 import * as claude from "./claude/theme";
-import { ClaudeThemeProvider } from "./claude/Provider";
+import { PaseoThemeProvider } from "./claude/Provider";
 
 const { Header, Sider, Content } = Layout;
 const { Title, Text } = Typography;
@@ -152,10 +152,10 @@ export default function App() {
   // some elements (buttons, tags) painted with the old theme's colors.
   // Keying the provider forces every component to re-register its styles.
   return (
-    <ClaudeThemeProvider key={view} theme={themeFor(view)}>
+    <PaseoThemeProvider key={view} theme={themeFor(view)}>
       <AntApp>
         <Dashboard view={view} section={section} setView={setView} setSection={setSection} />
       </AntApp>
-    </ClaudeThemeProvider>
+    </PaseoThemeProvider>
   );
 }

@@ -1,3 +1,9 @@
+/**
+ * Global CSS for the component-level behaviors that antd tokens cannot express.
+ * It is injected once by PaseoThemeProvider, so consumers do not need a
+ * separate CSS import.
+ */
+export const PASEO_THEME_CSS = `
 @keyframes claude-loading-rotate {
   to {
     transform: rotate(360deg);
@@ -30,3 +36,4 @@
 .claude-segmented-item:not(:last-child) {
   margin-inline-end: 4px;
 }
+`;

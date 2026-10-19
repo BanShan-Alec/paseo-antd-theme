@@ -1,131 +1,102 @@
-# paseo-antd-theme
+# paseo-antd-themes
 
-把 **Paseo 的深色体系**与 **Claude 的浅色体系**分别整合为 **antd v6** 主题。
+**Paseo Dark** 与 **Claude Light** 两套 **Ant Design v6** 主题。共享同一套 token 管线、字体度量和组件级行为，可作为 antd 默认主题的替代。
 
-| 方案 | 目录 | 说明 |
-| --- | --- | --- |
-| Paseo 完整（深色） | `src/paseo-full/` | paseo 配色 + Claude.ai 形态：40px 控件、14px 正文、12px 圆角、软阴影 |
-| Claude 浅色 | `src/claude/` | Claude 品牌表面 + Claude Code 信号色 + paseo 归一化状态色 |
-| Paseo 最小（深色） | `src/paseo/` | 13 个 token 的最小方案；浅色仍是 antd 默认，仅字体栈钉固 |
+## 安装
 
-> 浅色方案不是 antd 官方浅色。Claude Code CLI 的浅色主题只有信号色、没有画布背景（终端负责背景），所以表面/中性色以 Claude 品牌的 ivory / 暖灰为起点，按“干净暖色”方案降到低彩度暖中性（layout `#F4F2EC`、container `#FBFAF7`、边框 `#E1DED6`、墨色 `#141413`），避免大面积米黄发脏；信号色来自 Claude Code 官方浅色主题，状态色则保留 paseo 的归一化规则。
+```bash
+npm install paseo-antd-themes
+```
+
+Peer dependencies：
+
+- `antd >= 6.6.0 < 7`
+- `react >= 18`
+- `react-dom >= 18`
+
+## 使用
+
+### PaseoThemeProvider（推荐）
+
+`PaseoThemeProvider` 是 `ConfigProvider` 的替代品：按 `mode` 选择主题，并自动注入自定义 loading 图标、Segmented 间隙和 Select 行间透明间隔。不需要额外引入 CSS。
+
+```tsx
+import { PaseoThemeProvider } from "paseo-antd-themes";
+
+<PaseoThemeProvider mode="system">
+  <App />
+</PaseoThemeProvider>;
+```
+
+- `mode`: `"system" | "dark" | "light"`，默认 `"system"`，跟随 `prefers-color-scheme`。
+- `theme`: 传入任意 `ThemeConfig` 覆盖内置主题，优先级高于 `mode`。
+- `loadingIcon`: 替换默认 loading 图标；默认是本包的双弧渐变 spinner。
+- 其余 `ConfigProvider` props（`locale`、`direction` 等）原样透传。
+
+### 裸主题配置
+
+只需要 token 时，继续用 antd 的 `ConfigProvider`：
 
 ```tsx
 import { ConfigProvider } from "antd";
-import { paseoDarkTheme } from "./paseo-full/theme";
-import { claudeLightTheme } from "./claude/theme";
+import { claudeLightTheme } from "paseo-antd-themes/claude";
 
-const scheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-
-<ConfigProvider theme={scheme === "dark" ? paseoDarkTheme : claudeLightTheme}>
+<ConfigProvider theme={claudeLightTheme}>
   <App />
 </ConfigProvider>;
 ```
 
-映射表见 [MAPPING.md](./MAPPING.md)（由 `scripts/dump-mapping.ts` 生成）。
-
-## 全局组件配置（loading 图标 / Segmented / Select 间隙）
-
-`ThemeConfig` 只能承载 token，不能承载 React 节点，所以下面三项由 `ClaudeThemeProvider` 通过 antd 的组件级配置注入：
-
-- **loading 图标**：`button.loadingIcon`、`spin.indicator`、`select.loadingIcon` 全部指向 `ClaudeLoadingIcon`——本地复制的 `@ant-design/icons` LoadingIcon（双弧渐变 + 发丝连接线），`currentColor` 跟随文字色、1s 线性旋转。旋转作用在内层 `<g>` 上，外层 1em 盒子保持静止，避免小尺寸下的抖动。Button、Spin、Table 的 loading 都会继承。
-- **Segmented 间隙**：antd 没有 item gap token。完整主题把 `Segmented.trackPadding` 设为 4（默认 2）；Provider 再给每个 item 加 `claude-segmented-item` 类，由 `theme.css` 加 4px 的 `margin-inline-end`（用 `:not(:last-child)`，避免尾部多出空白）。
-- **Select 行间透明间隔**：antd 没有 item gap token。Provider 给每个 option 加 `claude-select-item` 类，`theme.css` 用 `border-block: 2px solid transparent` + `background-clip: padding-box`：hover/选中背景只画到 padding box，行间露出下拉框背景。`optionPadding` 保持 `9px 12px`，加 2px 透明边框后总行高仍为 44px。
-
 ```tsx
-import { ClaudeThemeProvider } from "./claude/Provider";
-import { paseoDarkTheme } from "./paseo-full/theme";
-
-<ClaudeThemeProvider>
-  <App />
-</ClaudeThemeProvider>;
-
-// 同一套 loading 图标、Segmented / Select 行为，换成 paseo 深色：
-<ClaudeThemeProvider theme={paseoDarkTheme}>
-  <App />
-</ClaudeThemeProvider>;
+import { paseoDarkTheme } from "paseo-antd-themes/paseo";
 ```
 
-不想要这些组件级行为时，继续直接用 `ConfigProvider theme={claudeLightTheme}` 即可。
+> 裸主题只包含 token；自定义 loading 图标、Segmented / Select 间隙只在 `PaseoThemeProvider` 中生效。
 
-## Claude 浅色是怎么拼出来的
+## Exports
 
-### 表面
-
-严格亮度递增，侧栏最暗、弹层最亮：
-
-| 角色 | 值 |
+| 入口 | 导出 |
 | --- | --- |
-| 侧栏 / `paseoSurfaceSidebar` | `#EFEDE7` |
-| layout / `surface0` | `#F4F2EC` |
-| container / `surface1` | `#FBFAF7` |
-| elevated / `surface2` | `#FFFFFF` |
-| 强填充 / `surface3` | `#EAE7DF` |
-| 最强填充 / `surface4` | `#DFDBD2` |
-| 边框 | `#E1DED6` |
+| `paseo-antd-themes` | `PaseoThemeProvider`, `ClaudeLoadingIcon`, `claudeLightTheme`, `paseoDarkTheme`, types |
+| `paseo-antd-themes/claude` | `claudeLightTheme`, `claudeLight`, `claudeIdentityLight`, token mappings |
+| `paseo-antd-themes/paseo` | `paseoDarkTheme`, `paseoDark`, token mappings |
 
-相对最初版本，侧栏/layout 和 oat 填充的彩度降低了约 25–40%，色相统一在 90° 附近，避免黄绿偏色带来的“脏”感。
+## 两套主题
 
-卡片在 layout 上呈米白，弹层与卡片靠**阴影**区分——这是 Claude.ai 的纸感层次，而不是深色主题的“越亮越靠前”。
+| Paseo Dark · 概览 | Claude Light · 概览 |
+| --- | --- |
+| ![Paseo Dark 概览](./docs/paseo-dark.png) | ![Claude Light 概览](./docs/claude-light.png) |
 
-### 主色与文字
-
-- 主色是 Claude 官网交互态使用的 clay `#C6613F`（品牌色板里的 `#D97757` 是更浅的装饰变体）。主按钮用白字：`#C6613F` 上白字 **4.05:1**，这是整套主题唯一记录的品牌例外；hover / active 用同族更深的 `#B4543A`（白字 4.92）和 `#A64B32`（白字 5.72），静止态之外都回到 4.5 以上。危险按钮仍用白字（`#a14b43` 上 5.53:1），靠全局 `colorTextLightSolid`。
-- 主色作为**文字**时用压暗的 `#A94F33`（5.17:1）；链接用 Claude Code suggestion 色相压暗到 `#4B5BD8`（象牙白 5.26:1）。
-- 文字阶梯：`#141413` / `#66645C` / `#6E6C64` / `#A8A498`（最后一级只用于占位/禁用）。
-
-### 状态色：paseo 规则，浅色重解
-
-状态色没有直接抄 Claude Code 的 `#2C7A39` / `#AB2B3F` / `#966C1E`，而是沿用 paseo 的等响度规则：**同一感知明度（OKLCH `L* = 0.52`）+ 各色相最大彩度的 55%，只让色相承载语义**。
-
-| 角色 | 浅色值 | 象牙白底对比 |
+| 维度 | Paseo Dark（完整） | Claude Light |
 | --- | --- | --- |
-| success | `#467650` | 5.02 |
-| danger | `#a14b43` | 5.53 |
-| warning | `#806340` | 5.28 |
-| merged | `#774fb3` | 5.61 |
-| running / info | `#436c96` | 5.21 |
+| 定位 | 长时间运行的 agent orchestration 深色工作台 | 日间、评审/文档式的 Claude 品牌浅色界面 |
+| 表面 | 青绿调深色阶梯，层与层靠亮度区分 | 低彩度暖白纸感阶梯，靠亮度与柔和阴影区分 |
+| 主色 | paseo 深绿；链接用更亮的绿 | Claude 官网 clay；链接用 suggestion 蓝 |
+| 状态色 | paseo 归一化家族，为深色表面调校 | 同一等响度规则在浅色表面重解 |
+| Diff | 降饱和深色行底，白字可读 | 低饱和浅色行底 + 深色统计文字 |
+| 阴影 | 黑色系软阴影 | 暖墨色软阴影 |
+| 适合 | 夜间、专注、终端/agent 工作流 | 白天、评审/文档、Claude 品牌场景 |
 
-代价是这组颜色比 Claude Code 终端里的状态色明显更安静——这是等响度 + 55% 彩度的直接结果。每个色族的 bg / border / hover / text 槽位由 `src/claude/colors.ts` 从同一色相按明度阶梯推导。**不能直接用 antd 的 `generate()` 派生这些槽位**：它会把低彩度基色洗成灰色（`#467650` → `#aab5ab`），并且会把 `*TextHover` 指向更浅、对比度不足的槽位。
+**Paseo Dark** 保留 paseo 的青绿深色表面和绿色身份，状态色按等响度规则归一化。完整方案把控件形态和软阴影同步到了与浅色一致的语言，因此它不再是 paseo 原始紧凑扁平形态的 1:1 移植。
 
-### Diff 与选区
+**Claude Light** 以 Claude 品牌的暖白纸感为底，主色采用官网交互态 clay，状态色把 paseo 的等响度规则重新解到浅色表面。文字与表面控制在低彩度暖中性，避免大面积米黄发脏。主按钮使用白字，并保留一处记录在案的品牌对比度例外。
 
-- 浅色 diff 行底：新增 `#c1f4ca`、删除 `#f3dfdd`（同一状态色相、`L*=0.92`、55% 彩度）；词级/统计用状态色深一档的 text 槽位（`#3e6947` / `#91423c`），保证在浅色行底上也 ≥4.5。
-- 深色 diff 行底同步降饱和：`#32573a` / `#783630`（`L*=0.42`，55% 彩度）。旧的 `#4ade80` / `#ef4444` 配白字只有 **1.67:1 / 3.61:1**，实际上不可读；新值配白字为 **7.86 / 8.49**。
-- 选区：`rgba(198, 97, 63, 0.32)`。paseo 的 `rgba(255,255,255,0.2)` 在浅色表面上等于不可见。
+> 仓库里的 `src/paseo/` 是最小方案（13 个 token），不包含在 npm 包内，只作为开发对照保留。
 
-### 形态
-
-两个完整方案共享 Claude.ai 形态：控件高 40（SM 32 / LG 48）、正文 14（SM 12 / LG 16）、圆角 12（SM 8 / XS 4）、软阴影（浅色暖墨色、深色黑色）。正文最初试过 16px，在 Agent 列表和表单并排的卡片里显得拥挤，最终回到 antd/paseo 的 14px——40px 控件配 14px 正文既保留了 Claude.ai 的松弛感，又不会挤。最小方案 `src/paseo/` 保持原来的 32 / 14 / 6 紧凑形态，不受影响。
-
-Select 选项：`optionPadding` 为 `9px 12px`、`optionHeight` 为 44（默认 40）。行间透明间隔由 Provider 的 `border-block: 2px solid transparent` + `background-clip: padding-box` 实现：hover/选中背景只画到 padding box，露出下拉框背景。**虚拟滚动列表需要传 `<Select listItemHeight={44}>`**，否则 rc-virtual-list 仍按 40px 估算行高。
-
-这也意味着**完整深色方案不再是对 paseo 深色的 1:1 移植**：paseo 原始深色是扁平、紧凑的。配色仍来自 paseo，形态已同步到 Claude.ai。
-
-## 为什么必须包装算法
-
-antd v6 的 token 管线有两个行为决定了“直接写 `theme.token`”行不通（读 `antd/lib/theme/util/alias.js` 与 `themes/dark/index.js` 确认）：
-
-1. **种子 token 的覆盖会被丢弃**——`formatToken` 把用户 `theme.token` 里所有 `defaultSeed` 键删掉再合并，`colorPrimary`、`fontFamily` 都在此列，它们只作为算法输入存在。
-2. **算法会重新派生颜色族**——深色算法会把种子色暗化（`#20744A` → `#1e6642`）；浅色算法的 `*TextHover` 槽位会选更浅的色阶，对低彩度基色来说低于 4.5:1。
-
-所以两个完整方案都用算法包装器：深色包 `darkAlgorithm`，浅色包 `defaultAlgorithm`，在返回值里钉回精确色值。浅色额外显式钉住所有 `*Text` / `*TextHover` / `*TextActive` 槽位，并自己推导状态族的背景/边框阶梯。
-
-## 验证
+## 开发与验证
 
 ```bash
 npm install
-npm run typecheck   # token 名对照 antd v6 自身类型，拼错即编译失败
-npm test            # 65 个测试：最小 15 + 完整深色 25 + Claude 浅色 22 + Provider 3
-npm run build
-npm run dev         # demo 可切换 antd 默认 / Claude 浅色 / Paseo 最小 / Paseo 完整
+npm run typecheck
+npm test
+npm run build:lib      # 发布产物：ESM + CJS + d.ts
+npm run build:demo     # demo，输出到 dist-demo/
+npm run pack:dry       # 检查 npm 包内容
 ```
 
-测试覆盖：映射值与源值逐字节一致、表面阶梯亮度顺序、hover/active 围绕基色、状态族等响度、对比度纪律（正文/三级文字/链接/状态/身份色/diff ≥ 4.5；主按钮静止态按品牌例外 ≥3:1，hover/active 仍 ≥4.5）、双主题渲染冒烟。
+`npm publish` 会自动执行 `prepublishOnly`（typecheck + test + build:lib）。发布前需要先 `npm login`。
 
-## 备注
+设计取值、状态色归一化规则和算法包装细节见 [DESIGN.md](./DESIGN.md)；完整 token 映射见 [MAPPING.md](./MAPPING.md)。
 
-- `@ant-design/colors` 仍是显式依赖，但浅色状态族的 bg/border 槽位由 `src/claude/colors.ts` 的 OKLCH 推导，不依赖它的色板索引。
-- 兼容 `cssVar`：`theme={{ ...claudeLightTheme, cssVar: true }}`。
-- 字体栈在所有方案中钉固为同一组，避免 Windows 上 `system-ui` 与 antd 默认栈的宽度差导致切换位移。
-- 完整深色方案的自定义 diff token 已换成降饱和值；如果你的消费方直接引用了 `#4ade80` / `#ef4444`，需要同步更新。
+## License
+
+MIT

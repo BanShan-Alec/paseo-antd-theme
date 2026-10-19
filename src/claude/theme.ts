@@ -395,7 +395,7 @@ const lightComponents: AntdComponents = {
     trackBg: claudeLight.surfaceSidebar,
     // Default is lineWidthBold (2). 4 gives the selected thumb visible
     // breathing room inside the 40px track; the item-to-item gap is added by
-    // ClaudeThemeProvider because antd has no gap token.
+    // PaseoThemeProvider because antd has no gap token.
     trackPadding: 4,
     itemColor: claudeLight.foregroundMuted,
     itemSelectedBg: claudeLight.surface2,

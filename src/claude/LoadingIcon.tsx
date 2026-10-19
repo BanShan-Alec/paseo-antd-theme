@@ -1,5 +1,4 @@
 import { useId, type SVGProps } from "react";
-import "./theme.css";
 
 function joinClassNames(...values: (string | undefined)[]): string {
   return values.filter(Boolean).join(" ");
