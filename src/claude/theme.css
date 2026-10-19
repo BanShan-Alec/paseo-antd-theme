@@ -1,0 +1,18 @@
+@keyframes claude-loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.claude-loading-icon {
+  animation: claude-loading-spin 1s linear infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+  vertical-align: -0.125em;
+}
+
+/* antd has no gap token for Segmented items; the provider adds this class to
+   every item, and the rule keeps the gap out of the trailing edge. */
+.claude-segmented-item:not(:last-child) {
+  margin-inline-end: 4px;
+}

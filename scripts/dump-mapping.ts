@@ -1,5 +1,7 @@
 import { writeFileSync } from "node:fs";
-import { PASEO_DARK_TOKEN_MAPPING } from "../src/paseo/theme.ts";
+import { PASEO_DARK_TOKEN_MAPPING as MINIMAL_DARK_MAPPING } from "../src/paseo/theme.ts";
+import { PASEO_DARK_TOKEN_MAPPING as FULL_DARK_MAPPING } from "../src/paseo-full/theme.ts";
+import { CLAUDE_LIGHT_TOKEN_MAPPING } from "../src/claude/theme.ts";
 
 function table(
   rows: readonly {
@@ -26,12 +28,26 @@ const doc = `<!-- 由 scripts/dump-mapping.ts 生成，请勿手改 -->
 
 ## 完整映射表
 
-最小方案：深色只钉 13 个 token（五个颜色族的种子 + 三个背景 + 字体栈），
-其余全部由 antd 以 paseo 的种子色自行派生。浅色是 antd 默认主题，仅字体栈例外。
+### 最小方案 · 深色（Paseo Dark）
 
-### 深色主题（Paseo Dark）
+只钉 13 个 token（五个颜色族的种子 + 三个背景 + 字体栈），其余由 antd 以 paseo 的种子色自行派生。
+浅色仍是 antd 默认主题，仅字体栈例外。
 
-${table(PASEO_DARK_TOKEN_MAPPING)}
+${table(MINIMAL_DARK_MAPPING)}
+
+### 完整方案 · 深色（Paseo Dark + Claude.ai 形态）
+
+paseo 配色 + Claude.ai 形态：40px 控件、16px 正文、12px 圆角、软阴影。
+Diff 行底已降饱和为 \`#32573a\` / \`#783630\`。
+
+${table(FULL_DARK_MAPPING)}
+
+### Claude 浅色（Claude Light）
+
+Claude 品牌表面 + Claude Code 信号色 + paseo 归一化状态色（OKLCH L*=0.52 / 55% 彩度）。
+主色 clay 的按钮文字为墨色；链接为压暗后的 Claude suggestion 蓝。
+
+${table(CLAUDE_LIGHT_TOKEN_MAPPING)}
 `;
 
 writeFileSync(new URL("../MAPPING.md", import.meta.url), doc);

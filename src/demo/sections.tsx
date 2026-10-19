@@ -26,11 +26,12 @@ import {
 const { Header, Sider, Content } = Layout;
 import * as full from "../paseo-full/theme";
 import * as minimal from "../paseo/theme";
+import * as claude from "../claude/theme";
 import type { TokenMapping } from "../paseo/theme";
 
 const { Paragraph, Text } = Typography;
 
-export type View = "light" | "minimal" | "full";
+export type View = "light" | "claude" | "minimal" | "full";
 
 /** Live token accessor with graceful degradation when a token is absent. */
 function useSchemeTokens() {
@@ -68,7 +69,7 @@ export function OverviewSection() {
   return (
     <Row gutter={[16, 16]}>
       <Col xs={24} xl={12}>
-        <Card title="按钮" size="small">
+        <Card variant="borderless" title="按钮" size="small">
           <SpaceWrap>
             <Button type="primary">Run agent</Button>
             <Button>Cancel</Button>
@@ -87,7 +88,7 @@ export function OverviewSection() {
       </Col>
 
       <Col xs={24} xl={12}>
-        <Card title="状态与反馈" size="small">
+        <Card variant="borderless" title="状态与反馈" size="small">
           <SpaceWrap>
             <Tag color="success">success</Tag>
             <Tag color="warning">warning</Tag>
@@ -106,7 +107,7 @@ export function OverviewSection() {
       </Col>
 
       <Col xs={24} xl={12}>
-        <Card title="表单控件" size="small">
+        <Card variant="borderless" title="表单控件" size="small">
           <div style={{ display: "grid", gap: 12, maxWidth: 420 }}>
             <Input placeholder="搜索 agent、文件、命令…" allowClear />
             <Select
@@ -195,7 +196,7 @@ export function AgentsSection() {
   ];
 
   return (
-    <Card title="Agent 列表" size="small">
+    <Card variant="borderless" title="Agent 列表" size="small">
       <Table size="small" columns={columns} dataSource={agents} pagination={false} />
       <Paragraph style={{ marginTop: 12, marginBottom: 0 }} type="secondary">
         变更列用 <code>paseoDiffAdditionText</code>/<code>paseoDiffDeletionText</code>（paseo
@@ -227,7 +228,7 @@ export function DiffSection() {
   const delText = get("paseoDiffDeletionText", t.colorError);
 
   return (
-    <Card title="Diff 视图" size="small">
+    <Card variant="borderless" title="Diff 视图" size="small">
       {!custom && <Note>当前方案没有自定义 diff token——行底色与统计色回退到 antd 派生值。</Note>}
       <div style={{ fontFamily: "var(--paseo-mono, monospace)", fontSize: 13 }}>
         <div style={{ marginBottom: 8 }}>
@@ -252,8 +253,8 @@ export function DiffSection() {
           ))}
         </div>
         <Paragraph type="secondary" style={{ fontSize: 12, marginTop: 8, marginBottom: 0 }}>
-          行底色用 <code>paseoDiffAddition</code>/<code>paseoDiffDeletion</code>（paseo
-          的饱和对）——逐行扫描时颜色本身就是信号。
+          行底色用 <code>paseoDiffAddition</code>/<code>paseoDiffDeletion</code>（从归一化状态色相派生的
+          低饱和行底）——逐行扫描时颜色本身就是信号。
         </Paragraph>
       </div>
     </Card>
@@ -276,7 +277,7 @@ export function StatusSection() {
   const custom = has("paseoStatusDotSuccess");
 
   return (
-    <Card title="状态圆点" size="small">
+    <Card variant="borderless" title="状态圆点" size="small">
       {!custom && <Note>当前方案没有自定义状态圆点 token——回退到 antd 状态色。</Note>}
       <div style={{ display: "grid", gap: 10, maxWidth: 520 }}>
         {dotStates.map((s) => (
@@ -338,7 +339,7 @@ export function HostsSection() {
   return (
     <Row gutter={[16, 16]}>
       <Col xs={24} xl={12}>
-        <Card title="Host 身份色" size="small">
+        <Card variant="borderless" title="Host 身份色" size="small">
           {!custom && <Note>当前方案没有自定义身份色 token——回退 antd 默认徽章。</Note>}
           <div style={{ display: "grid", gap: 10 }}>
             {hosts.map((host, i) => {
@@ -373,13 +374,13 @@ export function HostsSection() {
             })}
           </div>
           <Paragraph type="secondary" style={{ fontSize: 12, marginTop: 12, marginBottom: 0 }}>
-            十色全部压在同一对比度带（对白字 4.2–4.8:1）——颜色起识别作用，不排名。
+            十色全部压在同一对比度带（对白字 ≥4.2:1）——颜色起识别作用，不排名。
           </Paragraph>
         </Card>
       </Col>
 
       <Col xs={24} xl={12}>
-        <Card title="Selection" size="small">
+        <Card variant="borderless" title="Selection" size="small">
           {selection && (
             <style>{`.demo-selectable::selection { background: ${selection}; }`}</style>
           )}
@@ -400,27 +401,29 @@ export function HostsSection() {
 
 const COMPONENT_COVERAGE: { group: string; tokens: string; where: string }[] = [
   { group: "Layout", tokens: "bodyBg / siderBg / headerBg / triggerBg", where: "本页 + 整页骨架" },
-  { group: "Menu（深色）", tokens: "darkItemBg / HoverBg / SelectedBg / ItemColor…", where: "左侧边栏" },
+  { group: "Menu", tokens: "darkItem*（深色）/ item*（浅色）", where: "左侧边栏" },
   { group: "Table", tokens: "headerBg / rowHoverBg / borderColor / headerSort*Bg", where: "Agent 列表页" },
-  { group: "Segmented", tokens: "trackBg / itemSelectedBg / itemColor", where: "概览页 + 右上角切换器" },
+  { group: "Segmented", tokens: "trackBg / trackPadding / itemSelectedBg / itemColor", where: "概览页 + 右上角（+ Provider 4px 间隙）" },
   { group: "Tabs", tokens: "itemColor / itemSelectedColor / inkBarColor", where: "本页" },
   { group: "Card", tokens: "headerBg", where: "所有卡片" },
+  { group: "Alert", tokens: "borderRadius", where: "概览页（补 antd css-var 默认缺失）" },
   { group: "Input", tokens: "hoverBorderColor / activeBorderColor", where: "概览页表单" },
   { group: "Modal", tokens: "contentBg / headerBg", where: "本页" },
   { group: "Message", tokens: "contentBg", where: "本页" },
   { group: "Notification", tokens: "colorBgElevated", where: "本页" },
-  { group: "Button", tokens: "primaryShadow / defaultShadow / dangerShadow", where: "概览页（扁平无阴影）" },
+  { group: "Button", tokens: "primaryShadow / defaultShadow / dangerShadow", where: "概览页（软阴影）" },
 ];
 
-export function ComponentsSection() {
+export function ComponentsSection({ isLight }: { isLight: boolean }) {
   const { message, notification } = AntApp.useApp();
+  const { token } = antdTheme.useToken();
   const [modalOpen, setModalOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
 
   return (
     <Row gutter={[16, 16]}>
       <Col xs={24} xl={12}>
-        <Card title="Tabs" size="small">
+        <Card variant="borderless" title="Tabs" size="small">
           <Tabs
             items={[
               { key: "1", label: "工作区", children: <p style={{ fontSize: 13 }}>3 个 agent 正在运行…</p> },
@@ -429,13 +432,22 @@ export function ComponentsSection() {
             ]}
           />
           <Paragraph type="secondary" style={{ fontSize: 12, marginBottom: 0 }}>
-            选中项与 ink bar 用 <code>accentBright</code>——深色背景上深绿 accent 不可读。
+            {isLight ? (
+              <>
+                选中项文字用 <code>accentText</code>、ink bar 用压暗 clay——clay 本身在浅色上作为文字只有
+                2.96:1。
+              </>
+            ) : (
+              <>
+                选中项与 ink bar 用 <code>accentBright</code>——深色背景上深绿 accent 不可读。
+              </>
+            )}
           </Paragraph>
         </Card>
       </Col>
 
       <Col xs={24} xl={12}>
-        <Card title="浮层：Modal / Message / Notification" size="small">
+        <Card variant="borderless" title="浮层：Modal / Message / Notification" size="small">
           <SpaceWrap>
             <Button type="primary" onClick={() => setModalOpen(true)}>
               打开 Modal
@@ -469,17 +481,19 @@ export function ComponentsSection() {
       </Col>
 
       <Col xs={24} xl={12}>
-        <Card title="Layout" size="small">
+        <Card variant="borderless" title="Layout" size="small">
           <Layout style={{ height: 220, borderRadius: 8, overflow: "hidden" }}>
             <Sider
-              theme="dark"
+              theme={isLight ? "light" : "dark"}
               width={150}
               collapsible
               collapsed={collapsed}
               onCollapse={setCollapsed}
               trigger={<span style={{ fontSize: 12 }}>{collapsed ? "展开" : "收起"}</span>}
             >
-              <div style={{ padding: 12, color: "#fff", fontSize: 12 }}>Sider · siderBg</div>
+              <div style={{ padding: 12, color: token.colorText, fontSize: 12 }}>
+                Sider · siderBg
+              </div>
             </Sider>
             <Layout>
               <Header style={{ height: 40, fontSize: 12, padding: "0 12px" }}>Header · headerBg</Header>
@@ -487,13 +501,13 @@ export function ComponentsSection() {
             </Layout>
           </Layout>
           <Paragraph type="secondary" style={{ fontSize: 12, marginTop: 12, marginBottom: 0 }}>
-            底部触发器用 <code>triggerBg</code>（surface1）；收起可对比 siderBg 与 headerBg。
+            底部触发器用 <code>triggerBg</code>；收起可对比 siderBg 与 headerBg。
           </Paragraph>
         </Card>
       </Col>
 
       <Col span={24}>
-        <Card title="组件 Token 覆盖" size="small" bordered={false}>
+        <Card variant="borderless" title="组件 Token 覆盖" size="small">
           <div style={{ display: "grid", gap: 6 }}>
             {COMPONENT_COVERAGE.map((row) => (
               <div
@@ -600,9 +614,20 @@ function TokenGroup({ title, tokens }: { title: string; tokens: Record<string, s
 export function MappingSection({ view }: { view: View }) {
   const { token } = antdTheme.useToken();
   const t = token as unknown as Record<string, string>;
-  const isDark = view !== "light";
-  const mapping =
-    view === "full" ? full.PASEO_DARK_TOKEN_MAPPING : minimal.PASEO_DARK_TOKEN_MAPPING;
+  const isStockLight = view === "light";
+  const isFullDark = view === "full";
+  const isClaude = view === "claude";
+  const mapping = isFullDark
+    ? full.PASEO_DARK_TOKEN_MAPPING
+    : isClaude
+      ? claude.CLAUDE_LIGHT_TOKEN_MAPPING
+      : minimal.PASEO_DARK_TOKEN_MAPPING;
+  const derivedTokens = isFullDark
+    ? full.PASEO_DERIVED_TOKENS
+    : isClaude
+      ? claude.CLAUDE_LIGHT_DERIVED_TOKENS
+      : [];
+  const showDerived = isFullDark || isClaude;
 
   const customTokens = Object.fromEntries(
     Object.keys(t)
@@ -616,23 +641,26 @@ export function MappingSection({ view }: { view: View }) {
   return (
     <>
       <Card
+        variant="borderless"
         title="Token 映射（实时解析值）"
         size="small"
-        extra={isDark ? <Text type="secondary">{mapping.length} 个 antd token</Text> : null}
+        extra={isStockLight ? null : <Text type="secondary">{mapping.length} 个 antd token</Text>}
       >
-        {isDark ? (
-          mapping.map((row) => <TokenSwatchRow key={row.antdToken} row={row} live={t[row.antdToken]} />)
-        ) : (
+        {isStockLight ? (
           <Paragraph type="secondary" style={{ marginBottom: 0 }}>
-            浅色主题未覆盖任何 antd 变量（唯一例外：字体栈与深色一致，避免切换时元素位移）。
+            这是 antd 默认浅色主题，未覆盖任何 antd 变量（唯一例外：字体栈与深色一致，避免切换时元素位移）。
+            切到「Claude 浅色」查看完整浅色方案。
           </Paragraph>
+        ) : (
+          mapping.map((row) => <TokenSwatchRow key={row.antdToken} row={row} live={t[row.antdToken]} />)
         )}
       </Card>
 
-      {view === "full" && (
+      {showDerived && (
         <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
           <Col xs={24} xl={12}>
             <Card
+              variant="borderless"
               title="antd 自行派生的 token"
               size="small"
               extra={<Text type="secondary">无需手动设置</Text>}
@@ -641,7 +669,7 @@ export function MappingSection({ view }: { view: View }) {
                 这些别名 token 由 antd 在最后一步从受控 token 计算得出——手动覆盖会被静默丢弃，
                 完整方案里只登记派生来源。
               </Paragraph>
-              {full.PASEO_DERIVED_TOKENS.map((row) => (
+              {derivedTokens.map((row) => (
                 <div
                   key={row.antdToken}
                   style={{
@@ -662,6 +690,7 @@ export function MappingSection({ view }: { view: View }) {
 
           <Col xs={24} xl={12}>
             <Card
+              variant="borderless"
               title="自定义 token"
               size="small"
               extra={<Text type="secondary">{Object.keys(customTokens).length} 个</Text>}

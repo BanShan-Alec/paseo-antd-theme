@@ -114,6 +114,28 @@ describe("paseo → antd dark token mapping", () => {
     expect(dark.fontFamily).toContain("system-ui");
     expect(dark.fontFamilyCode).toContain("SFMono-Regular");
   });
+
+  it("uses the synced 40px control / 12px radius / 14px body scale", () => {
+    // The full dark scheme follows the light scheme's form language: 40px
+    // controls, 12px radius, 14px body. The minimal scheme stays compact.
+    expect(dark.fontSize).toBe(14);
+    expect(dark.fontSizeSM).toBe(12);
+    expect(dark.fontSizeLG).toBe(16);
+    expect(dark.controlHeight).toBe(40);
+    expect(dark.controlHeightSM).toBe(32);
+    expect(dark.controlHeightLG).toBe(48);
+    expect(dark.borderRadius).toBe(12);
+    expect(dark.borderRadiusSM).toBe(8);
+    expect(dark.borderRadiusLG).toBe(12);
+    expect(dark.borderRadiusXS).toBe(4);
+    expect(paseoDarkTheme.components?.Alert?.borderRadius).toBe("12px");
+    expect(paseoDarkTheme.components?.Segmented?.trackPadding).toBe(4);
+  });
+
+  it("uses soft elevation instead of flat chrome", () => {
+    expect(String(dark.boxShadow)).toContain("rgba(0, 0, 0");
+    expect(paseoDarkTheme.components?.Button?.primaryShadow).not.toBe("none");
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -251,6 +273,12 @@ describe("dark contrast", () => {
     expect(contrast(String(dark.paseoDiffDeletionText), paseoDark.surface0)).toBeGreaterThanOrEqual(
       4.5,
     );
+  });
+
+  it("diff line text stays readable on the desaturated fills", () => {
+    // The old #4ade80 / #ef4444 pair was 1.67:1 / 3.61:1 under white text.
+    expect(contrast("#fafafa", paseoDark.diffAddition)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast("#fafafa", paseoDark.diffDeletion)).toBeGreaterThanOrEqual(4.5);
   });
 });
 

@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { App as AntApp, ConfigProvider, Layout, Menu, Segmented, Typography } from "antd";
+import {
+  App as AntApp,
+  Layout,
+  Menu,
+  Segmented,
+  Typography,
+  theme as antdTheme,
+} from "antd";
 import {
   AgentsSection,
   ComponentsSection,
@@ -12,12 +19,15 @@ import {
 } from "./demo/sections";
 import * as minimal from "./paseo/theme";
 import * as full from "./paseo-full/theme";
+import * as claude from "./claude/theme";
+import { ClaudeThemeProvider } from "./claude/Provider";
 
 const { Header, Sider, Content } = Layout;
 const { Title, Text } = Typography;
 
 const VIEW_OPTIONS = [
   { label: "antd 默认", value: "light" },
+  { label: "Claude 浅色", value: "claude" },
   { label: "Paseo 最小", value: "minimal" },
   { label: "Paseo 完整", value: "full" },
 ] as const;
@@ -42,6 +52,7 @@ const SECTIONS: { key: Section; label: string; hint: string }[] = [
 ];
 
 function themeFor(view: View) {
+  if (view === "claude") return claude.claudeLightTheme;
   if (view === "full") return full.paseoDarkTheme;
   if (view === "minimal") return minimal.paseoDarkTheme;
   return minimal.antdDefaultLightTheme;
@@ -57,8 +68,83 @@ const SECTION_TITLES: Record<Section, string> = {
   mapping: "Token 映射",
 };
 
+function Dashboard({
+  view,
+  section,
+  setView,
+  setSection,
+}: {
+  view: View;
+  section: Section;
+  setView: (view: View) => void;
+  setSection: (section: Section) => void;
+}) {
+  const { token } = antdTheme.useToken();
+  // The two light views need a light Sider and light Menu; the paseo views
+  // keep the dark chrome both themes were designed around.
+  const isLight = view === "light" || view === "claude";
+
+  return (
+    <Layout style={{ minHeight: "100vh" }}>
+      <Sider width={248} theme={isLight ? "light" : "dark"}>
+        <div style={{ padding: "16px 20px", color: token.colorText }}>
+          <Title level={5} style={{ color: "inherit", margin: 0 }}>
+            Paseo × antd v6
+          </Title>
+          <Text style={{ color: token.colorTextSecondary, fontSize: 12 }}>
+            agent orchestration
+          </Text>
+        </div>
+        <Menu
+          theme={isLight ? "light" : "dark"}
+          mode="inline"
+          selectedKeys={[section]}
+          onClick={({ key }) => setSection(key as Section)}
+          items={SECTIONS.map((s) => ({ key: s.key, label: s.label }))}
+        />
+        <div
+          style={{
+            padding: "12px 20px",
+            color: token.colorTextTertiary,
+            fontSize: 11,
+            lineHeight: 1.6,
+          }}
+        >
+          {SECTIONS.find((s) => s.key === section)?.hint}
+        </div>
+      </Sider>
+      <Layout>
+        <Header
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "0 24px",
+          }}
+        >
+          <Text strong>{SECTION_TITLES[section]}</Text>
+          <Segmented
+            value={view}
+            onChange={(value) => setView(value as View)}
+            options={VIEW_OPTIONS.map((o) => ({ ...o }))}
+          />
+        </Header>
+        <Content style={{ padding: 24 }}>
+          {section === "overview" && <OverviewSection />}
+          {section === "agents" && <AgentsSection />}
+          {section === "diff" && <DiffSection />}
+          {section === "status" && <StatusSection />}
+          {section === "hosts" && <HostsSection />}
+          {section === "components" && <ComponentsSection isLight={isLight} />}
+          {section === "mapping" && <MappingSection view={view} />}
+        </Content>
+      </Layout>
+    </Layout>
+  );
+}
+
 export default function App() {
-  const [view, setView] = useState<View>("full");
+  const [view, setView] = useState<View>("claude");
   const [section, setSection] = useState<Section>("overview");
 
   // Remount on theme change: antd's cssinjs does not fully reclaim the
@@ -66,64 +152,10 @@ export default function App() {
   // some elements (buttons, tags) painted with the old theme's colors.
   // Keying the provider forces every component to re-register its styles.
   return (
-    <ConfigProvider key={view} theme={themeFor(view)}>
+    <ClaudeThemeProvider key={view} theme={themeFor(view)}>
       <AntApp>
-        <Layout style={{ minHeight: "100vh" }}>
-          <Sider width={232}>
-            <div style={{ padding: "16px 20px", color: "#fff" }}>
-              <Title level={5} style={{ color: "inherit", margin: 0 }}>
-                Paseo × antd v6
-              </Title>
-              <Text style={{ color: "inherit", opacity: 0.6, fontSize: 12 }}>
-                agent orchestration
-              </Text>
-            </div>
-            <Menu
-              theme="dark"
-              mode="inline"
-              selectedKeys={[section]}
-              onClick={({ key }) => setSection(key as Section)}
-              items={SECTIONS.map((s) => ({ key: s.key, label: s.label }))}
-            />
-            <div
-              style={{
-                padding: "12px 20px",
-                color: "rgba(255,255,255,0.45)",
-                fontSize: 11,
-                lineHeight: 1.6,
-              }}
-            >
-              {SECTIONS.find((s) => s.key === section)?.hint}
-            </div>
-          </Sider>
-          <Layout>
-            <Header
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                padding: "0 24px",
-              }}
-            >
-              <Text strong>{SECTION_TITLES[section]}</Text>
-              <Segmented
-                value={view}
-                onChange={(value) => setView(value as View)}
-                options={VIEW_OPTIONS.map((o) => ({ ...o }))}
-              />
-            </Header>
-            <Content style={{ padding: 24 }}>
-              {section === "overview" && <OverviewSection />}
-              {section === "agents" && <AgentsSection />}
-              {section === "diff" && <DiffSection />}
-              {section === "status" && <StatusSection />}
-              {section === "hosts" && <HostsSection />}
-              {section === "components" && <ComponentsSection />}
-              {section === "mapping" && <MappingSection view={view} />}
-            </Content>
-          </Layout>
-        </Layout>
+        <Dashboard view={view} section={section} setView={setView} setSection={setSection} />
       </AntApp>
-    </ConfigProvider>
+    </ClaudeThemeProvider>
   );
 }

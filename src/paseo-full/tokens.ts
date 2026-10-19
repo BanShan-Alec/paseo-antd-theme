@@ -41,9 +41,13 @@ export const paseoDark = {
   statusDotWarning: "#db932e",
   statusDotRunning: "#5caaf6",
 
-  // Diff stays saturated: the color *is* the signal when scanning line by line.
-  diffAddition: "#4ade80",
-  diffDeletion: "#ef4444",
+  // Diff line fills. Paseo's original pair (#4ade80 / #ef4444) was tuned as
+  // pure signal, but white line text on it only reaches 1.67:1 / 3.61:1.
+  // These are the same status hues at L*=0.42, C=55% gamut max: still a
+  // visible band against #181B1A (2.11 / 1.96), now safe under light text
+  // (7.86 / 8.49).
+  diffAddition: "#32573a",
+  diffDeletion: "#783630",
 
   // ::selection background (matches the theme's terminal selection).
   selection: "rgba(255, 255, 255, 0.2)",

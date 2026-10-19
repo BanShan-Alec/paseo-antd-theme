@@ -107,6 +107,18 @@ function familyTokens(prefix: FamilyPrefix, palette: DarkPalette): AntdToken {
 const primary = darkPalette(paseoDark.accent);
 const primaryBright = darkPalette(paseoDark.accentBright);
 
+// Claude.ai's soft elevation, black-tinted for the dark scheme. The original
+// paseo chrome was flat; Q14 syncs the full dark scheme to the same form
+// language as the Claude light scheme.
+const DARK_SHADOW = {
+  base: "0 1px 2px rgba(0, 0, 0, 0.28), 0 4px 12px rgba(0, 0, 0, 0.32)",
+  secondary: "0 6px 16px rgba(0, 0, 0, 0.40), 0 2px 6px rgba(0, 0, 0, 0.24)",
+  tertiary: "0 1px 2px rgba(0, 0, 0, 0.24), 0 4px 12px rgba(0, 0, 0, 0.28)",
+  buttonDefault: "0 1px 2px rgba(0, 0, 0, 0.24)",
+  buttonPrimary: "0 1px 2px rgba(0, 0, 0, 0.32)",
+  buttonDanger: "0 1px 2px rgba(0, 0, 0, 0.32)",
+} as const;
+
 const pinnedDarkColors: AntdToken = {
   ...familyTokens("colorPrimary", primary),
   // Primary-colored *text* on a dark surface takes paseo's bright accent —
@@ -197,10 +209,10 @@ const darkMappings: readonly TokenMapping[] = [
     paseoToken: "fontFamily.mono",
   },
   { antdToken: "fontSize", kind: "seed", value: 14, paseoToken: "fontSize.base" },
-  { antdToken: "borderRadius", kind: "seed", value: 6, paseoToken: "borderRadius.md" },
+  { antdToken: "borderRadius", kind: "seed", value: 12, paseoToken: "borderRadius.lg" },
   { antdToken: "sizeUnit", kind: "seed", value: 4, paseoToken: "spacing.1" },
   { antdToken: "sizeStep", kind: "seed", value: 4, paseoToken: "spacing.1" },
-  { antdToken: "controlHeight", kind: "seed", value: 32, paseoToken: "—" },
+  { antdToken: "controlHeight", kind: "seed", value: 40, paseoToken: "—" },
   { antdToken: "lineWidth", kind: "seed", value: 1, paseoToken: "borderWidth.1" },
 
   // Map tokens — paseo's surface ladder, mapped so the visual hierarchy
@@ -279,15 +291,16 @@ const darkMappings: readonly TokenMapping[] = [
     note: "Zebra stripes and disabled outlines sit at hairline weight.",
   },
 
-  // Size ladder — paseo's spacing scale is already antd's (4-based), pinned
-  // here so a future antd default change cannot drift the integration.
-  { antdToken: "controlHeightSM", kind: "map", value: 24, paseoToken: "spacing.6" },
-  { antdToken: "controlHeightLG", kind: "map", value: 40, paseoToken: "spacing.10" },
+  // Size ladder — paseo's spacing scale is already antd's (4-based), but the
+  // control/type/radius scale follows the Claude.ai form language (Q13/Q14):
+  // 40px controls, 16px body, 12px radius. Spacing stays on the 4px grid.
+  { antdToken: "controlHeightSM", kind: "map", value: 32, paseoToken: "spacing.8" },
+  { antdToken: "controlHeightLG", kind: "map", value: 48, paseoToken: "spacing.12" },
   { antdToken: "fontSizeSM", kind: "map", value: 12, paseoToken: "fontSize.sm" },
   { antdToken: "fontSizeLG", kind: "map", value: 16, paseoToken: "fontSize.lg" },
-  { antdToken: "borderRadiusSM", kind: "map", value: 4, paseoToken: "borderRadius.base" },
-  { antdToken: "borderRadiusLG", kind: "map", value: 8, paseoToken: "borderRadius.lg" },
-  { antdToken: "borderRadiusXS", kind: "map", value: 2, paseoToken: "borderRadius.sm" },
+  { antdToken: "borderRadiusSM", kind: "map", value: 8, paseoToken: "borderRadius.base" },
+  { antdToken: "borderRadiusLG", kind: "map", value: 12, paseoToken: "borderRadius.lg" },
+  { antdToken: "borderRadiusXS", kind: "map", value: 4, paseoToken: "borderRadius.sm" },
   { antdToken: "padding", kind: "map", value: 16, paseoToken: "spacing.4" },
   { antdToken: "paddingSM", kind: "map", value: 12, paseoToken: "spacing.3" },
   { antdToken: "paddingXS", kind: "map", value: 8, paseoToken: "spacing.2" },
@@ -298,6 +311,22 @@ const darkMappings: readonly TokenMapping[] = [
   { antdToken: "marginXS", kind: "map", value: 8, paseoToken: "spacing.2" },
   { antdToken: "marginXXS", kind: "map", value: 4, paseoToken: "spacing.1" },
   { antdToken: "marginLG", kind: "map", value: 24, paseoToken: "spacing.6" },
+
+  // Elevation — soft and black-tinted, so popovers separate from the surface
+  // ladder by shadow rather than by a lighter fill.
+  { antdToken: "boxShadow", kind: "map", value: DARK_SHADOW.base, paseoToken: "—" },
+  {
+    antdToken: "boxShadowSecondary",
+    kind: "map",
+    value: DARK_SHADOW.secondary,
+    paseoToken: "—",
+  },
+  {
+    antdToken: "boxShadowTertiary",
+    kind: "map",
+    value: DARK_SHADOW.tertiary,
+    paseoToken: "—",
+  },
 ];
 
 /** Tokens antd derives last, from tokens this integration controls. Never set them. */
@@ -393,6 +422,7 @@ const darkComponents: AntdComponents = {
   },
   Segmented: {
     trackBg: paseoDark.surface0,
+    trackPadding: 4,
     itemColor: paseoDark.foregroundMuted,
     itemSelectedBg: paseoDark.surface2,
     itemSelectedColor: paseoDark.foreground,
@@ -403,12 +433,21 @@ const darkComponents: AntdComponents = {
     inkBarColor: paseoDark.accentBright,
   },
   Card: { headerBg: paseoDark.surface1 },
+  // Explicit component token: antd 6.6's css-var mode leaves the Alert
+  // default empty, so the alert would render square. The string form is
+  // required — numeric values are skipped by the css-var serializer here.
+  // The cast only satisfies antd's `number`-typed token declaration.
+  Alert: { borderRadius: "12px" as unknown as number },
   Input: { hoverBorderColor: paseoDark.accent, activeBorderColor: paseoDark.accentBright },
   Modal: { contentBg: paseoDark.surface2, headerBg: paseoDark.surface2 },
   Message: { contentBg: paseoDark.surface2 },
   Notification: { colorBgElevated: paseoDark.surface2 },
-  // Paseo's chrome is flat — no drop shadow on buttons.
-  Button: { primaryShadow: "none", defaultShadow: "none", dangerShadow: "none" },
+  // Soft elevation in place of paseo's original flat chrome (Q14 sync).
+  Button: {
+    primaryShadow: DARK_SHADOW.buttonPrimary,
+    defaultShadow: DARK_SHADOW.buttonDefault,
+    dangerShadow: DARK_SHADOW.buttonDanger,
+  },
 };
 
 // ---------------------------------------------------------------------------
