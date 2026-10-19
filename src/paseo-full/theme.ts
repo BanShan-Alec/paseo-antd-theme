@@ -427,6 +427,11 @@ const darkComponents: AntdComponents = {
     itemSelectedBg: paseoDark.surface2,
     itemSelectedColor: paseoDark.foreground,
   },
+  Select: {
+    // 2px more vertical breathing room than the 9px 12px / 40px default.
+    optionPadding: "11px 12px",
+    optionHeight: 44,
+  },
   Tabs: {
     itemColor: paseoDark.foregroundMuted,
     itemSelectedColor: paseoDark.accentBright,

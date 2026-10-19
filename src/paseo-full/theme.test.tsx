@@ -130,6 +130,8 @@ describe("paseo → antd dark token mapping", () => {
     expect(dark.borderRadiusXS).toBe(4);
     expect(paseoDarkTheme.components?.Alert?.borderRadius).toBe("12px");
     expect(paseoDarkTheme.components?.Segmented?.trackPadding).toBe(4);
+    expect(paseoDarkTheme.components?.Select?.optionPadding).toBe("11px 12px");
+    expect(paseoDarkTheme.components?.Select?.optionHeight).toBe(44);
   });
 
   it("uses soft elevation instead of flat chrome", () => {

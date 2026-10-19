@@ -118,6 +118,8 @@ describe("claude → antd light token mapping", () => {
     expect(light.borderRadiusXS).toBe(4);
     expect(claudeLightTheme.components?.Alert?.borderRadius).toBe("12px");
     expect(claudeLightTheme.components?.Segmented?.trackPadding).toBe(4);
+    expect(claudeLightTheme.components?.Select?.optionPadding).toBe("11px 12px");
+    expect(claudeLightTheme.components?.Select?.optionHeight).toBe(44);
   });
 
   it("uses soft elevation rather than the paseo flat chrome", () => {

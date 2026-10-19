@@ -401,6 +401,13 @@ const lightComponents: AntdComponents = {
     itemSelectedBg: claudeLight.surface2,
     itemSelectedColor: claudeLight.foreground,
   },
+  Select: {
+    // Default is 9px 12px inside a 40px row. 11px adds 2px above/below the
+    // label; optionHeight must match because the dropdown row is measured
+    // from it. Virtualized lists also need <Select listItemHeight={44}>.
+    optionPadding: "11px 12px",
+    optionHeight: 44,
+  },
   Tabs: {
     itemColor: claudeLight.foregroundMuted,
     itemSelectedColor: claudeLight.accentText,
