@@ -8,7 +8,7 @@
 | Claude 浅色 | `src/claude/` | Claude 品牌表面 + Claude Code 信号色 + paseo 归一化状态色 |
 | Paseo 最小（深色） | `src/paseo/` | 13 个 token 的最小方案；浅色仍是 antd 默认，仅字体栈钉固 |
 
-> 浅色方案不是 antd 官方浅色。Claude Code CLI 的浅色主题只有信号色、没有画布背景（终端负责背景），所以表面/中性色来自 Claude 品牌（ivory `#FAF9F5`、暖灰 `#F0EEE6`、边框 `#DEDCD1`、墨色 `#141413`），信号色来自 Claude Code 官方浅色主题，状态色则保留 paseo 的归一化规则。
+> 浅色方案不是 antd 官方浅色。Claude Code CLI 的浅色主题只有信号色、没有画布背景（终端负责背景），所以表面/中性色以 Claude 品牌的 ivory / 暖灰为起点，按“干净暖色”方案降到低彩度暖中性（layout `#F4F2EC`、container `#FBFAF7`、边框 `#E1DED6`、墨色 `#141413`），避免大面积米黄发脏；信号色来自 Claude Code 官方浅色主题，状态色则保留 paseo 的归一化规则。
 
 ```tsx
 import { ConfigProvider } from "antd";
@@ -24,12 +24,13 @@ const scheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark
 
 映射表见 [MAPPING.md](./MAPPING.md)（由 `scripts/dump-mapping.ts` 生成）。
 
-## 全局组件配置（loading 图标 / Segmented 间隙）
+## 全局组件配置（loading 图标 / Segmented / Select 间隙）
 
-`ThemeConfig` 只能承载 token，不能承载 React 节点，所以下面两项由 `ClaudeThemeProvider` 通过 antd 的组件级配置注入：
+`ThemeConfig` 只能承载 token，不能承载 React 节点，所以下面三项由 `ClaudeThemeProvider` 通过 antd 的组件级配置注入：
 
-- **loading 图标**：`button.loadingIcon`、`spin.indicator`、`select.loadingIcon` 全部指向 `ClaudeLoadingIcon`——本地复制的 `@ant-design/icons` LoadingIcon（双弧渐变 + 发丝连接线），`currentColor` 跟随文字色、1s 线性旋转。Button、Spin、Table 的 loading 都会继承。
+- **loading 图标**：`button.loadingIcon`、`spin.indicator`、`select.loadingIcon` 全部指向 `ClaudeLoadingIcon`——本地复制的 `@ant-design/icons` LoadingIcon（双弧渐变 + 发丝连接线），`currentColor` 跟随文字色、1s 线性旋转。旋转作用在内层 `<g>` 上，外层 1em 盒子保持静止，避免小尺寸下的抖动。Button、Spin、Table 的 loading 都会继承。
 - **Segmented 间隙**：antd 没有 item gap token。完整主题把 `Segmented.trackPadding` 设为 4（默认 2）；Provider 再给每个 item 加 `claude-segmented-item` 类，由 `theme.css` 加 4px 的 `margin-inline-end`（用 `:not(:last-child)`，避免尾部多出空白）。
+- **Select 行间透明间隔**：antd 没有 item gap token。Provider 给每个 option 加 `claude-select-item` 类，`theme.css` 用 `border-block: 2px solid transparent` + `background-clip: padding-box`：hover/选中背景只画到 padding box，行间露出下拉框背景。`optionPadding` 保持 `9px 12px`，加 2px 透明边框后总行高仍为 44px。
 
 ```tsx
 import { ClaudeThemeProvider } from "./claude/Provider";
@@ -39,13 +40,13 @@ import { paseoDarkTheme } from "./paseo-full/theme";
   <App />
 </ClaudeThemeProvider>;
 
-// 同一套 loading 图标与 Segmented 行为，换成 paseo 深色：
+// 同一套 loading 图标、Segmented / Select 行为，换成 paseo 深色：
 <ClaudeThemeProvider theme={paseoDarkTheme}>
   <App />
 </ClaudeThemeProvider>;
 ```
 
-只想要 token、不想要自定义图标时，继续直接用 `ConfigProvider theme={claudeLightTheme}` 即可。
+不想要这些组件级行为时，继续直接用 `ConfigProvider theme={claudeLightTheme}` 即可。
 
 ## Claude 浅色是怎么拼出来的
 
@@ -55,13 +56,15 @@ import { paseoDarkTheme } from "./paseo-full/theme";
 
 | 角色 | 值 |
 | --- | --- |
-| 侧栏 / `paseoSurfaceSidebar` | `#E9E6DC` |
-| layout / `surface0` | `#F0EEE6` |
-| container / `surface1` | `#FAF9F5` |
+| 侧栏 / `paseoSurfaceSidebar` | `#EFEDE7` |
+| layout / `surface0` | `#F4F2EC` |
+| container / `surface1` | `#FBFAF7` |
 | elevated / `surface2` | `#FFFFFF` |
-| 强填充 / `surface3` | `#E3DACC` |
-| 最强填充 / `surface4` | `#D5D1C3` |
-| 边框 | `#DEDCD1` |
+| 强填充 / `surface3` | `#EAE7DF` |
+| 最强填充 / `surface4` | `#DFDBD2` |
+| 边框 | `#E1DED6` |
+
+相对最初版本，侧栏/layout 和 oat 填充的彩度降低了约 25–40%，色相统一在 90° 附近，避免黄绿偏色带来的“脏”感。
 
 卡片在 layout 上呈米白，弹层与卡片靠**阴影**区分——这是 Claude.ai 的纸感层次，而不是深色主题的“越亮越靠前”。
 
@@ -95,7 +98,7 @@ import { paseoDarkTheme } from "./paseo-full/theme";
 
 两个完整方案共享 Claude.ai 形态：控件高 40（SM 32 / LG 48）、正文 14（SM 12 / LG 16）、圆角 12（SM 8 / XS 4）、软阴影（浅色暖墨色、深色黑色）。正文最初试过 16px，在 Agent 列表和表单并排的卡片里显得拥挤，最终回到 antd/paseo 的 14px——40px 控件配 14px 正文既保留了 Claude.ai 的松弛感，又不会挤。最小方案 `src/paseo/` 保持原来的 32 / 14 / 6 紧凑形态，不受影响。
 
-Select 选项：`Select.optionPadding` 从默认 `9px 12px` 提到 `11px 12px`，`optionHeight` 同步为 44（默认 40），文字上下各多 2px。**虚拟滚动列表需要同时传 `<Select listItemHeight={44}>`**，否则 rc-virtual-list 仍按 40px 估算行高。
+Select 选项：`optionPadding` 为 `9px 12px`、`optionHeight` 为 44（默认 40）。行间透明间隔由 Provider 的 `border-block: 2px solid transparent` + `background-clip: padding-box` 实现：hover/选中背景只画到 padding box，露出下拉框背景。**虚拟滚动列表需要传 `<Select listItemHeight={44}>`**，否则 rc-virtual-list 仍按 40px 估算行高。
 
 这也意味着**完整深色方案不再是对 paseo 深色的 1:1 移植**：paseo 原始深色是扁平、紧凑的。配色仍来自 paseo，形态已同步到 Claude.ai。
 
@@ -113,7 +116,7 @@ antd v6 的 token 管线有两个行为决定了“直接写 `theme.token`”行
 ```bash
 npm install
 npm run typecheck   # token 名对照 antd v6 自身类型，拼错即编译失败
-npm test            # 64 个测试：最小 15 + 完整深色 25 + Claude 浅色 22 + Provider 2
+npm test            # 65 个测试：最小 15 + 完整深色 25 + Claude 浅色 22 + Provider 3
 npm run build
 npm run dev         # demo 可切换 antd 默认 / Claude 浅色 / Paseo 最小 / Paseo 完整
 ```

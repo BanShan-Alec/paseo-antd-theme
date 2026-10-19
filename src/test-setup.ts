@@ -12,3 +12,14 @@ if (typeof window !== "undefined" && typeof window.matchMedia !== "function") {
     dispatchEvent: () => false,
   })) as typeof window.matchMedia;
 }
+
+// jsdom has no ResizeObserver; rc-virtual-list (Select, Table) instantiates it
+// when a popup/list mounts.
+if (typeof globalThis.ResizeObserver !== "function") {
+  class ResizeObserverStub {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  }
+  globalThis.ResizeObserver = ResizeObserverStub as unknown as typeof ResizeObserver;
+}

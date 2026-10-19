@@ -10,6 +10,9 @@ function joinClassNames(...values: (string | undefined)[]): string {
  * (two gradient arcs plus a hairline connector), copied locally so the theme
  * has no dependency on another project's node_modules. `currentColor` keeps
  * it correct on primary buttons, text buttons and Spin.
+ *
+ * The rotation lives on the inner <g>, matching the reference: the outer 1em
+ * box stays static, so the icon does not shimmer or jitter at small sizes.
  */
 export function ClaudeLoadingIcon(props: SVGProps<SVGSVGElement>) {
   const { className, ...rest } = props;
@@ -35,7 +38,7 @@ export function ClaudeLoadingIcon(props: SVGProps<SVGSVGElement>) {
       className={joinClassNames("claude-loading-icon", className)}
       {...rest}
     >
-      <g strokeWidth="2.42">
+      <g className="claude-loading-spin" strokeWidth="2.42">
         <path
           d="M1.35561 5.96553C1.36473 4.7336 1.86287 3.55573 2.74043 2.69107C3.618 1.82642 4.80311 1.34578 6.03505 1.35491C7.26698 1.36403 8.44485 1.86217 9.30951 2.73973C10.1742 3.6173 10.6548 4.80241 10.6457 6.03434"
           stroke={`url(#${idTop})`}

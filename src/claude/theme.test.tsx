@@ -60,8 +60,8 @@ describe("claude → antd light token mapping", () => {
     expect(light.colorInfo).toBe("#436c96");
     expect(light.colorLink).toBe("#4B5BD8");
     expect(light.colorText).toBe("#141413");
-    expect(light.colorBgLayout).toBe("#F0EEE6");
-    expect(light.colorBgContainer).toBe("#FAF9F5");
+    expect(light.colorBgLayout).toBe("#F4F2EC");
+    expect(light.colorBgContainer).toBe("#FBFAF7");
     expect(light.colorBgElevated).toBe("#FFFFFF");
   });
 
@@ -118,7 +118,7 @@ describe("claude → antd light token mapping", () => {
     expect(light.borderRadiusXS).toBe(4);
     expect(claudeLightTheme.components?.Alert?.borderRadius).toBe("12px");
     expect(claudeLightTheme.components?.Segmented?.trackPadding).toBe(4);
-    expect(claudeLightTheme.components?.Select?.optionPadding).toBe("11px 12px");
+    expect(claudeLightTheme.components?.Select?.optionPadding).toBe("9px 12px");
     expect(claudeLightTheme.components?.Select?.optionHeight).toBe(44);
   });
 

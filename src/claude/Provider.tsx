@@ -29,7 +29,10 @@ export function ClaudeThemeProvider({
       theme={theme}
       button={{ loadingIcon: indicator }}
       spin={{ indicator }}
-      select={{ loadingIcon: indicator }}
+      select={{
+        loadingIcon: indicator,
+        classNames: { popup: { listItem: "claude-select-item" } },
+      }}
       segmented={{ classNames: { item: "claude-segmented-item" } }}
     >
       {children}

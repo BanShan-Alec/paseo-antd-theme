@@ -405,7 +405,7 @@ const COMPONENT_COVERAGE: { group: string; tokens: string; where: string }[] = [
   { group: "Menu", tokens: "darkItem*（深色）/ item*（浅色）", where: "左侧边栏" },
   { group: "Table", tokens: "headerBg / rowHoverBg / borderColor / headerSort*Bg", where: "Agent 列表页" },
   { group: "Segmented", tokens: "trackBg / trackPadding / itemSelectedBg / itemColor", where: "概览页 + 右上角（+ Provider 4px 间隙）" },
-  { group: "Select", tokens: "optionPadding / optionHeight", where: "概览页（+ listItemHeight=44）" },
+  { group: "Select", tokens: "optionPadding / optionHeight / 透明边框", where: "概览页（+ listItemHeight=44）" },
   { group: "Tabs", tokens: "itemColor / itemSelectedColor / inkBarColor", where: "本页" },
   { group: "Card", tokens: "headerBg", where: "所有卡片" },
   { group: "Alert", tokens: "borderRadius", where: "概览页（补 antd css-var 默认缺失）" },

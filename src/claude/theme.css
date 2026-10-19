@@ -1,14 +1,28 @@
-@keyframes claude-loading-spin {
+@keyframes claude-loading-rotate {
   to {
     transform: rotate(360deg);
   }
 }
 
 .claude-loading-icon {
-  animation: claude-loading-spin 1s linear infinite;
-  transform-origin: center;
-  transform-box: fill-box;
   vertical-align: -0.125em;
+}
+
+/* Rotate the inner group, not the outer <svg>: the reference icon does this
+   so the 1em box never changes and the strokes do not shimmer at small sizes. */
+.claude-loading-spin {
+  animation: claude-loading-rotate 1s linear infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Real transparent gaps between Select options: the hover/selected background
+   stops at the padding box, so the 2px top/bottom borders reveal the dropdown
+   background instead of letting adjacent rows touch. The border is included in
+   the row's offsetHeight, so optionHeight and listItemHeight both stay 44. */
+.claude-select-item {
+  border-block: 2px solid transparent;
+  background-clip: padding-box;
 }
 
 /* antd has no gap token for Segmented items; the provider adds this class to

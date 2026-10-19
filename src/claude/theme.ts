@@ -163,7 +163,7 @@ const lightMappings: readonly TokenMapping[] = [
     kind: "seed",
     value: claudeLight.link,
     paseoToken: "link",
-    note: "Claude Code's suggestion hue #5769F7 darkened until it clears 4.5:1 on #F0EEE6.",
+    note: "Claude Code's suggestion hue #5769F7 darkened until it clears 4.5:1 on #F4F2EC.",
   },
   { antdToken: "fontFamily", kind: "seed", value: CLAUDE_FONT_STACK, paseoToken: "fontFamily.ui" },
   {
@@ -265,7 +265,7 @@ const lightMappings: readonly TokenMapping[] = [
   {
     antdToken: "colorFillQuaternary",
     kind: "map",
-    value: "#F5F3EC",
+    value: "#F7F5F0",
     paseoToken: "—",
     note: "Zebra stripes and hairline fills.",
   },
@@ -383,13 +383,13 @@ const lightComponents: AntdComponents = {
     itemDisabledColor: claudeLight.foregroundFaint,
   },
   Table: {
-    headerBg: "#EAE7DE",
+    headerBg: "#EFECE5",
     rowHoverBg: claudeLight.surface0,
     borderColor: claudeLight.borderAccent,
     headerSplitColor: claudeLight.borderAccent,
     headerSortHoverBg: claudeLight.surface3,
     headerSortActiveBg: claudeLight.surface3,
-    bodySortBg: "#F5F3EC",
+    bodySortBg: "#F7F5F0",
   },
   Segmented: {
     trackBg: claudeLight.surfaceSidebar,
@@ -402,10 +402,10 @@ const lightComponents: AntdComponents = {
     itemSelectedColor: claudeLight.foreground,
   },
   Select: {
-    // Default is 9px 12px inside a 40px row. 11px adds 2px above/below the
-    // label; optionHeight must match because the dropdown row is measured
-    // from it. Virtualized lists also need <Select listItemHeight={44}>.
-    optionPadding: "11px 12px",
+    // 9px padding + the provider's 2px transparent borders keeps the text
+    // spacing of 11px and the total row at 44px. Virtualized lists also need
+    // <Select listItemHeight={44}>.
+    optionPadding: "9px 12px",
     optionHeight: 44,
   },
   Tabs: {
@@ -414,7 +414,7 @@ const lightComponents: AntdComponents = {
     // The 2px ink bar is non-text: #C6613F clears the 3:1 threshold (3.85:1).
     inkBarColor: claudeLight.accent,
   },
-  Card: { headerBg: "#F5F3EC" },
+  Card: { headerBg: "#F8F6F1" },
   // antd 6.6's css-var mode does not emit the Alert component-token default,
   // which leaves `--ant-alert-border-radius` empty and the alert square. The
   // value must be a string: the css-var serializer skips a numeric value for

@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { Button, Segmented, Spin } from "antd";
+import { Button, Segmented, Select, Spin } from "antd";
 import { ClaudeThemeProvider } from "./Provider";
 
 describe("ClaudeThemeProvider", () => {
@@ -13,6 +13,7 @@ describe("ClaudeThemeProvider", () => {
     );
 
     expect(container.querySelectorAll("svg[data-claude-loading]").length).toBeGreaterThan(0);
+    expect(container.querySelector("svg[data-claude-loading] > g.claude-loading-spin")).toBeTruthy();
     expect(container.querySelector(".anticon-loading")).toBeNull();
   });
 
@@ -24,5 +25,21 @@ describe("ClaudeThemeProvider", () => {
     );
 
     expect(container.querySelectorAll(".claude-segmented-item").length).toBe(2);
+  });
+
+  it("adds the Select option gap class", () => {
+    render(
+      <ClaudeThemeProvider>
+        <Select
+          open
+          options={[
+            { value: "claude", label: "Claude Code" },
+            { value: "codex", label: "Codex" },
+          ]}
+        />
+      </ClaudeThemeProvider>,
+    );
+
+    expect(document.querySelectorAll(".claude-select-item").length).toBeGreaterThan(0);
   });
 });

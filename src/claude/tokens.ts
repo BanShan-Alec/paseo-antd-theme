@@ -48,20 +48,20 @@ function diffFill(hue: number): string {
 }
 
 export const claudeLight = {
-  surfaceSidebar: "#E9E6DC", // sidebar — one step below the page
-  surface0: "#F0EEE6", // main background / layout
-  surface1: "#FAF9F5", // panel / container
+  surfaceSidebar: "#EFEDE7", // sidebar — one step below the page
+  surface0: "#F4F2EC", // main background / layout
+  surface1: "#FBFAF7", // panel / container
   surface2: "#FFFFFF", // elevated / popover
-  surface3: "#E3DACC", // strong fill (oat)
-  surface4: "#D5D1C3", // strongest fill
+  surface3: "#EAE7DF", // strong fill (clean oat)
+  surface4: "#DFDBD2", // strongest fill
 
   foreground: "#141413",
   foregroundMuted: "#66645C",
   foregroundExtraMuted: "#6E6C64",
   foregroundFaint: "#A8A498",
 
-  border: "#DEDCD1",
-  borderAccent: "#E7E4DA",
+  border: "#E1DED6",
+  borderAccent: "#EAE7DF",
 
   accent: "#C6613F", // Claude's site interactive clay; brand-palette #D97757 is the lighter variant
   accentText: "#A94F33", // clay darkened for text (5.17:1 on ivory)

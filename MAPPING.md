@@ -95,8 +95,8 @@ Claude 品牌表面 + Claude Code 信号色 + paseo 归一化状态色（OKLCH L
 | `colorError` | seed | `#a14b43` | `statusDanger` |  |
 | `colorInfo` | seed | `#436c96` | `statusRunning` | Claude Code's suggestion blue hue is reserved for links; info uses paseo's running blue. |
 | `colorTextBase` | seed | `#141413` | `foreground` |  |
-| `colorBgBase` | seed | `#FAF9F5` | `surface1` |  |
-| `colorLink` | seed | `#4B5BD8` | `link` | Claude Code's suggestion hue #5769F7 darkened until it clears 4.5:1 on #F0EEE6. |
+| `colorBgBase` | seed | `#FBFAF7` | `surface1` |  |
+| `colorLink` | seed | `#4B5BD8` | `link` | Claude Code's suggestion hue #5769F7 darkened until it clears 4.5:1 on #F4F2EC. |
 | `fontFamily` | seed | `system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif` | `fontFamily.ui` |  |
 | `fontFamilyCode` | seed | `SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace` | `fontFamily.mono` |  |
 | `fontSize` | seed | `14` | `—` | 14px body — the 16px Claude.ai scale felt cramped in dense app chrome. |
@@ -105,8 +105,8 @@ Claude 品牌表面 + Claude Code 信号色 + paseo 归一化状态色（OKLCH L
 | `sizeStep` | seed | `4` | `spacing.1` |  |
 | `controlHeight` | seed | `40` | `—` |  |
 | `lineWidth` | seed | `1` | `borderWidth.1` |  |
-| `colorBgLayout` | map | `#F0EEE6` | `surface0` |  |
-| `colorBgContainer` | map | `#FAF9F5` | `surface1` | Default buttons, inputs, cards. |
+| `colorBgLayout` | map | `#F4F2EC` | `surface0` |  |
+| `colorBgContainer` | map | `#FBFAF7` | `surface1` | Default buttons, inputs, cards. |
 | `colorBgElevated` | map | `#FFFFFF` | `surface2` | Popovers, dropdowns, modals — separated from cards by shadow. |
 | `colorBgSpotlight` | map | `#1F1E1D` | `—` | Tooltip stays dark ink with white text. |
 | `colorBgMask` | map | `rgba(20, 20, 19, 0.45)` | `—` |  |
@@ -115,12 +115,12 @@ Claude 品牌表面 + Claude Code 信号色 + paseo 归一化状态色（OKLCH L
 | `colorTextTertiary` | map | `#6E6C64` | `foregroundExtraMuted` |  |
 | `colorTextQuaternary` | map | `#A8A498` | `foregroundFaint` | Placeholder/disabled only — not a body-text level. |
 | `colorTextLightSolid` | map | `#FFFFFF` | `—` | Danger/solid labels stay white; primary buttons override with Button.primaryColor. |
-| `colorBorder` | map | `#DEDCD1` | `border` |  |
-| `colorBorderSecondary` | map | `#E7E4DA` | `borderAccent` |  |
-| `colorFill` | map | `#D5D1C3` | `surface4` |  |
-| `colorFillSecondary` | map | `#E3DACC` | `surface3` |  |
-| `colorFillTertiary` | map | `#F0EEE6` | `surface0` | Hover/disabled fills sit below the container, not above it. |
-| `colorFillQuaternary` | map | `#F5F3EC` | `—` | Zebra stripes and hairline fills. |
+| `colorBorder` | map | `#E1DED6` | `border` |  |
+| `colorBorderSecondary` | map | `#EAE7DF` | `borderAccent` |  |
+| `colorFill` | map | `#DFDBD2` | `surface4` |  |
+| `colorFillSecondary` | map | `#EAE7DF` | `surface3` |  |
+| `colorFillTertiary` | map | `#F4F2EC` | `surface0` | Hover/disabled fills sit below the container, not above it. |
+| `colorFillQuaternary` | map | `#F7F5F0` | `—` | Zebra stripes and hairline fills. |
 | `controlHeightSM` | map | `32` | `—` |  |
 | `controlHeightLG` | map | `48` | `—` |  |
 | `fontSizeSM` | map | `12` | `—` |  |
