@@ -17,9 +17,9 @@ import {
   StatusSection,
 } from "./demo/sections";
 import type { View } from "./demo/view";
-import * as full from "./paseo-full/theme";
-import * as claude from "./claude/theme";
-import { PaseoThemeProvider } from "./claude/Provider";
+import * as full from "./themes/paseo-dark/theme";
+import * as claude from "./themes/claude/theme";
+import { PaseoThemeProvider } from "./Provider";
 
 const { Header, Sider, Content } = Layout;
 const { Title, Text } = Typography;

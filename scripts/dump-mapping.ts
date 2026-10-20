@@ -1,6 +1,6 @@
 import { writeFileSync } from "node:fs";
-import { PASEO_DARK_TOKEN_MAPPING as FULL_DARK_MAPPING } from "../src/paseo-full/theme.ts";
-import { CLAUDE_LIGHT_TOKEN_MAPPING } from "../src/claude/theme.ts";
+import { PASEO_DARK_TOKEN_MAPPING as FULL_DARK_MAPPING } from "../src/themes/paseo-dark/theme.ts";
+import { CLAUDE_LIGHT_TOKEN_MAPPING } from "../src/themes/claude/theme.ts";
 
 function table(
   rows: readonly {

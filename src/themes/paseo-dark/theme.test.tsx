@@ -9,7 +9,8 @@ import {
   paseoTheme,
   type PaseoColorScheme,
 } from "./theme";
-import { PASEO_FONT_STACK, paseoDark, paseoIdentityDark } from "./tokens";
+import { paseoDark, paseoIdentityDark } from "./tokens";
+import { PASEO_FONT_STACK } from "../../shared/fonts";
 
 // ---------------------------------------------------------------------------
 // WCAG contrast — paseo's own palette discipline ("retune with the contrast

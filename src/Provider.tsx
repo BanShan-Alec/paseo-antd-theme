@@ -1,8 +1,8 @@
 import { ConfigProvider, type ConfigProviderProps, type ThemeConfig } from "antd";
 import { useSyncExternalStore, type ReactElement } from "react";
-import { paseoDarkTheme } from "../paseo-full/theme";
-import { ClaudeLoadingIcon } from "./LoadingIcon";
-import { claudeLightTheme } from "./theme";
+import { paseoDarkTheme } from "./themes/paseo-dark/theme";
+import { PaseoLoadingIcon } from "./LoadingIcon";
+import { claudeLightTheme } from "./themes/claude/theme";
 import { PASEO_THEME_CSS } from "./themeStyles";
 
 export type PaseoThemeMode = "dark" | "light" | "system";
@@ -80,7 +80,7 @@ export function PaseoThemeProvider({
   );
 
   const resolvedTheme = resolvePaseoTheme({ mode, systemDark, theme });
-  const indicator = loadingIcon ?? <ClaudeLoadingIcon />;
+  const indicator = loadingIcon ?? <PaseoLoadingIcon />;
 
   return (
     <ConfigProvider
@@ -90,9 +90,9 @@ export function PaseoThemeProvider({
       spin={{ indicator }}
       select={{
         loadingIcon: indicator,
-        classNames: { popup: { listItem: "claude-select-item" } },
+        classNames: { popup: { listItem: "paseo-select-item" } },
       }}
-      segmented={{ classNames: { item: "claude-segmented-item" } }}
+      segmented={{ classNames: { item: "paseo-segmented-item" } }}
     >
       <style data-paseo-theme="">{PASEO_THEME_CSS}</style>
       {children}

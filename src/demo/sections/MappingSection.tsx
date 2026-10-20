@@ -1,6 +1,6 @@
 import { Card, Col, Row, theme as antdTheme, Typography } from "antd";
-import * as full from "../../paseo-full/theme";
-import * as claude from "../../claude/theme";
+import * as full from "../../themes/paseo-dark/theme";
+import * as claude from "../../themes/claude/theme";
 import {
   TokenGroup,
   TokenSwatchRow,

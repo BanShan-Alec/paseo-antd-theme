@@ -13,14 +13,14 @@ function joinClassNames(...values: (string | undefined)[]): string {
  * The rotation lives on the inner <g>, matching the reference: the outer 1em
  * box stays static, so the icon does not shimmer or jitter at small sizes.
  */
-export function ClaudeLoadingIcon(props: SVGProps<SVGSVGElement>) {
+export function PaseoLoadingIcon(props: SVGProps<SVGSVGElement>) {
   const { className, ...rest } = props;
   // useId keeps the SVG gradient ids unique per rendered instance; colons are
   // stripped because they are awkward inside url(#...) references.
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, "");
-  const idTop = `claude-loading-top-${uid}`;
-  const idDown = `claude-loading-down-${uid}`;
-  const idHeader = `claude-loading-header-${uid}`;
+  const idTop = `paseo-loading-top-${uid}`;
+  const idDown = `paseo-loading-down-${uid}`;
+  const idHeader = `paseo-loading-header-${uid}`;
 
   return (
     <svg
@@ -32,12 +32,12 @@ export function ClaudeLoadingIcon(props: SVGProps<SVGSVGElement>) {
       xmlns="http://www.w3.org/2000/svg"
       focusable="false"
       data-icon="loading"
-      data-claude-loading=""
+      data-paseo-loading=""
       aria-hidden="true"
-      className={joinClassNames("claude-loading-icon", className)}
+      className={joinClassNames("paseo-loading-icon", className)}
       {...rest}
     >
-      <g className="claude-loading-spin" strokeWidth="2.42">
+      <g className="paseo-loading-spin" strokeWidth="2.42">
         <path
           d="M1.35561 5.96553C1.36473 4.7336 1.86287 3.55573 2.74043 2.69107C3.618 1.82642 4.80311 1.34578 6.03505 1.35491C7.26698 1.36403 8.44485 1.86217 9.30951 2.73973C10.1742 3.6173 10.6548 4.80241 10.6457 6.03434"
           stroke={`url(#${idTop})`}

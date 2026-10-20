@@ -1,8 +1,8 @@
-export { PaseoThemeProvider } from "./claude/Provider";
+export { PaseoThemeProvider } from "./Provider";
 export type {
   PaseoThemeMode,
   PaseoThemeProviderProps,
-} from "./claude/Provider";
-export { ClaudeLoadingIcon } from "./claude/LoadingIcon";
-export { claudeLightTheme } from "./claude/theme";
-export { paseoDarkTheme } from "./paseo-full/theme";
+} from "./Provider";
+export { PaseoLoadingIcon } from "./LoadingIcon";
+export { claudeLightTheme } from "./themes/claude/theme";
+export { paseoDarkTheme } from "./themes/paseo-dark/theme";

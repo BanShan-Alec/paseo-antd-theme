@@ -1,7 +1,8 @@
 import { generate } from "@ant-design/colors";
 import type { ThemeConfig } from "antd";
 import { theme as antdTheme } from "antd";
-import { PASEO_FONT_STACK, PASEO_MONO_FONT_STACK, paseoDark, paseoIdentityDark } from "./tokens";
+import { paseoDark, paseoIdentityDark } from "./tokens";
+import { PASEO_FONT_STACK, PASEO_MONO_FONT_STACK } from "../../shared/fonts";
 
 export type PaseoColorScheme = "light" | "dark";
 

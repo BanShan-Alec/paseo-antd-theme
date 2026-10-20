@@ -9,8 +9,8 @@ import {
 } from "antd";
 import { hydrateRoot } from "react-dom/client";
 import { renderToString } from "react-dom/server";
-import { claudeLightTheme } from "./theme";
-import { paseoDarkTheme } from "../paseo-full/theme";
+import { claudeLightTheme } from "./themes/claude/theme";
+import { paseoDarkTheme } from "./themes/paseo-dark/theme";
 import {
   PaseoThemeProvider,
   resolvePaseoTheme,
@@ -77,10 +77,10 @@ describe("PaseoThemeProvider", () => {
       </PaseoThemeProvider>,
     );
 
-    const icons = container.querySelectorAll("svg[data-claude-loading]");
+    const icons = container.querySelectorAll("svg[data-paseo-loading]");
     expect(icons.length).toBeGreaterThan(0);
     expect(icons[0]?.getAttribute("aria-hidden")).toBe("true");
-    expect(container.querySelector("svg[data-claude-loading] > g.claude-loading-spin")).toBeTruthy();
+    expect(container.querySelector("svg[data-paseo-loading] > g.paseo-loading-spin")).toBeTruthy();
     expect(container.querySelector(".anticon-loading")).toBeNull();
     expect(screen.getByRole("button", { name: "Run agent" })).toBeTruthy();
   });
@@ -92,7 +92,7 @@ describe("PaseoThemeProvider", () => {
       </PaseoThemeProvider>,
     );
 
-    expect(container.querySelectorAll(".claude-segmented-item").length).toBe(2);
+    expect(container.querySelectorAll(".paseo-segmented-item").length).toBe(2);
   });
 
   it("adds the Select option gap class", () => {
@@ -108,7 +108,7 @@ describe("PaseoThemeProvider", () => {
       </PaseoThemeProvider>,
     );
 
-    expect(document.querySelectorAll(".claude-select-item").length).toBeGreaterThan(0);
+    expect(document.querySelectorAll(".paseo-select-item").length).toBeGreaterThan(0);
   });
 
   it("uses the paseo dark theme in dark mode", () => {
@@ -184,7 +184,7 @@ describe("PaseoThemeProvider", () => {
     );
 
     expect(container.querySelector("[data-custom-loading]")).toBeTruthy();
-    expect(container.querySelector("svg[data-claude-loading]")).toBeNull();
+    expect(container.querySelector("svg[data-paseo-loading]")).toBeNull();
   });
 
   it("passes other ConfigProvider props through", () => {
@@ -204,7 +204,7 @@ describe("PaseoThemeProvider", () => {
       </PaseoThemeProvider>,
     );
 
-    expect(container.querySelector(".ant-select svg[data-claude-loading]")).toBeTruthy();
+    expect(container.querySelector(".ant-select svg[data-paseo-loading]")).toBeTruthy();
   });
 
   it("resolves the server snapshot from ssrMode", () => {
@@ -266,7 +266,7 @@ describe("PaseoThemeProvider", () => {
     );
 
     const css = document.querySelector("style[data-paseo-theme]")?.textContent ?? "";
-    expect(css).toContain("animation: claude-loading-rotate 1s linear infinite");
+    expect(css).toContain("animation: paseo-loading-rotate 1s linear infinite");
     expect(css).toContain("margin-inline-end: 4px");
     expect(css).toContain("border-top: 2px solid transparent");
     expect(css).toContain("border-bottom: 2px solid transparent");
@@ -275,8 +275,8 @@ describe("PaseoThemeProvider", () => {
     // jsdom cannot resolve @keyframes or CSS variables; the animation and the
     // 44px var-driven row height are covered by the browser check. The
     // cascade-critical properties below are statically computed.
-    const segmentedItem = document.querySelector(".claude-segmented-item");
-    const selectItem = document.querySelector(".claude-select-item");
+    const segmentedItem = document.querySelector(".paseo-segmented-item");
+    const selectItem = document.querySelector(".paseo-select-item");
     expect(segmentedItem ? getComputedStyle(segmentedItem).marginInlineEnd : null).toBe("4px");
     expect(selectItem ? getComputedStyle(selectItem).borderTopWidth : null).toBe("2px");
     expect(selectItem ? getComputedStyle(selectItem).borderBottomWidth : null).toBe("2px");
@@ -297,7 +297,7 @@ describe("PaseoThemeProvider", () => {
 
     const dropdowns = document.querySelectorAll(".ant-select-dropdown");
     const dropdown = dropdowns[dropdowns.length - 1];
-    const items = dropdown.querySelectorAll(".claude-select-item");
+    const items = dropdown.querySelectorAll(".paseo-select-item");
     expect(items.length).toBe(200);
     // jsdom leaves var()-based min-height/padding unresolved; assert the
     // statically computed gap borders. The 44px total is covered in browser.

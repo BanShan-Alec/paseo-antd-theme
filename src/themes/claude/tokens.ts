@@ -22,8 +22,7 @@
  * `normalizedLightFamily` so the family stays equal-loudness.
  */
 
-import { maxChroma, normalizedLightFamily, oklchHex } from "./colors";
-import { PASEO_FONT_STACK, PASEO_MONO_FONT_STACK } from "../paseo-full/tokens";
+import { maxChroma, normalizedLightFamily, oklchHex } from "../../shared/colors";
 
 /** Paseo's status hues (OKLCH degrees) — only the hue is borrowed. */
 export const CLAUDE_LIGHT_STATUS_HUES = {
@@ -107,7 +106,3 @@ export const claudeIdentityLight = {
   amber: normalizedLightFamily(90.0, 0.55).base,
   blue: normalizedLightFamily(256.4, 0.55).base,
 } as const;
-
-/** Shared with the paseo schemes so switching cannot shift type metrics. */
-export const CLAUDE_FONT_STACK = PASEO_FONT_STACK;
-export const CLAUDE_MONO_FONT_STACK = PASEO_MONO_FONT_STACK;

@@ -1,16 +1,15 @@
 import { generate } from "@ant-design/colors";
 import type { ThemeConfig } from "antd";
 import { theme as antdTheme } from "antd";
-import type { DerivedToken, TokenMapping } from "../paseo-full/theme";
-import { normalizedLightFamily, type LightFamily } from "./colors";
+import type { DerivedToken, TokenMapping } from "../paseo-dark/theme";
+import { normalizedLightFamily, type LightFamily } from "../../shared/colors";
 import {
-  CLAUDE_FONT_STACK,
   CLAUDE_LIGHT_STATUS_HUES,
-  CLAUDE_MONO_FONT_STACK,
   claudeIdentityLight,
   claudeLight,
   claudeLightStatusFamilies,
 } from "./tokens";
+import { PASEO_FONT_STACK, PASEO_MONO_FONT_STACK } from "../../shared/fonts";
 
 /** `ThemeConfig["token"]` minus the `undefined` — antd does not export `AliasToken` itself. */
 type AntdToken = NonNullable<ThemeConfig["token"]>;
@@ -80,8 +79,8 @@ const pinnedLightColors: AntdToken = {
   colorLink: claudeLight.link,
   colorLinkHover: linkRamp[6],
   colorLinkActive: linkRamp[7],
-  fontFamily: CLAUDE_FONT_STACK,
-  fontFamilyCode: CLAUDE_MONO_FONT_STACK,
+  fontFamily: PASEO_FONT_STACK,
+  fontFamilyCode: PASEO_MONO_FONT_STACK,
 };
 
 const claudeLightAlgorithm: typeof antdTheme.defaultAlgorithm = (seed) =>
@@ -163,11 +162,11 @@ const lightMappings: readonly TokenMapping[] = [
     paseoToken: "link",
     note: "Claude Code's suggestion hue #5769F7 darkened until it clears 4.5:1 on #F0EDE2.",
   },
-  { antdToken: "fontFamily", kind: "seed", value: CLAUDE_FONT_STACK, paseoToken: "fontFamily.ui" },
+  { antdToken: "fontFamily", kind: "seed", value: PASEO_FONT_STACK, paseoToken: "fontFamily.ui" },
   {
     antdToken: "fontFamilyCode",
     kind: "seed",
-    value: CLAUDE_MONO_FONT_STACK,
+    value: PASEO_MONO_FONT_STACK,
     paseoToken: "fontFamily.mono",
   },
   { antdToken: "fontSize", kind: "seed", value: 14, paseoToken: "—", note: "14px body — the 16px Claude.ai scale felt cramped in dense app chrome." },

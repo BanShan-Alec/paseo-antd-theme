@@ -1,5 +1,5 @@
 import { Alert, theme as antdTheme, Typography } from "antd";
-import type { TokenMapping } from "../paseo-full/theme";
+import type { TokenMapping } from "../themes/paseo-dark/theme";
 
 const { Text } = Typography;
 
