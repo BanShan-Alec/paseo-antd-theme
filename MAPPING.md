@@ -120,3 +120,116 @@ Claude 品牌表面 + Claude Code 信号色 + paseo 归一化状态色（OKLCH L
 | `boxShadow` | map | `0 1px 2px rgba(31, 30, 29, 0.06), 0 4px 12px rgba(31, 30, 29, 0.08)` | `—` |  |
 | `boxShadowSecondary` | map | `0 6px 16px rgba(31, 30, 29, 0.10), 0 2px 6px rgba(31, 30, 29, 0.05)` | `—` |  |
 | `boxShadowTertiary` | map | `0 1px 2px rgba(31, 30, 29, 0.04), 0 4px 12px rgba(31, 30, 29, 0.06)` | `—` |  |
+## Tailwind 变量映射
+
+`src/tailwind/theme.css` 由 `scripts/gen-tailwind.ts` 生成：值经 antd 管线解析（含算法派生的
+hover/active/色阶槽位），浅色写在 `:root`，深色同时写在 `@media (prefers-color-scheme: dark)` 与 `.dark`。
+
+| Tailwind 变量 | 浅色值（Claude Light） | 深色值（Paseo Dark） | antd token 来源 | 说明 |
+| --- | --- | --- | --- | --- |
+| `--paseo-primary` | `#BA5B37` | `#20744A` | `colorPrimary` |  |
+| `--paseo-primary-hover` | `#943F25` | `#347552` | `colorPrimaryHover` |  |
+| `--paseo-primary-active` | `#6E2716` | `#1c5237` | `colorPrimaryActive` |  |
+| `--paseo-primary-bg` | `#FAF1EB` | `#183124` | `colorPrimaryBg` |  |
+| `--paseo-primary-bg-hover` | `#EDE5DF` | `#193f2c` | `colorPrimaryBgHover` |  |
+| `--paseo-primary-border` | `#E0C1AF` | `#183124` | `colorPrimaryBorder` |  |
+| `--paseo-primary-border-hover` | `#D49E83` | `#193f2c` | `colorPrimaryBorderHover` |  |
+| `--paseo-primary-text` | `#A34E2D` | `#7ccba0` | `colorPrimaryText` |  |
+| `--paseo-primary-text-hover` | `#7D351D` | `#ecfaf1` | `colorPrimaryTextHover` |  |
+| `--paseo-primary-text-active` | `#571F10` | `#cbdcd2` | `colorPrimaryTextActive` |  |
+| `--paseo-success` | `#467650` | `#6cb17b` | `colorSuccess` |  |
+| `--paseo-success-hover` | `#50865c` | `#85ac8c` | `colorSuccessHover` |  |
+| `--paseo-success-active` | `#3a6343` | `#4d7a57` | `colorSuccessActive` |  |
+| `--paseo-success-bg` | `#d2f6d8` | `#19201b` | `colorSuccessBg` |  |
+| `--paseo-success-bg-hover` | `#b8f3c2` | `#223226` | `colorSuccessBgHover` |  |
+| `--paseo-success-border` | `#92eda5` | `#2e4333` | `colorSuccessBorder` |  |
+| `--paseo-success-border-hover` | `#88de9b` | `#3c5b42` | `colorSuccessBorderHover` |  |
+| `--paseo-success-text` | `#467650` | `#c4d0c6` | `colorSuccessText` |  |
+| `--paseo-success-text-hover` | `#3e6947` | `#d1dfd2` | `colorSuccessTextHover` |  |
+| `--paseo-success-text-active` | `#365d3e` | `#b3c0b5` | `colorSuccessTextActive` |  |
+| `--paseo-warning` | `#806340` | `#c09664` | `colorWarning` |  |
+| `--paseo-warning-hover` | `#91714a` | `#baa17f` | `colorWarningHover` |  |
+| `--paseo-warning-active` | `#6c5335` | `#846948` | `colorWarningActive` |  |
+| `--paseo-warning-bg` | `#f6e9da` | `#221d18` | `colorWarningBg` |  |
+| `--paseo-warning-bg-hover` | `#f2dec7` | `#352c21` | `colorWarningBgHover` |  |
+| `--paseo-warning-border` | `#eccfad` | `#483b2c` | `colorWarningBorder` |  |
+| `--paseo-warning-border-hover` | `#e7c092` | `#614f38` | `colorWarningBorderHover` |  |
+| `--paseo-warning-text` | `#806340` | `#e0dbd2` | `colorWarningText` |  |
+| `--paseo-warning-text-hover` | `#725839` | `#eeeae0` | `colorWarningTextHover` |  |
+| `--paseo-warning-text-active` | `#654e31` | `#cfc2ae` | `colorWarningTextActive` |  |
+| `--paseo-error` | `#a14b43` | `#d8847b` | `colorError` |  |
+| `--paseo-error-hover` | `#b7554d` | `#d1a099` | `colorErrorHover` |  |
+| `--paseo-error-active` | `#883e38` | `#935d57` | `colorErrorActive` |  |
+| `--paseo-error-bg` | `#f6e7e5` | `#261b1b` | `colorErrorBg` |  |
+| `--paseo-error-bg-hover` | `#f2dbd8` | `#3c2826` | `colorErrorBgHover` |  |
+| `--paseo-error-border` | `#edcbc7` | `#4f3633` | `colorErrorBorder` |  |
+| `--paseo-error-border-hover` | `#e7bbb6` | `#6c4642` | `colorErrorBorderHover` |  |
+| `--paseo-error-text` | `#a14b43` | `#f8ece9` | `colorErrorText` |  |
+| `--paseo-error-text-hover` | `#91423c` | `#faefec` | `colorErrorTextHover` |  |
+| `--paseo-error-text-active` | `#803a34` | `#e7d2ce` | `colorErrorTextActive` |  |
+| `--paseo-info` | `#436c96` | `#5caaf6` | `colorInfo` |  |
+| `--paseo-info-hover` | `#4d7baa` | `#7cb5e8` | `colorInfoHover` |  |
+| `--paseo-info-active` | `#375b7e` | `#4376a7` | `colorInfoActive` |  |
+| `--paseo-info-bg` | `#e3ecf6` | `#18202a` | `colorInfoBg` |  |
+| `--paseo-info-bg-hover` | `#d5e3f2` | `#203043` | `colorInfoBgHover` |  |
+| `--paseo-info-border` | `#c3d7ec` | `#2a4158` | `colorInfoBorder` |  |
+| `--paseo-info-border-hover` | `#b0cbe6` | `#34587a` | `colorInfoBorderHover` |  |
+| `--paseo-info-text` | `#436c96` | `#d3e9f8` | `colorInfoText` |  |
+| `--paseo-info-text-hover` | `#3b6186` | `#ecf4fa` | `colorInfoTextHover` |  |
+| `--paseo-info-text-active` | `#345577` | `#a8d3f3` | `colorInfoTextActive` |  |
+| `--paseo-bg-layout` | `#F0EDE2` | `#181B1A` | `colorBgLayout` |  |
+| `--paseo-bg-container` | `#F5F4EC` | `#1E2120` | `colorBgContainer` |  |
+| `--paseo-bg-elevated` | `#FFFFFF` | `#272A29` | `colorBgElevated` |  |
+| `--paseo-bg-spotlight` | `#1F1E1D` | `#272A29` | `colorBgSpotlight` |  |
+| `--paseo-bg-mask` | `rgba(20, 20, 19, 0.45)` | `rgba(0, 0, 0, 0.65)` | `colorBgMask` |  |
+| `--paseo-surface-0` | `#F0EDE2` | `#181B1A` | `paseoSurface0` |  |
+| `--paseo-surface-1` | `#F5F4EC` | `#1E2120` | `paseoSurface1` |  |
+| `--paseo-surface-2` | `#FFFFFF` | `#272A29` | `paseoSurface2` |  |
+| `--paseo-surface-3` | `#D7D2C7` | `#434645` | `paseoSurface3` |  |
+| `--paseo-surface-4` | `#D1CCBF` | `#595B5B` | `paseoSurface4` |  |
+| `--paseo-surface-sidebar` | `#E2E0D6` | `#141716` | `paseoSurfaceSidebar` |  |
+| `--paseo-surface-head` | `#E0DDD0` | `#1E2120` | `paseoSurfaceHead` / `paseoSurface1` | 深色主题没有 paper-on-paper 表头概念，用面板色 surface1 补位（与 Table.headerBg 一致）。 |
+| `--paseo-surface-hover` | `#DDD9CE` | `#1E2120` | `paseoSurfaceHover` / `paseoSurface1` | 深色主题的卡片 hover 就是面板色 surface1（与 Table.rowHoverBg 一致）。 |
+| `--paseo-text` | `#3C3C2C` | `#fafafa` | `colorText` |  |
+| `--paseo-text-secondary` | `#5C5C54` | `#A1A5A4` | `colorTextSecondary` |  |
+| `--paseo-text-tertiary` | `#65635E` | `#717574` | `colorTextTertiary` |  |
+| `--paseo-text-quaternary` | `#878681` | `#595B5B` | `colorTextQuaternary` |  |
+| `--paseo-text-light-solid` | `#FFFFFF` | `#fff` | `colorTextLightSolid` |  |
+| `--paseo-border` | `#DBD9D0` | `#252B2A` | `colorBorder` |  |
+| `--paseo-border-secondary` | `#E8E6DF` | `#2F3534` | `colorBorderSecondary` |  |
+| `--paseo-split` | `rgba(28,11,19,0.06)` | `rgba(219,255,254,0.09)` | `colorSplit` |  |
+| `--paseo-fill` | `#D1CCBF` | `#434645` | `colorFill` |  |
+| `--paseo-fill-secondary` | `#D7D2C7` | `#272A29` | `colorFillSecondary` |  |
+| `--paseo-fill-tertiary` | `#DDD9CE` | `#1E2120` | `colorFillTertiary` |  |
+| `--paseo-fill-quaternary` | `#EDEBE0` | `#252B2A` | `colorFillQuaternary` |  |
+| `--paseo-control-item-bg-hover` | `#DDD9CE` | `#1E2120` | `controlItemBgHover` |  |
+| `--paseo-control-item-bg-active` | `#FAF1EB` | `#183124` | `controlItemBgActive` |  |
+| `--paseo-link` | `#4B5BD8` | `#7ccba0` | `colorLink` |  |
+| `--paseo-link-hover` | `#3640b3` | `#deebe3` | `colorLinkHover` |  |
+| `--paseo-link-active` | `#23288c` | `#cbdcd2` | `colorLinkActive` |  |
+| `--paseo-diff-addition` | `#c1f4ca` | `#32573a` | `paseoDiffAddition` |  |
+| `--paseo-diff-addition-text` | `#3e6947` | `#6cb17b` | `paseoDiffAdditionText` |  |
+| `--paseo-diff-deletion` | `#f3dfdd` | `#783630` | `paseoDiffDeletion` |  |
+| `--paseo-diff-deletion-text` | `#91423c` | `#d8847b` | `paseoDiffDeletionText` |  |
+| `--paseo-status-dot-success` | `#467650` | `#35c264` | `paseoStatusDotSuccess` |  |
+| `--paseo-status-dot-danger` | `#a14b43` | `#f7796d` | `paseoStatusDotDanger` |  |
+| `--paseo-status-dot-warning` | `#806340` | `#db932e` | `paseoStatusDotWarning` |  |
+| `--paseo-status-dot-running` | `#436c96` | `#5caaf6` | `paseoStatusDotRunning` |  |
+| `--paseo-status-merged` | `#774fb3` | `#a890d5` | `paseoStatusMerged` |  |
+| `--paseo-selection` | `rgba(186, 91, 55, 0.32)` | `rgba(255, 255, 255, 0.2)` | `paseoSelection` |  |
+| `--paseo-identity-violet` | `#7a5ac1` | `#a392d5` | `paseoIdentityViolet` |  |
+| `--paseo-identity-sky` | `#4a7795` | `#6aa6ce` | `paseoIdentitySky` |  |
+| `--paseo-identity-emerald` | `#4c7d6b` | `#6cae96` | `paseoIdentityEmerald` |  |
+| `--paseo-identity-orange` | `#936646` | `#cc8f64` | `paseoIdentityOrange` |  |
+| `--paseo-identity-pink` | `#a84f76` | `#d87da3` | `paseoIdentityPink` |  |
+| `--paseo-identity-indigo` | `#6166c1` | `#9299d5` | `paseoIdentityIndigo` |  |
+| `--paseo-identity-teal` | `#4c7b7b` | `#6cacab` | `paseoIdentityTeal` |  |
+| `--paseo-identity-red` | `#ad5151` | `#d88381` | `paseoIdentityRed` |  |
+| `--paseo-identity-amber` | `#807046` | `#b29d64` | `paseoIdentityAmber` |  |
+| `--paseo-identity-blue` | `#4773ae` | `#7ba1d5` | `paseoIdentityBlue` |  |
+| `--paseo-font` | `system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif` | `system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif` | `fontFamily` |  |
+| `--paseo-font-mono` | `SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace` | `SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace` | `fontFamilyCode` |  |
+| `--paseo-radius-xs` | `4px` | `4px` | `borderRadiusXS` |  |
+| `--paseo-radius-sm` | `8px` | `8px` | `borderRadiusSM` |  |
+| `--paseo-radius-md` | `12px` | `12px` | `borderRadius` |  |
+| `--paseo-radius-lg` | `12px` | `12px` | `borderRadiusLG` |  |

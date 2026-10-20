@@ -62,6 +62,7 @@ try {
     "dist/claude.d.ts",
     "dist/paseo.js",
     "dist/paseo.d.ts",
+    "dist/tailwind.css",
   ];
   for (const file of required) {
     if (!packed.has(file)) fail(`missing from tarball: ${file}`);
@@ -85,6 +86,32 @@ try {
     if (Object.keys(mod).length === 0) fail(`empty ESM entry: ${entry}`);
   }
 
+  // The Tailwind stylesheet must ship both schemes completely: every variable
+  // present in the light :root block must also appear in the dark media block
+  // and in the .dark class block.
+  {
+    const css = await readFile(join(dist, "tailwind.css"), "utf8");
+    const rootStart = css.indexOf(":root, :host {");
+    const mediaStart = css.indexOf("@media (prefers-color-scheme: dark) {");
+    const classStart = css.indexOf(".dark {");
+    if (rootStart < 0 || mediaStart < 0 || classStart < 0) {
+      fail("tailwind.css is missing one of the :root / @media dark / .dark blocks");
+    }
+    const lightBlock = css.slice(rootStart, mediaStart);
+    const darkBlock = css.slice(css.indexOf("{", mediaStart) + 1, classStart);
+    const classBlock = css.slice(classStart);
+    const vars = (text) =>
+      new Set([...text.matchAll(/--paseo-[a-z0-9-]+(?=:)/g)].map((m) => m[0]));
+    const lightVars = vars(lightBlock);
+    if (lightVars.size === 0) fail("tailwind.css light block has no --paseo-* variables");
+    for (const [label, block] of [["dark media", darkBlock], [".dark class", classBlock]]) {
+      const missing = [...lightVars].filter((name) => !vars(block).has(name));
+      if (missing.length > 0) {
+        fail(`tailwind.css ${label} block is missing variables: ${missing.join(", ")}`);
+      }
+    }
+  }
+
   const declarationFiles = (await walk(dist)).filter((file) => file.endsWith(".d.ts"));
   const badImports = [];
   for (const file of declarationFiles) {
@@ -106,7 +133,9 @@ try {
     shell: true,
     env: npmEnv(),
   });
-  execFileSync(npx, ["attw", tarball, "--profile", "esm-only"], {
+  // tailwind.css is a stylesheet, not a JS entry — attw would report it as
+  // untyped (NoResolution), so it is excluded from the analysis.
+  execFileSync(npx, ["attw", tarball, "--profile", "esm-only", "--exclude-entrypoints", "./tailwind.css"], {
     cwd: root,
     stdio: "inherit",
     shell: true,

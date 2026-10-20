@@ -21,7 +21,9 @@
     "light",
     "paseo",
     "claude",
-    "react"
+    "react",
+    "tailwind",
+    "tailwindcss"
   ],
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -41,6 +43,7 @@
       "import": "./dist/paseo.js",
       "default": "./dist/paseo.js"
     },
+    "./tailwind.css": "./dist/tailwind.css",
     "./package.json": "./package.json"
   },
   "files": [
@@ -57,6 +60,7 @@
   },
   "scripts": {
     "dev": "vite --host",
+    "gen:tailwind": "vite-node scripts/gen-tailwind.ts",
     "build": "npm run build:lib",
     "build:lib": "vite build --config vite.config.lib.ts && node scripts/fix-dts-extensions.mjs",
     "build:demo": "tsc --noEmit && vite build --outDir dist-demo",
@@ -79,6 +83,7 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
     "@testing-library/react": "^16.3.0",
+    "@types/node": "^26.6.5",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "@vitejs/plugin-react": "^5.0.0",
