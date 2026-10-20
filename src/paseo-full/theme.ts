@@ -109,14 +109,16 @@ const primaryBright = darkPalette(paseoDark.accentBright);
 
 // Claude.ai's soft elevation, black-tinted for the dark scheme. The original
 // paseo chrome was flat; Q14 syncs the full dark scheme to the same form
-// language as the Claude light scheme.
+// language as the Claude light scheme. Alphas stay low: the dark surface
+// ladder (#181B1A / #1E2120 / #272A29) already carries the hierarchy, so the
+// shadow only needs to hint at material.
 const DARK_SHADOW = {
-  base: "0 1px 2px rgba(0, 0, 0, 0.28), 0 4px 12px rgba(0, 0, 0, 0.32)",
-  secondary: "0 6px 16px rgba(0, 0, 0, 0.40), 0 2px 6px rgba(0, 0, 0, 0.24)",
-  tertiary: "0 1px 2px rgba(0, 0, 0, 0.24), 0 4px 12px rgba(0, 0, 0, 0.28)",
-  buttonDefault: "0 1px 2px rgba(0, 0, 0, 0.24)",
-  buttonPrimary: "0 1px 2px rgba(0, 0, 0, 0.32)",
-  buttonDanger: "0 1px 2px rgba(0, 0, 0, 0.32)",
+  base: "0 1px 2px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.16)",
+  secondary: "0 4px 10px rgba(0, 0, 0, 0.18), 0 1px 3px rgba(0, 0, 0, 0.10)",
+  tertiary: "0 1px 2px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.10)",
+  buttonDefault: "0 1px 2px rgba(0, 0, 0, 0.10)",
+  buttonPrimary: "0 1px 2px rgba(0, 0, 0, 0.14)",
+  buttonDanger: "0 1px 2px rgba(0, 0, 0, 0.14)",
 } as const;
 
 const pinnedDarkColors: AntdToken = {

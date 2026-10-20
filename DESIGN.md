@@ -10,17 +10,20 @@
 
 | 角色 | 值 |
 | --- | --- |
-| 侧栏 / `paseoSurfaceSidebar` | `#EFEDE7` |
-| layout / `surface0` | `#F4F2EC` |
-| container / `surface1` | `#FBFAF7` |
+| 侧栏 / `paseoSurfaceSidebar` | `#E2E0D6` |
+| layout / `surface0` | `#F0EDE2` |
+| container / `surface1` | `#F5F4EC` |
 | elevated / `surface2` | `#FFFFFF` |
-| 强填充 / `surface3` | `#EAE7DF` |
-| 最强填充 / `surface4` | `#DFDBD2` |
-| 边框 | `#E1DED6` |
+| 面板头（`surfaceHead`） | `#E0DDD0` |
+| hover（`colorFillTertiary`） | `#DDD9CE` |
+| Segmented track / `surfaceTrack` | `#E9E6DD` |
+| 强填充 / `surface3` | `#D7D2C7` |
+| 最强填充 / `surface4` | `#D1CCBF` |
+| 边框 | `#DBD9D0` |
 
-相对最初版本，侧栏/layout 和 oat 填充的彩度降低了约 25–40%，色相统一在 90° 附近，避免黄绿偏色带来的“脏”感。
+整套中性色保持同一 95° 暖色相，彩度压在 0.003–0.011 的低带内，亮度阶梯重排为：侧栏 < layout（Claude ivory #FAF9F5）< 卡片/浮层（纯白）。hover/选中按“坐在哪块表面上”分层：白卡上的 hover 用 #E4E2DA（对白 1.30），侧栏里的菜单 hover 用 #E4E2DA（对侧栏 1.09）、选中用 #DAD6CC（1.22）；卡片/表头用羊皮纸调的 #ECE7DB（对白 1.23），比 hover 亮一档，避免悬停行和表头撞色。
 
-卡片在 layout 上呈米白，弹层与卡片靠**阴影**区分——这是 Claude.ai 的纸感层次，而不是深色主题的“越亮越靠前”。
+卡片只比页面亮 1.06，主要靠边框（1.28）+ 软阴影分层——这是 claude.ai 官网“纸上纸”的层次，而不是深色主题的“越亮越靠前”。主色 clay #BA5B37 是官网取色后再深一档，白字 4.53:1 直接过 4.5；hover/active 压深到 #943F25 / #6E2716。
 
 ### 主色与文字
 

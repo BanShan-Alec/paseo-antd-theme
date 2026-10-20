@@ -2,9 +2,9 @@
  * Claude light design tokens.
  *
  * Provenance:
- *   surfaces / neutrals — Anthropic brand palette
- *     ivory #FAF9F5, warm gray 150 #F0EEE6, warm gray 250 #DEDCD1,
- *     ink #141413, oat #E3DACC.
+ *   surfaces / neutrals — sampled from the claude.ai UI (V4)
+ *     page #F0EDE2, card #F5F4EC (1.06 above the page), hover #E4E4D4,
+ *     ink #3C3C2C, secondary #5C5C54, clay #BC5C3C.
  *   clay — #C6613F, the interactive clay used on Claude's site (the brand
  *     palette's #D97757 is its lighter decorative variant). White text on it
  *     is 4.05:1, the theme's one documented contrast exception.
@@ -48,23 +48,26 @@ function diffFill(hue: number): string {
 }
 
 export const claudeLight = {
-  surfaceSidebar: "#EFEDE7", // sidebar — one step below the page
-  surface0: "#F4F2EC", // main background / layout
-  surface1: "#FBFAF7", // panel / container
+  surfaceSidebar: "#E2E0D6", // sidebar — one step below the page
+  surface0: "#F0EDE2", // main background / layout (Claude.ai cream)
+  surface1: "#F5F4EC", // panel / container — paper-on-paper, only 1.06 above the page
   surface2: "#FFFFFF", // elevated / popover
-  surface3: "#EAE7DF", // strong fill (clean oat)
-  surface4: "#DFDBD2", // strongest fill
+  surfaceHead: "#E0DDD0", // card/table head — clearly reads on the card (1.24), above hover (1.08)
+  surfaceHover: "#DDD9CE", // hover step on cards — same hue as the page (1.28 vs card)
+  surfaceTrack: "#E9E6DD", // segmented track — light neutral in the card family
+  surface3: "#D7D2C7", // one step darker: segmented hover (antd default) + menu hover
+  surface4: "#D1CCBF", // strongest fill / menu selected
 
-  foreground: "#141413",
-  foregroundMuted: "#66645C",
-  foregroundExtraMuted: "#6E6C64",
-  foregroundFaint: "#A8A498",
+  foreground: "#3C3C2C", // warm ink (9.6:1 on the page)
+  foregroundMuted: "#5C5C54", // warm gray (5.8:1)
+  foregroundExtraMuted: "#65635E", // 5.1:1
+  foregroundFaint: "#878681", // placeholder/disabled only (3.1:1)
 
-  border: "#E1DED6",
-  borderAccent: "#EAE7DF",
+  border: "#DBD9D0",
+  borderAccent: "#E8E6DF",
 
-  accent: "#C6613F", // Claude's site interactive clay; brand-palette #D97757 is the lighter variant
-  accentText: "#A94F33", // clay darkened for text (5.17:1 on ivory)
+  accent: "#BA5B37", // clay sampled from claude.ai, one step deeper (white label 4.53:1 — clears 4.5)
+  accentText: "#A34E2D", // clay darkened for text (4.86:1 on the page)
   link: "#4B5BD8", // Claude suggestion hue, darkened from #5769F7
   linkHover: "#3640B3",
   linkActive: "#23288C",
@@ -81,7 +84,7 @@ export const claudeLight = {
 
   // ::selection — clay tint instead of paseo's white overlay, which is
   // invisible on a light surface.
-  selection: "rgba(198, 97, 63, 0.32)",
+  selection: "rgba(186, 91, 55, 0.32)",
 } as const;
 
 /** The full status families (bg/border/hover/text slots) for the theme layer. */

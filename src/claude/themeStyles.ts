@@ -25,9 +25,12 @@ export const PASEO_THEME_CSS = `
 /* Real transparent gaps between Select options: the hover/selected background
    stops at the padding box, so the 2px top/bottom borders reveal the dropdown
    background instead of letting adjacent rows touch. The border is included in
-   the row's offsetHeight, so optionHeight and listItemHeight both stay 44. */
-.claude-select-item {
-  border-block: 2px solid transparent;
+   the row's offsetHeight, so optionHeight and listItemHeight both stay 44.
+   Physical border properties are used so the rule also wins over antd's reset
+   in engines with weaker logical-property cascade support. */
+.claude-select-item.claude-select-item {
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid transparent;
   background-clip: padding-box;
 }
 

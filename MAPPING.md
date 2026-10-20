@@ -78,9 +78,9 @@ Diff 行底已降饱和为 `#32573a` / `#783630`。
 | `marginXS` | map | `8` | `spacing.2` |  |
 | `marginXXS` | map | `4` | `spacing.1` |  |
 | `marginLG` | map | `24` | `spacing.6` |  |
-| `boxShadow` | map | `0 1px 2px rgba(0, 0, 0, 0.28), 0 4px 12px rgba(0, 0, 0, 0.32)` | `—` |  |
-| `boxShadowSecondary` | map | `0 6px 16px rgba(0, 0, 0, 0.40), 0 2px 6px rgba(0, 0, 0, 0.24)` | `—` |  |
-| `boxShadowTertiary` | map | `0 1px 2px rgba(0, 0, 0, 0.24), 0 4px 12px rgba(0, 0, 0, 0.28)` | `—` |  |
+| `boxShadow` | map | `0 1px 2px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.16)` | `—` |  |
+| `boxShadowSecondary` | map | `0 4px 10px rgba(0, 0, 0, 0.18), 0 1px 3px rgba(0, 0, 0, 0.10)` | `—` |  |
+| `boxShadowTertiary` | map | `0 1px 2px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.10)` | `—` |  |
 
 ### Claude 浅色（Claude Light）
 
@@ -89,14 +89,14 @@ Claude 品牌表面 + Claude Code 信号色 + paseo 归一化状态色（OKLCH L
 
 | antd token | 类型 | 值 | paseo 来源 | 说明 |
 | --- | --- | --- | --- | --- |
-| `colorPrimary` | seed | `#C6613F` | `accent` | Claude's site interactive clay (#C6613F); brand-palette #D97757 is the lighter decorative variant. |
+| `colorPrimary` | seed | `#BA5B37` | `accent` | Claude's site interactive clay (#C6613F); brand-palette #D97757 is the lighter decorative variant. |
 | `colorSuccess` | seed | `#467650` | `statusSuccess` | Paseo's normalized rule re-solved at L*=0.52, C=55% gamut max. |
 | `colorWarning` | seed | `#806340` | `statusWarning` |  |
 | `colorError` | seed | `#a14b43` | `statusDanger` |  |
 | `colorInfo` | seed | `#436c96` | `statusRunning` | Claude Code's suggestion blue hue is reserved for links; info uses paseo's running blue. |
-| `colorTextBase` | seed | `#141413` | `foreground` |  |
-| `colorBgBase` | seed | `#FBFAF7` | `surface1` |  |
-| `colorLink` | seed | `#4B5BD8` | `link` | Claude Code's suggestion hue #5769F7 darkened until it clears 4.5:1 on #F4F2EC. |
+| `colorTextBase` | seed | `#3C3C2C` | `foreground` |  |
+| `colorBgBase` | seed | `#F5F4EC` | `surface1` |  |
+| `colorLink` | seed | `#4B5BD8` | `link` | Claude Code's suggestion hue #5769F7 darkened until it clears 4.5:1 on #F0EDE2. |
 | `fontFamily` | seed | `system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif` | `fontFamily.ui` |  |
 | `fontFamilyCode` | seed | `SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace` | `fontFamily.mono` |  |
 | `fontSize` | seed | `14` | `—` | 14px body — the 16px Claude.ai scale felt cramped in dense app chrome. |
@@ -105,22 +105,22 @@ Claude 品牌表面 + Claude Code 信号色 + paseo 归一化状态色（OKLCH L
 | `sizeStep` | seed | `4` | `spacing.1` |  |
 | `controlHeight` | seed | `40` | `—` |  |
 | `lineWidth` | seed | `1` | `borderWidth.1` |  |
-| `colorBgLayout` | map | `#F4F2EC` | `surface0` |  |
-| `colorBgContainer` | map | `#FBFAF7` | `surface1` | Default buttons, inputs, cards. |
+| `colorBgLayout` | map | `#F0EDE2` | `surface0` |  |
+| `colorBgContainer` | map | `#F5F4EC` | `surface1` | Default buttons, inputs, cards. |
 | `colorBgElevated` | map | `#FFFFFF` | `surface2` | Popovers, dropdowns, modals — separated from cards by shadow. |
 | `colorBgSpotlight` | map | `#1F1E1D` | `—` | Tooltip stays dark ink with white text. |
 | `colorBgMask` | map | `rgba(20, 20, 19, 0.45)` | `—` |  |
-| `colorText` | map | `#141413` | `foreground` |  |
-| `colorTextSecondary` | map | `#66645C` | `foregroundMuted` |  |
-| `colorTextTertiary` | map | `#6E6C64` | `foregroundExtraMuted` |  |
-| `colorTextQuaternary` | map | `#A8A498` | `foregroundFaint` | Placeholder/disabled only — not a body-text level. |
+| `colorText` | map | `#3C3C2C` | `foreground` |  |
+| `colorTextSecondary` | map | `#5C5C54` | `foregroundMuted` |  |
+| `colorTextTertiary` | map | `#65635E` | `foregroundExtraMuted` |  |
+| `colorTextQuaternary` | map | `#878681` | `foregroundFaint` | Placeholder/disabled only — not a body-text level. |
 | `colorTextLightSolid` | map | `#FFFFFF` | `—` | Danger/solid labels stay white; primary buttons override with Button.primaryColor. |
-| `colorBorder` | map | `#E1DED6` | `border` |  |
-| `colorBorderSecondary` | map | `#EAE7DF` | `borderAccent` |  |
-| `colorFill` | map | `#DFDBD2` | `surface4` |  |
-| `colorFillSecondary` | map | `#EAE7DF` | `surface3` |  |
-| `colorFillTertiary` | map | `#F4F2EC` | `surface0` | Hover/disabled fills sit below the container, not above it. |
-| `colorFillQuaternary` | map | `#F7F5F0` | `—` | Zebra stripes and hairline fills. |
+| `colorBorder` | map | `#DBD9D0` | `border` |  |
+| `colorBorderSecondary` | map | `#E8E6DF` | `borderAccent` |  |
+| `colorFill` | map | `#D1CCBF` | `surface4` |  |
+| `colorFillSecondary` | map | `#D7D2C7` | `surface3` |  |
+| `colorFillTertiary` | map | `#DDD9CE` | `surfaceHover` | Hover/disabled fills on white surfaces: 1.30:1 against the container, clearly visible without shouting. |
+| `colorFillQuaternary` | map | `#EDEBE0` | `—` | Zebra stripes and hairline fills. |
 | `controlHeightSM` | map | `32` | `—` |  |
 | `controlHeightLG` | map | `48` | `—` |  |
 | `fontSizeSM` | map | `12` | `—` |  |

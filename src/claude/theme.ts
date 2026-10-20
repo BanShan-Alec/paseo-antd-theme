@@ -29,22 +29,20 @@ type AntdComponents = NonNullable<ThemeConfig["components"]>;
 
 const primaryPalette: LightFamily = {
   base: claudeLight.accent,
-  // Same OKLCH hue (39°) and 55% chroma as the status families. The
-  // `generate()` light end is too close to the container to make selected
-  // states or the focus ring visible.
-  bg: "#f6e8e3",
-  bgHover: "#f2dcd5",
-  border: "#edccc1",
-  borderHover: "#e7bcae",
-  // The solid primary button carries a white label. The base is the one
-  // documented brand exception (4.05:1); hover/active darken so white stays
-  // above 4.5 there (4.92 / 5.72).
-  hover: "#B4543A",
-  active: "#A64B32",
-  // Clay as text needs the darker text-safe tone (5.17:1 on ivory).
+  // Parchment-tinted slots derived from the same clay hue; the generate()
+  // light end is too close to the card to make selected states visible.
+  bg: "#FAF1EB",
+  bgHover: "#EDE5DF",
+  border: "#E0C1AF",
+  borderHover: "#D49E83",
+  // The solid primary button carries a white label: 4.53:1 on the sampled
+  // clay. Hover/active darken so white stays well clear (6.6 / 9.1).
+  hover: "#943F25",
+  active: "#6E2716",
+  // Clay as text needs the darker text-safe tone (4.86:1 on the page).
   text: claudeLight.accentText,
-  textHover: "#8C3C2A",
-  textActive: "#66251A",
+  textHover: "#7D351D",
+  textActive: "#571F10",
 };
 
 const linkRamp = generate(claudeLight.link);
@@ -163,7 +161,7 @@ const lightMappings: readonly TokenMapping[] = [
     kind: "seed",
     value: claudeLight.link,
     paseoToken: "link",
-    note: "Claude Code's suggestion hue #5769F7 darkened until it clears 4.5:1 on #F4F2EC.",
+    note: "Claude Code's suggestion hue #5769F7 darkened until it clears 4.5:1 on #F0EDE2.",
   },
   { antdToken: "fontFamily", kind: "seed", value: CLAUDE_FONT_STACK, paseoToken: "fontFamily.ui" },
   {
@@ -258,14 +256,14 @@ const lightMappings: readonly TokenMapping[] = [
   {
     antdToken: "colorFillTertiary",
     kind: "map",
-    value: claudeLight.surface0,
-    paseoToken: "surface0",
-    note: "Hover/disabled fills sit below the container, not above it.",
+    value: claudeLight.surfaceHover,
+    paseoToken: "surfaceHover",
+    note: "Hover/disabled fills on white surfaces: 1.30:1 against the container, clearly visible without shouting.",
   },
   {
     antdToken: "colorFillQuaternary",
     kind: "map",
-    value: "#F7F5F0",
+    value: "#EDEBE0",
     paseoToken: "—",
     note: "Zebra stripes and hairline fills.",
   },
@@ -328,6 +326,8 @@ function capitalize(value: string): string {
 
 function extras(): AntdToken {
   return {
+    paseoSurfaceHead: claudeLight.surfaceHead,
+    paseoSurfaceHover: claudeLight.surfaceHover,
     paseoSurface0: claudeLight.surface0,
     paseoSurface1: claudeLight.surface1,
     paseoSurface2: claudeLight.surface2,
@@ -375,29 +375,37 @@ const lightComponents: AntdComponents = {
     subMenuItemBg: claudeLight.surfaceSidebar,
     popupBg: claudeLight.surface2,
     itemColor: claudeLight.foregroundMuted,
+    // Sidebar hover/selected are measured against the sidebar, not the card:
+    // 1.14 and 1.21. Selected stays clearly above hover.
     itemHoverBg: claudeLight.surface3,
     itemHoverColor: claudeLight.foreground,
-    itemSelectedBg: claudeLight.surface3,
+    itemSelectedBg: claudeLight.surface4,
     itemSelectedColor: claudeLight.foreground,
     itemActiveBg: claudeLight.surface3,
     itemDisabledColor: claudeLight.foregroundFaint,
   },
   Table: {
-    headerBg: "#EFECE5",
-    rowHoverBg: claudeLight.surface0,
+    // Parchment panel-head tone, shared with Card.
+    headerBg: claudeLight.surfaceHead,
+    rowHoverBg: claudeLight.surfaceHover,
     borderColor: claudeLight.borderAccent,
     headerSplitColor: claudeLight.borderAccent,
     headerSortHoverBg: claudeLight.surface3,
-    headerSortActiveBg: claudeLight.surface3,
-    bodySortBg: "#F7F5F0",
+    headerSortActiveBg: claudeLight.surface4,
+    bodySortBg: "#F5F3EF",
   },
   Segmented: {
-    trackBg: claudeLight.surfaceSidebar,
+    // A light neutral in the card family (antd's own default is
+    // colorBgLayout). The sidebar tone would be darker than the hover step
+    // and invert the hover direction.
+    trackBg: claudeLight.surfaceTrack,
     // Default is lineWidthBold (2). 4 gives the selected thumb visible
     // breathing room inside the 40px track; the item-to-item gap is added by
     // PaseoThemeProvider because antd has no gap token.
     trackPadding: 4,
     itemColor: claudeLight.foregroundMuted,
+    // itemHoverBg is deliberately NOT set: antd's default is
+    // colorFillSecondary (surface3), which reads 1.21 against the track.
     itemSelectedBg: claudeLight.surface2,
     itemSelectedColor: claudeLight.foreground,
   },
@@ -411,10 +419,10 @@ const lightComponents: AntdComponents = {
   Tabs: {
     itemColor: claudeLight.foregroundMuted,
     itemSelectedColor: claudeLight.accentText,
-    // The 2px ink bar is non-text: #C6613F clears the 3:1 threshold (3.85:1).
+    // The 2px ink bar is non-text: #BC5C3C clears the 3:1 threshold (3.78:1).
     inkBarColor: claudeLight.accent,
   },
-  Card: { headerBg: "#F8F6F1" },
+  Card: { headerBg: claudeLight.surfaceHead },
   // antd 6.6's css-var mode does not emit the Alert component-token default,
   // which leaves `--ant-alert-border-radius` empty and the alert square. The
   // value must be a string: the css-var serializer skips a numeric value for

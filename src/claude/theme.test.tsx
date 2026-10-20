@@ -53,28 +53,30 @@ describe("claude → antd light token mapping", () => {
   });
 
   it("pins the Claude palette", () => {
-    expect(light.colorPrimary).toBe("#C6613F");
+    expect(light.colorPrimary).toBe("#BA5B37");
     expect(light.colorSuccess).toBe("#467650");
     expect(light.colorWarning).toBe("#806340");
     expect(light.colorError).toBe("#a14b43");
     expect(light.colorInfo).toBe("#436c96");
     expect(light.colorLink).toBe("#4B5BD8");
-    expect(light.colorText).toBe("#141413");
-    expect(light.colorBgLayout).toBe("#F4F2EC");
-    expect(light.colorBgContainer).toBe("#FBFAF7");
+    expect(light.colorText).toBe("#3C3C2C");
+    expect(light.colorBgLayout).toBe("#F0EDE2");
+    expect(light.colorBgContainer).toBe("#F5F4EC");
     expect(light.colorBgElevated).toBe("#FFFFFF");
   });
 
-  it("keeps the surface ladder in strict luminance order", () => {
+  it("keeps the surface ladder ordered", () => {
     const ladder = [
       claudeLight.surfaceSidebar,
       claudeLight.surface0,
       claudeLight.surface1,
       claudeLight.surface2,
     ];
-    for (let i = 1; i < ladder.length; i += 1) {
-      expect(luminance(ladder[i]), ladder[i]).toBeGreaterThan(luminance(ladder[i - 1]));
-    }
+    // sidebar < layout < container. Container and elevated are both white in
+    // light mode: elevation is carried by border + shadow, not lightness.
+    expect(luminance(ladder[0]), "sidebar").toBeLessThan(luminance(ladder[1]));
+    expect(luminance(ladder[1]), "layout").toBeLessThan(luminance(ladder[2]));
+    expect(luminance(ladder[3]), "elevated").toBeGreaterThanOrEqual(luminance(ladder[2]));
     expect(light.colorBgLayout).toBe(claudeLight.surface0);
     expect(light.colorBgContainer).toBe(claudeLight.surface1);
     expect(light.colorBgElevated).toBe(claudeLight.surface2);
@@ -103,6 +105,38 @@ describe("claude → antd light token mapping", () => {
   it("pins the shared font stacks", () => {
     expect(light.fontFamily).toContain("system-ui");
     expect(light.fontFamilyCode).toContain("SFMono-Regular");
+  });
+
+  it("keeps hover, selected and parchment panel-head steps visible", () => {
+    // Hover visibility is measured against the surface it sits on. The V4
+    // paper look keeps the card only 1.06 above the page, so hover is 1.16.
+    expect(contrast(claudeLight.surfaceHover, claudeLight.surface1)).toBeGreaterThanOrEqual(1.15);
+    // Selected must read stronger than hover on the sidebar.
+    expect(contrast(claudeLight.surface4, claudeLight.surfaceSidebar)).toBeGreaterThan(
+      contrast(claudeLight.surfaceHover, claudeLight.surfaceSidebar),
+    );
+    // Parchment panel-head tone against the white card.
+    expect(contrast(claudeLight.surfaceHead, claudeLight.surface1)).toBeGreaterThanOrEqual(1.15);
+    // Head must stay distinct from the hover step so hovering a row does not
+    // look like the header.
+    expect(contrast(claudeLight.surfaceHead, claudeLight.surfaceHover)).toBeGreaterThanOrEqual(1.02);
+
+    // Menu hover/selected are derived for the sidebar surface (1.14 / 1.21),
+    // and selected must stay above hover.
+    expect(claudeLightTheme.components?.Menu?.itemHoverBg).toBe(claudeLight.surface3);
+    expect(claudeLightTheme.components?.Menu?.itemSelectedBg).toBe(claudeLight.surface4);
+    expect(contrast(claudeLight.surface4, claudeLight.surfaceSidebar)).toBeGreaterThan(
+      contrast(claudeLight.surface3, claudeLight.surfaceSidebar),
+    );
+    expect(claudeLightTheme.components?.Table?.rowHoverBg).toBe(claudeLight.surfaceHover);
+    expect(claudeLightTheme.components?.Table?.headerBg).toBe(claudeLight.surfaceHead);
+    // Segmented's track is a light neutral in the card family, so it needs
+    // no hover override — antd's default (colorFillSecondary = surface3)
+    // already reads 1.21 against it.
+    expect(claudeLightTheme.components?.Segmented?.trackBg).toBe(claudeLight.surfaceTrack);
+    expect(claudeLightTheme.components?.Segmented?.itemHoverBg).toBeUndefined();
+    expect(claudeLightTheme.components?.Card?.headerBg).toBe(claudeLight.surfaceHead);
+    expect(light.colorFillTertiary).toBe(claudeLight.surfaceHover);
   });
 
   it("uses the 40px control / 12px radius / 14px body scale", () => {
@@ -186,13 +220,11 @@ describe("claude light contrast", () => {
     }
   });
 
-  it("uses the official clay with a documented white-label exception", () => {
-    // Claude's site accepts white on #C6613F at 4.05:1. Hover/active darken
-    // so the label clears 4.5 there.
-    expect(claudeLight.accent).toBe("#C6613F");
+  it("uses the sampled claude.ai clay with a white label above 4.5:1", () => {
+    // #BA5B37 is the sampled clay taken one step deeper so white clears 4.5.
+    expect(claudeLight.accent).toBe("#BA5B37");
     expect(claudeLightTheme.components?.Button?.primaryColor).toBe("#FFFFFF");
-    expect(contrast("#ffffff", claudeLight.accent)).toBeGreaterThanOrEqual(3);
-    expect(contrast("#ffffff", claudeLight.accent)).toBeLessThan(4.5);
+    expect(contrast("#ffffff", claudeLight.accent)).toBeGreaterThanOrEqual(4.5);
     expect(contrast("#ffffff", light.colorPrimaryHover as string)).toBeGreaterThanOrEqual(4.5);
     expect(contrast("#ffffff", light.colorPrimaryActive as string)).toBeGreaterThanOrEqual(4.5);
   });
@@ -253,7 +285,7 @@ describe("claude light contrast", () => {
   });
 
   it("selection is not the paseo white overlay", () => {
-    expect(claudeLight.selection).toContain("rgba(198, 97, 63");
+    expect(claudeLight.selection).toContain("rgba(186, 91, 55");
   });
 });
 

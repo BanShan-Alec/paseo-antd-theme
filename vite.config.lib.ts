@@ -24,14 +24,14 @@ export default defineConfig({
         claude: "src/claude.ts",
         paseo: "src/paseo.ts",
       },
-      formats: ["es", "cjs"],
+      formats: ["es"],
       fileName: (format, entryName) =>
         `${entryName}.${format === "es" ? "js" : "cjs"}`,
     },
     rollupOptions: {
       external: ["antd", "react", "react-dom", "react/jsx-runtime", "@ant-design/colors"],
     },
-    sourcemap: true,
+    sourcemap: false,
     minify: false,
     emptyOutDir: true,
   },
