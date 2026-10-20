@@ -30,7 +30,9 @@ const generated = () => {
 };
 
 describe("tailwind css artifact", () => {
-  const css = readFileSync(join(ROOT, "src/tailwind/theme.css"), "utf8");
+  // The generator emits LF; git may check the committed file out as CRLF on
+  // Windows, so compare content, not checkout line endings.
+  const css = readFileSync(join(ROOT, "src/tailwind/theme.css"), "utf8").replace(/\r\n/g, "\n");
 
   it("is fresh — regeneration reproduces the committed file byte for byte", () => {
     expect(generated()).toBe(css);
