@@ -43,7 +43,7 @@
 | merged | `#774fb3` | 5.61 |
 | running / info | `#436c96` | 5.21 |
 
-代价是这组颜色比 Claude Code 终端里的状态色明显更安静——这是等响度 + 55% 彩度的直接结果。每个色族的 bg / border / hover / text 槽位由 `src/claude/colors.ts` 从同一色相按明度阶梯推导。**不能直接用 antd 的 `generate()` 派生这些槽位**：它会把低彩度基色洗成灰色（`#467650` → `#aab5ab`），并且会把 `*TextHover` 指向更浅、对比度不足的槽位。
+代价是这组颜色比 Claude Code 终端里的状态色明显更安静——这是等响度 + 55% 彩度的直接结果。每个色族的 bg / border / hover / text 槽位由 `src/shared/colors.ts` 从同一色相按明度阶梯推导。**不能直接用 antd 的 `generate()` 派生这些槽位**：它会把低彩度基色洗成灰色（`#467650` → `#aab5ab`），并且会把 `*TextHover` 指向更浅、对比度不足的槽位。
 
 ### Diff 与选区
 
@@ -68,9 +68,42 @@ antd v6 的 token 管线有两个行为决定了“直接写 `theme.token`”行
 
 所以两个完整方案都用算法包装器：深色包 `darkAlgorithm`，浅色包 `defaultAlgorithm`，在返回值里钉回精确色值。浅色额外显式钉住所有 `*Text` / `*TextHover` / `*TextActive` 槽位，并自己推导状态族的背景/边框阶梯。
 
+## 仓库结构
+
+```
+src/
+  index.ts  claude.ts  paseo.ts      # 三个包入口，路径与 package.json exports 一致
+  Provider.tsx                        # PaseoThemeProvider（组合层：唯一同时认识两个主题的文件）
+  LoadingIcon.tsx                     # PaseoLoadingIcon
+  themeStyles.ts                      # PASEO_THEME_CSS
+  shared/                             # 主题基座，只依赖 antd，不依赖 themes
+    theme.ts                          # TokenMapping/DerivedToken 类型 + familyTokens/capitalize/extras/buildToken + antdDefaultLightTheme
+    colors.ts                         # OKLCH 数学（normalizedLightFamily 等）
+    fonts.ts                          # PASEO_FONT_STACK / PASEO_MONO_FONT_STACK
+  themes/
+    claude/      theme.ts  tokens.ts  theme.test.tsx
+    paseo-dark/  theme.ts  tokens.ts  theme.test.tsx
+  demo/                               # demo 应用（不进 npm 包）
+  testing/                            # 测试共用工具（不进 npm 包）
+```
+
+分层规则：`shared/` 只依赖 antd；`themes/*` 依赖 `shared/`；`Provider.tsx` 在 src 根层组合两个主题，是唯一同时 import 两个主题的文件；`demo/` 与 `testing/` 不进包。
+
+## Provider 注入的类名契约
+
+`PaseoThemeProvider` 通过 antd 的 `classNames` 插槽和自身 SVG 的 `className` 往消费者 DOM 里写入以下类，CSS 由 `PASEO_THEME_CSS` 以字符串形式随 Provider 注入（无需单独 import）。这些类与 `prefixCls` 无关，只在 Provider 子树内生效。
+
+| 类名 | 落点 | 改了什么 | 为什么是 (0,2,0) | 想覆盖时写什么 |
+| --- | --- | --- | --- | --- |
+| `.paseo-loading-icon` / `.paseo-loading-spin` | 我们自己的 loading SVG（默认图标与 Spin 的 indicator） | `vertical-align: -0.125em`；内层 `<g>` 绕中心旋转 1s/圈。旋转加在内层 `<g>` 而非 `<svg>`：1em 盒子不随旋转变化，小尺寸下笔画不闪 | 纯单类 (0,1,0)，作用在我们自己的 DOM 上，无 antd 规则竞争 | 选择器 `.paseo-loading-icon`（后写的样式或更高特异性均可） |
+| `.paseo-select-item` | Select 下拉选项（`Select.popup.classNames.listItem`） | 上下 2px 透明边框 + `background-clip: padding-box`，让 hover/选中背景止步于 padding box，露出下拉背景形成行间间隔 | 写成 **`.paseo-select-item.paseo-select-item`** 的加倍形式。antd 的下拉选项规则实际是 `:where(.css-hash).ant-select-dropdown :where(.css-hash).ant-select-item`，特异性 (0,2,0)；我们的单类只有 (0,1,0) 会输。加倍打平后靠源顺序取胜，且用户仍能用一个类覆盖 | `.paseo-select-item { … }`（特异性 (0,1,0)，与我们的规则同权重，源顺序在用户侧之后即胜）；需要更强保证就写 `.ant-select-item.paseo-select-item` |
+| `.paseo-segmented-item` | Segmented 选项（`Segmented.classNames.item`） | `:not(:last-child) { margin-inline-end: 4px }`——antd 没有 Segmented 间隙 token | 单类 (0,1,0)，竞争规则只有 antd 自身的 reset | `.paseo-segmented-item` 或更具体的选择器 |
+
+> 注意：不要为了省掉自造类名而改成靶向 `.ant-select-item` / `.ant-segmented-item`——`ConfigProvider prefixCls` 一改这些规则就静默失效，而且 CSS 是全局的，会波及 Provider 之外的 antd 实例。
+
 ## 备注
 
-- `@ant-design/colors` 仍是显式依赖，但浅色状态族的 bg/border 槽位由 `src/claude/colors.ts` 的 OKLCH 推导，不依赖它的色板索引。
+- `@ant-design/colors` 仍是显式依赖，但浅色状态族的 bg/border 槽位由 `src/shared/colors.ts` 的 OKLCH 推导，不依赖它的色板索引。
 - 兼容 `cssVar`：`theme={{ ...claudeLightTheme, cssVar: true }}`。
 - 字体栈在所有方案中钉固为同一组，避免 Windows 上 `system-ui` 与 antd 默认栈的宽度差导致切换位移。
 - 完整深色方案的自定义 diff token 已换成降饱和值；如果你的消费方直接引用了 `#4ade80` / `#ef4444`，需要同步更新。

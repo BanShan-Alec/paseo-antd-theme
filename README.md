@@ -59,7 +59,7 @@ import { paseoDarkTheme } from "paseo-antd-themes/paseo";
 
 | 入口 | 导出 |
 | --- | --- |
-| `paseo-antd-themes` | `PaseoThemeProvider`, `ClaudeLoadingIcon`, `claudeLightTheme`, `paseoDarkTheme`, types |
+| `paseo-antd-themes` | `PaseoThemeProvider`, `PaseoLoadingIcon`, `claudeLightTheme`, `paseoDarkTheme`, types |
 | `paseo-antd-themes/claude` | `claudeLightTheme`, `claudeLight`, `claudeIdentityLight`, token mappings |
 | `paseo-antd-themes/paseo` | `paseoDarkTheme`, `paseoDark`, token mappings |
 
