@@ -55,6 +55,28 @@ import { paseoDarkTheme } from "paseo-antd-themes/paseo";
 
 > 裸主题只包含 token；自定义 loading 图标、Segmented / Select 间隙只在 `PaseoThemeProvider` 中生效。
 
+### Tailwind v4（纯 CSS，无需 antd）
+
+同一条 token 管线也发布为 Tailwind v4 样式表。值在构建期经 antd 管线解析（包含算法派生的 hover/active/色阶），发布为静态 CSS——**使用它的项目不需要安装 antd**：
+
+```css
+@import "tailwindcss";
+@import "paseo-antd-themes/tailwind.css";
+```
+
+之后 `bg-primary`、`text-secondary`、`border-split`、`bg-surface-1`、`font-sans`、`rounded-md` 等工具类直接可用。完整变量清单见 [MAPPING.md](./MAPPING.md) 的「Tailwind 变量映射」一节。
+
+暗色策略两种都支持：浅色（Claude Light）写在 `:root`，深色（Paseo Dark）同时写在 `@media (prefers-color-scheme: dark)`（Tailwind 默认策略，`dark:` 变体开箱即用）与 `.dark`（类策略，写在 media 块之后，同时命中时类胜出）。
+
+命名规则：antd token 去 `color` 前缀转 kebab，自定义 token 同理——`colorPrimary` → `--paseo-primary`、`colorPrimaryHover` → `--paseo-primary-hover`、`paseoSurface0` → `--paseo-surface-0`、`paseoIdentityViolet` → `--paseo-identity-violet`。`@theme inline` 把它们映射为 Tailwind 的 `--color-*` 刻度。
+
+两点有意覆盖，需要回退默认刻度时自行在项目里重定义：
+
+- `--font-sans` / `--font-mono` 采用 paseo 的系统字体栈（与 antd 主题一致）；
+- `--radius-xs/sm/md/lg` 对齐主题的 4/8/12/12px 圆角形态。
+
+重新生成：`npm run gen:tailwind`（产物 `src/tailwind/theme.css` 已提交，改动主题后需要重新生成；测试会校验新鲜度）。
+
 ## Exports
 
 | 入口 | 导出 |
@@ -62,6 +84,7 @@ import { paseoDarkTheme } from "paseo-antd-themes/paseo";
 | `paseo-antd-themes` | `PaseoThemeProvider`, `PaseoLoadingIcon`, `claudeLightTheme`, `paseoDarkTheme`, types |
 | `paseo-antd-themes/claude` | `claudeLightTheme`, `claudeLight`, `claudeIdentityLight`, token mappings |
 | `paseo-antd-themes/paseo` | `paseoDarkTheme`, `paseoDark`, token mappings |
+| `paseo-antd-themes/tailwind.css` | Tailwind v4 样式表（浅色 `:root` + 深色 media/`.dark`，含 `@theme inline`） |
 
 ## 两套主题
 
@@ -89,7 +112,8 @@ import { paseoDarkTheme } from "paseo-antd-themes/paseo";
 npm install
 npm run typecheck
 npm test
-npm run build:lib      # 发布产物：ESM + d.ts（相对导入自动补 .js）
+npm run gen:tailwind   # 重生成 src/tailwind/theme.css（主题色值变更后）
+npm run build:lib      # 发布产物：ESM + d.ts（相对导入自动补 .js）+ tailwind.css
 npm run build:demo     # demo，输出到 dist-demo/
 npm run verify:package # 打包并校验：exports、CJS 残留、声明解析、publint、attw (esm-only)
 npm run pack:dry       # npm pack --dry-run（触发 prepack 构建）
