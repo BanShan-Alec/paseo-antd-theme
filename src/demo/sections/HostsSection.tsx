@@ -23,7 +23,7 @@ export function HostsSection() {
     <Row gutter={[16, 16]}>
       <Col xs={24} xl={12}>
         <Card variant="borderless" title="Host 身份色" size="small">
-          {!custom && <Note>当前方案没有自定义身份色 token——回退 antd 默认徽章。</Note>}
+          {!custom && <Note>当前方案没有自定义身份色 token——回退 Antd 默认徽章。</Note>}
           <div style={{ display: "grid", gap: 10 }}>
             {hosts.map((host, i) => {
               const key = identityKeys[i % identityKeys.length];
@@ -50,7 +50,7 @@ export function HostsSection() {
                   </span>
                   <span style={{ fontSize: 13 }}>{host.name}</span>
                   <code style={{ fontSize: 11, opacity: 0.6, marginLeft: "auto" }}>
-                    {key ?? "antd 默认"}
+                    {key ?? "Antd 默认"}
                   </code>
                 </div>
               );

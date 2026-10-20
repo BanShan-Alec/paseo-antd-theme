@@ -42,7 +42,7 @@ export function MappingSection({ view }: { view: View }) {
       >
         {isStockLight ? (
           <Paragraph type="secondary" style={{ marginBottom: 0 }}>
-            这是 antd 默认浅色主题，未覆盖任何 antd 变量（唯一例外：字体栈与深色一致，避免切换时元素位移）。
+            这是 Antd 默认浅色主题，未覆盖任何 antd 变量（唯一例外：字体栈与深色一致，避免切换时元素位移）。
             切到「Claude 浅色」查看完整浅色方案。
           </Paragraph>
         ) : (

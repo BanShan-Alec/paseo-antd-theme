@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   App as AntApp,
+  ConfigProvider,
   Layout,
   Menu,
   Segmented,
@@ -25,7 +26,7 @@ const { Header, Sider, Content } = Layout;
 const { Title, Text } = Typography;
 
 const VIEW_OPTIONS = [
-  { label: "antd 默认", value: "light" },
+  { label: "Antd 默认", value: "light" },
   { label: "Claude 浅色", value: "claude" },
   { label: "Paseo 深色", value: "dark" },
 ] as const;
@@ -105,6 +106,12 @@ function Dashboard({
             alignItems: "center",
             justifyContent: "space-between",
             padding: "0 24px",
+            // antd's stock headerBg is dark navy #001529 while headerColor
+            // stays the normal dark text — unreadable. Both light views
+            // override headerBg to the sider tone in their themes; the stock
+            // view pins it to colorBgLayout here so the header stays readable
+            // without touching the stock theme itself.
+            background: view === "light" ? token.colorBgLayout : undefined,
           }}
         >
           <Text strong>{SECTIONS.find((s) => s.key === section)?.title}</Text>
@@ -136,11 +143,22 @@ export default function App() {
   // previous theme's style tags when components are reused, which leaves
   // some elements (buttons, tags) painted with the old theme's colors.
   // Keying the provider forces every component to re-register its styles.
-  return (
-    <PaseoThemeProvider key={view} theme={themeFor(view)}>
-      <AntApp>
-        <Dashboard view={view} section={section} setView={setView} setSection={setSection} />
-      </AntApp>
-    </PaseoThemeProvider>
-  );
+  // The stock view bypasses PaseoThemeProvider on purpose: it must show antd
+  // without the package's Segmented gap, Select row gap or loading icon, so
+  // the comparison against the two real themes stays honest.
+  const page =
+    view === "light" ? (
+      <ConfigProvider theme={themeFor(view)}>
+        <AntApp>
+          <Dashboard view={view} section={section} setView={setView} setSection={setSection} />
+        </AntApp>
+      </ConfigProvider>
+    ) : (
+      <PaseoThemeProvider key={view} theme={themeFor(view)}>
+        <AntApp>
+          <Dashboard view={view} section={section} setView={setView} setSection={setSection} />
+        </AntApp>
+      </PaseoThemeProvider>
+    );
+  return page;
 }
