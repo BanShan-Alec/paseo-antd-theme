@@ -2,6 +2,8 @@
 
 **Paseo Dark** 与 **Claude Light** 两套 **Ant Design v6** 主题。共享同一套 token 管线、字体度量和组件级行为，可作为 antd 默认主题的替代。
 
+> **快速预览**：在线 demo 部署在 GitHub Pages —— [https://banshan-alec.github.io/paseo-antd-theme/](https://banshan-alec.github.io/paseo-antd-theme/)，顶部切换器可在 Antd 默认 / Claude 浅色 / Paseo 深色三个视图间切换。
+
 ## 安装
 
 ```bash
