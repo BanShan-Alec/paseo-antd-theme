@@ -69,7 +69,7 @@ import { paseoDarkTheme } from "paseo-antd-themes/paseo";
 | --- | --- |
 | ![Paseo Dark 概览](./docs/paseo-dark.png) | ![Claude Light 概览](./docs/claude-light.png) |
 
-| 维度 | Paseo Dark（完整） | Claude Light |
+| 维度 | Paseo Dark | Claude Light |
 | --- | --- | --- |
 | 定位 | 长时间运行的 agent orchestration 深色工作台 | 日间、评审/文档式的 Claude 品牌浅色界面 |
 | 表面 | 青绿调深色阶梯，层与层靠亮度区分 | 官网取色奶油底 `#F0EDE2` + 纸感卡片 `#F5F4EC`，暖黑文字 |
@@ -79,11 +79,9 @@ import { paseoDarkTheme } from "paseo-antd-themes/paseo";
 | 阴影 | 黑色系软阴影 | 暖墨色软阴影 |
 | 适合 | 夜间、专注、终端/agent 工作流 | 白天、评审/文档、Claude 品牌场景 |
 
-**Paseo Dark** 保留 paseo 的青绿深色表面和绿色身份，状态色按等响度规则归一化。完整方案把控件形态和软阴影同步到了与浅色一致的语言，因此它不再是 paseo 原始紧凑扁平形态的 1:1 移植。
+**Paseo Dark** 保留 paseo 的青绿深色表面和绿色身份，状态色按等响度规则归一化。控件形态和软阴影与浅色主题共享同一套语言。
 
 **Claude Light** 从 claude.ai 官网截图像素取色重推：奶油页面 `#F0EDE2`、只亮 1.06 的纸感卡片 `#F5F4EC`、hover `#DDD9CE`、暖黑文字 `#3C3C2C`，主色用官网交互态 clay `#BA5B37`（白字 4.53:1）。状态色仍按 paseo 等响度规则在浅色表面重解。完整取值见 [DESIGN.md](./DESIGN.md)。
-
-> 仓库里的 `src/paseo/` 是最小方案（13 个 token），不包含在 npm 包内，只作为开发对照保留。
 
 ## 开发与验证
 

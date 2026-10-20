@@ -17,7 +17,6 @@ import {
   StatusSection,
   type View,
 } from "./demo/sections";
-import * as minimal from "./paseo/theme";
 import * as full from "./paseo-full/theme";
 import * as claude from "./claude/theme";
 import { PaseoThemeProvider } from "./claude/Provider";
@@ -28,8 +27,7 @@ const { Title, Text } = Typography;
 const VIEW_OPTIONS = [
   { label: "antd 默认", value: "light" },
   { label: "Claude 浅色", value: "claude" },
-  { label: "Paseo 最小", value: "minimal" },
-  { label: "Paseo 完整", value: "full" },
+  { label: "Paseo 深色", value: "dark" },
 ] as const;
 
 type Section =
@@ -53,9 +51,8 @@ const SECTIONS: { key: Section; label: string; hint: string }[] = [
 
 function themeFor(view: View) {
   if (view === "claude") return claude.claudeLightTheme;
-  if (view === "full") return full.paseoDarkTheme;
-  if (view === "minimal") return minimal.paseoDarkTheme;
-  return minimal.antdDefaultLightTheme;
+  if (view === "dark") return full.paseoDarkTheme;
+  return full.antdDefaultLightTheme;
 }
 
 const SECTION_TITLES: Record<Section, string> = {
@@ -80,8 +77,8 @@ function Dashboard({
   setSection: (section: Section) => void;
 }) {
   const { token } = antdTheme.useToken();
-  // The two light views need a light Sider and light Menu; the paseo views
-  // keep the dark chrome both themes were designed around.
+  // The two light views need a light Sider and light Menu; the paseo dark view
+  // keeps the dark chrome both themes were designed around.
   const isLight = view === "light" || view === "claude";
 
   return (

@@ -2,30 +2,9 @@
 
 ## 完整映射表
 
-### 最小方案 · 深色（Paseo Dark）
-
-只钉 13 个 token（五个颜色族的种子 + 三个背景 + 字体栈），其余由 antd 以 paseo 的种子色自行派生。
-浅色仍是 antd 默认主题，仅字体栈例外。
-
-| antd token | 类型 | 值 | paseo 来源 | 说明 |
-| --- | --- | --- | --- | --- |
-| `colorPrimary` | seed | `#20744A` | `accent` |  |
-| `colorSuccess` | seed | `#6cb17b` | `statusSuccess` |  |
-| `colorWarning` | seed | `#c09664` | `statusWarning` |  |
-| `colorError` | seed | `#d8847b` | `statusDanger` |  |
-| `colorInfo` | seed | `#5caaf6` | `statusDotRunning` | paseo has no info color; its 'running' blue is the only informational hue. |
-| `colorTextBase` | seed | `#fafafa` | `foreground` |  |
-| `colorBgBase` | seed | `#181B1A` | `surface0` |  |
-| `colorLink` | seed | `#7ccba0` | `accentBright` | Pinned to accentBright by the wrapped algorithm; the seed keeps derivation in-family. |
-| `fontFamily` | seed | `system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif` | `fontFamily.ui` |  |
-| `fontFamilyCode` | seed | `SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace` | `fontFamily.mono` |  |
-| `colorBgLayout` | map | `#181B1A` | `surface0` |  |
-| `colorBgContainer` | map | `#1E2120` | `surface1` | Default buttons, inputs, cards. |
-| `colorBgElevated` | map | `#272A29` | `surface2` | Popovers, dropdowns, modals. |
-
 ### 完整方案 · 深色（Paseo Dark + Claude.ai 形态）
 
-paseo 配色 + Claude.ai 形态：40px 控件、16px 正文、12px 圆角、软阴影。
+paseo 配色 + Claude.ai 形态：40px 控件、14px 正文、12px 圆角、软阴影。
 Diff 行底已降饱和为 `#32573a` / `#783630`。
 
 | antd token | 类型 | 值 | paseo 来源 | 说明 |
@@ -85,7 +64,7 @@ Diff 行底已降饱和为 `#32573a` / `#783630`。
 ### Claude 浅色（Claude Light）
 
 Claude 品牌表面 + Claude Code 信号色 + paseo 归一化状态色（OKLCH L*=0.52 / 55% 彩度）。
-主色 clay 的按钮文字为墨色；链接为压暗后的 Claude suggestion 蓝。
+主色 clay 的按钮文字为白字（4.53:1）；链接为压暗后的 Claude suggestion 蓝。
 
 | antd token | 类型 | 值 | paseo 来源 | 说明 |
 | --- | --- | --- | --- | --- |

@@ -53,7 +53,7 @@
 
 ### 形态
 
-两个完整方案共享 Claude.ai 形态：控件高 40（SM 32 / LG 48）、正文 14（SM 12 / LG 16）、圆角 12（SM 8 / XS 4）、软阴影（浅色暖墨色、深色黑色）。正文最初试过 16px，在 Agent 列表和表单并排的卡片里显得拥挤，最终回到 antd/paseo 的 14px——40px 控件配 14px 正文既保留了 Claude.ai 的松弛感，又不会挤。最小方案 `src/paseo/` 保持原来的 32 / 14 / 6 紧凑形态，不受影响。
+两个完整方案共享 Claude.ai 形态：控件高 40（SM 32 / LG 48）、正文 14（SM 12 / LG 16）、圆角 12（SM 8 / XS 4）、软阴影（浅色暖墨色、深色黑色）。正文最初试过 16px，在 Agent 列表和表单并排的卡片里显得拥挤，最终回到 antd/paseo 的 14px——40px 控件配 14px 正文既保留了 Claude.ai 的松弛感，又不会挤。
 
 Select 选项：`optionPadding` 为 `9px 12px`、`optionHeight` 为 44（默认 40）。行间透明间隔由 Provider 的 `border-block: 2px solid transparent` + `background-clip: padding-box` 实现：hover/选中背景只画到 padding box，露出下拉框背景。**虚拟滚动列表需要传 `<Select listItemHeight={44}>`**，否则 rc-virtual-list 仍按 40px 估算行高。
 

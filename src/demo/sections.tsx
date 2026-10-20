@@ -25,13 +25,12 @@ import {
 
 const { Header, Sider, Content } = Layout;
 import * as full from "../paseo-full/theme";
-import * as minimal from "../paseo/theme";
 import * as claude from "../claude/theme";
-import type { TokenMapping } from "../paseo/theme";
+import type { TokenMapping } from "../paseo-full/theme";
 
 const { Paragraph, Text } = Typography;
 
-export type View = "light" | "claude" | "minimal" | "full";
+export type View = "light" | "claude" | "dark";
 
 /** Live token accessor with graceful degradation when a token is absent. */
 function useSchemeTokens() {
@@ -617,19 +616,15 @@ export function MappingSection({ view }: { view: View }) {
   const { token } = antdTheme.useToken();
   const t = token as unknown as Record<string, string>;
   const isStockLight = view === "light";
-  const isFullDark = view === "full";
+  const isPaseoDark = view === "dark";
   const isClaude = view === "claude";
-  const mapping = isFullDark
+  const mapping = isPaseoDark
     ? full.PASEO_DARK_TOKEN_MAPPING
-    : isClaude
-      ? claude.CLAUDE_LIGHT_TOKEN_MAPPING
-      : minimal.PASEO_DARK_TOKEN_MAPPING;
-  const derivedTokens = isFullDark
+    : claude.CLAUDE_LIGHT_TOKEN_MAPPING;
+  const derivedTokens = isPaseoDark
     ? full.PASEO_DERIVED_TOKENS
-    : isClaude
-      ? claude.CLAUDE_LIGHT_DERIVED_TOKENS
-      : [];
-  const showDerived = isFullDark || isClaude;
+    : claude.CLAUDE_LIGHT_DERIVED_TOKENS;
+  const showDerived = isPaseoDark || isClaude;
 
   const customTokens = Object.fromEntries(
     Object.keys(t)
