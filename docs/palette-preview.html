@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Claude 浅色 · 配色版本预览</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin:0; background:#26241f; color:#e8e4dc; font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  header { padding:28px 32px 8px; }
+  header h1 { margin:0 0 6px; font-size:20px; }
+  header p { margin:0; color:#a8a29a; max-width:900px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(380px,1fr)); gap:20px; padding:24px 32px 40px; }
+  .pcard { background:#2f2c27; border:1px solid #403c35; border-radius:12px; padding:16px; }
+  .pcard h2 { margin:0 0 4px; font-size:15px; }
+  .pcard .note { margin:0 0 12px; font-size:12px; color:#a8a29a; }
+  .mock { display:flex; height:190px; border:1px solid; border-radius:8px; overflow:hidden; }
+  .side { width:96px; flex:none; padding:10px 8px; display:flex; flex-direction:column; gap:2px; }
+  .sitem { font-size:11px; padding:5px 8px; border-radius:5px; }
+  .main { flex:1; padding:12px; }
+  .card { height:100%; border:1px solid; border-radius:8px; overflow:hidden; display:flex; flex-direction:column; }
+  .chead { font-size:11px; padding:6px 10px; border-bottom:1px solid; }
+  .cbody { padding:10px; display:flex; flex-direction:column; gap:10px; }
+  .btnrow { display:flex; gap:6px; align-items:center; }
+  .btn { font-size:11px; padding:5px 10px; border-radius:6px; border:1px solid transparent; }
+  .tag { font-size:11px; padding:3px 8px; border-radius:5px; }
+  .tbl { display:flex; flex-direction:column; }
+  .tr { font-size:11px; padding:5px 10px; border-bottom:1px solid; }
+  .tr:last-child { border-bottom:none; }
+  .chips { display:flex; flex-wrap:wrap; gap:6px 10px; margin-top:12px; }
+  .chip { display:flex; align-items:center; gap:5px; }
+  .sw { width:14px; height:14px; border-radius:3px; border:1px solid rgba(255,255,255,.18); }
+  .hx { font:11px/1 ui-monospace,SFMono-Regular,Menlo,monospace; color:#c9c4ba; }
+  .ratios { margin:10px 0 0; font:11px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace; color:#a8a29a; }
+  footer { padding:0 32px 32px; color:#8a867e; font-size:12px; max-width:900px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Claude 浅色 · 中性色版本预览</h1>
+  <p>V1/V2 来自 git 提交，V3 是当前未提交的工作区，A–D 是四个候选。主色 clay、状态色、diff、链接、文字阶梯在所有版本中保持一致，只有中性层不同。每个卡片内是迷你界面示意：侧栏（默认/hover/选中）、卡片（面板头、按钮、表头、悬停行）。</p>
+</header>
+<div class="grid">
+
+  <section class="pcard">
+    <h2>Claude.ai 实拍取样 · V4（推荐）</h2>
+    <p class="note">从官网截图取色重推：页面 #F0EDE2 奶油底、卡片仅亮 1.06 的“纸上纸”层次、hover #E4E4D4、clay #BC5C3C</p>
+    <div class="mock" style="background:#F0EDE2;border-color:#E8E6DF">
+      <div class="side" style="background:#E2E0D6">
+        <div class="sitem" style="color:#5C5C54">概览</div>
+        <div class="sitem" style="background:#E4E4D4;color:#3C3C2C">列表</div>
+        <div class="sitem" style="background:#DAD7CB;color:#3C3C2C;font-weight:600">设置</div>
+      </div>
+      <div class="main">
+        <div class="card" style="background:#F5F4EC;border-color:#DBD9D0">
+          <div class="chead" style="background:#EDEBE0;border-color:#DBD9D0;color:#5C5C54">面板头</div>
+          <div class="cbody">
+            <div class="btnrow">
+              <span class="btn primary" style="background:#BC5C3C;color:#FFFFFF">主按钮</span>
+              <span class="btn" style="background:#F5F4EC;border-color:#DBD9D0;color:#3C3C2C">默认</span>
+              <span class="tag" style="background:#e8eddf;color:#467650">success</span>
+            </div>
+            <div class="tbl">
+              <div class="tr th" style="background:#EDEBE0;border-color:#E8E6DF;color:#5C5C54">表头</div>
+              <div class="tr" style="background:#E4E4D4;border-color:#E8E6DF;color:#3C3C2C">悬停行</div>
+              <div class="tr" style="border-color:#E8E6DF;color:#878681">普通行</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><span class="sw" style="background:#E2E0D6"></span><span class="hx">#E2E0D6</span></div><div class="chip"><span class="sw" style="background:#F0EDE2"></span><span class="hx">#F0EDE2</span></div><div class="chip"><span class="sw" style="background:#F5F4EC"></span><span class="hx">#F5F4EC</span></div><div class="chip"><span class="sw" style="background:#EDEBE0"></span><span class="hx">#EDEBE0</span></div><div class="chip"><span class="sw" style="background:#E4E4D4"></span><span class="hx">#E4E4D4</span></div><div class="chip"><span class="sw" style="background:#DAD7CB"></span><span class="hx">#DAD7CB</span></div><div class="chip"><span class="sw" style="background:#DBD9D0"></span><span class="hx">#DBD9D0</span></div><div class="chip"><span class="sw" style="background:#E8E6DF"></span><span class="hx">#E8E6DF</span></div><div class="chip"><span class="sw" style="background:#3C3C2C"></span><span class="hx">#3C3C2C</span></div><div class="chip"><span class="sw" style="background:#5C5C54"></span><span class="hx">#5C5C54</span></div><div class="chip"><span class="sw" style="background:#BC5C3C"></span><span class="hx">#BC5C3C</span></div>
+    </div>
+    <p class="ratios">头/卡 1.08 · hover/卡 1.16 · 选中/侧栏 1.09 · 边框/卡 1.28 · 正文/页 9.56 · 次要/页 5.75 · 白字/主色 4.44</p>
+  </section>
+
+  <section class="pcard">
+    <h2>Claude.ai 实拍取样 · V4 加深主色</h2>
+    <p class="note">同一套中性色，主色压深到 #BA5838（白字 4.63:1，满足 4.5 纪律；clay 原值 4.44 差一点）</p>
+    <div class="mock" style="background:#F0EDE2;border-color:#E8E6DF">
+      <div class="side" style="background:#E2E0D6">
+        <div class="sitem" style="color:#5C5C54">概览</div>
+        <div class="sitem" style="background:#E4E4D4;color:#3C3C2C">列表</div>
+        <div class="sitem" style="background:#DAD7CB;color:#3C3C2C;font-weight:600">设置</div>
+      </div>
+      <div class="main">
+        <div class="card" style="background:#F5F4EC;border-color:#DBD9D0">
+          <div class="chead" style="background:#EDEBE0;border-color:#DBD9D0;color:#5C5C54">面板头</div>
+          <div class="cbody">
+            <div class="btnrow">
+              <span class="btn primary" style="background:#BA5838;color:#FFFFFF">主按钮</span>
+              <span class="btn" style="background:#F5F4EC;border-color:#DBD9D0;color:#3C3C2C">默认</span>
+              <span class="tag" style="background:#e8eddf;color:#467650">success</span>
+            </div>
+            <div class="tbl">
+              <div class="tr th" style="background:#EDEBE0;border-color:#E8E6DF;color:#5C5C54">表头</div>
+              <div class="tr" style="background:#E4E4D4;border-color:#E8E6DF;color:#3C3C2C">悬停行</div>
+              <div class="tr" style="border-color:#E8E6DF;color:#878681">普通行</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><span class="sw" style="background:#E2E0D6"></span><span class="hx">#E2E0D6</span></div><div class="chip"><span class="sw" style="background:#F0EDE2"></span><span class="hx">#F0EDE2</span></div><div class="chip"><span class="sw" style="background:#F5F4EC"></span><span class="hx">#F5F4EC</span></div><div class="chip"><span class="sw" style="background:#EDEBE0"></span><span class="hx">#EDEBE0</span></div><div class="chip"><span class="sw" style="background:#E4E4D4"></span><span class="hx">#E4E4D4</span></div><div class="chip"><span class="sw" style="background:#DAD7CB"></span><span class="hx">#DAD7CB</span></div><div class="chip"><span class="sw" style="background:#DBD9D0"></span><span class="hx">#DBD9D0</span></div><div class="chip"><span class="sw" style="background:#E8E6DF"></span><span class="hx">#E8E6DF</span></div><div class="chip"><span class="sw" style="background:#3C3C2C"></span><span class="hx">#3C3C2C</span></div><div class="chip"><span class="sw" style="background:#5C5C54"></span><span class="hx">#5C5C54</span></div><div class="chip"><span class="sw" style="background:#BA5838"></span><span class="hx">#BA5838</span></div>
+    </div>
+    <p class="ratios">头/卡 1.08 · hover/卡 1.16 · 选中/侧栏 1.09 · 边框/卡 1.28 · 正文/页 9.56 · 次要/页 5.75 · 白字/主色 4.62</p>
+  </section>
+
+
+  <section class="pcard">
+    <h2>Solarized × V3 · 保留 paseo 强调色</h2>
+    <p class="note">Solarized Light 的奶油底 + 蓝灰文字阶梯；clay 主色与 paseo 状态色不变</p>
+    <div class="mock" style="background:#FDF6E3;border-color:#F2ECDB">
+      <div class="side" style="background:#F0E8D2">
+        <div class="sitem" style="color:#586E75">概览</div>
+        <div class="sitem" style="background:#EEE8D5;color:#073642">列表</div>
+        <div class="sitem" style="background:#E4DABC;color:#073642;font-weight:600">设置</div>
+      </div>
+      <div class="main">
+        <div class="card" style="background:#FFFFFF;border-color:#E7DFC7">
+          <div class="chead" style="background:#F5EED9;border-color:#E7DFC7;color:#586E75">面板头</div>
+          <div class="cbody">
+            <div class="btnrow">
+              <span class="btn primary" style="background:#C6613F;color:#FFFFFF">主按钮</span>
+              <span class="btn" style="background:#FFFFFF;border-color:#E7DFC7;color:#073642">默认</span>
+              <span class="tag" style="background:#d2f6d8;color:#467650">success</span>
+            </div>
+            <div class="tbl">
+              <div class="tr th" style="background:#F5EED9;border-color:#F2ECDB;color:#586E75">表头</div>
+              <div class="tr" style="background:#EEE8D5;border-color:#F2ECDB;color:#073642">悬停行</div>
+              <div class="tr" style="border-color:#F2ECDB;color:#93A1A1">普通行</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><span class="sw" style="background:#F0E8D2"></span><span class="hx">#F0E8D2</span></div><div class="chip"><span class="sw" style="background:#FDF6E3"></span><span class="hx">#FDF6E3</span></div><div class="chip"><span class="sw" style="background:#FFFFFF"></span><span class="hx">#FFFFFF</span></div><div class="chip"><span class="sw" style="background:#F5EED9"></span><span class="hx">#F5EED9</span></div><div class="chip"><span class="sw" style="background:#EEE8D5"></span><span class="hx">#EEE8D5</span></div><div class="chip"><span class="sw" style="background:#E4DABC"></span><span class="hx">#E4DABC</span></div><div class="chip"><span class="sw" style="background:#E7DFC7"></span><span class="hx">#E7DFC7</span></div><div class="chip"><span class="sw" style="background:#F2ECDB"></span><span class="hx">#F2ECDB</span></div><div class="chip"><span class="sw" style="background:#073642"></span><span class="hx">#073642</span></div><div class="chip"><span class="sw" style="background:#586E75"></span><span class="hx">#586E75</span></div>
+    </div>
+    <p class="ratios">头/卡 1.16 · hover/卡 1.23 · 选中/侧栏 1.14 · 边框/卡 1.33 · 正文/页 12.05 · 次要/页 4.99</p>
+  </section>
+
+  <section class="pcard">
+    <h2>Solarized × V3 · 纯 Solarized 强调</h2>
+    <p class="note">连强调色也换成 Solarized（橙主色/绿/黄/红）。注意：Solarized 强调色在 base3 上多为 2.9–4.3:1，低于项目 4.5 纪律，仅供观感</p>
+    <div class="mock" style="background:#FDF6E3;border-color:#F2ECDB">
+      <div class="side" style="background:#F0E8D2">
+        <div class="sitem" style="color:#586E75">概览</div>
+        <div class="sitem" style="background:#EEE8D5;color:#073642">列表</div>
+        <div class="sitem" style="background:#E4DABC;color:#073642;font-weight:600">设置</div>
+      </div>
+      <div class="main">
+        <div class="card" style="background:#FFFFFF;border-color:#E7DFC7">
+          <div class="chead" style="background:#F5EED9;border-color:#E7DFC7;color:#586E75">面板头</div>
+          <div class="cbody">
+            <div class="btnrow">
+              <span class="btn primary" style="background:#CB4B16;color:#FFFFFF">主按钮</span>
+              <span class="btn" style="background:#FFFFFF;border-color:#E7DFC7;color:#073642">默认</span>
+              <span class="tag" style="background:#EEE8D5;color:#859900">success</span>
+            </div>
+            <div class="tbl">
+              <div class="tr th" style="background:#F5EED9;border-color:#F2ECDB;color:#586E75">表头</div>
+              <div class="tr" style="background:#EEE8D5;border-color:#F2ECDB;color:#073642">悬停行</div>
+              <div class="tr" style="border-color:#F2ECDB;color:#93A1A1">普通行</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><span class="sw" style="background:#F0E8D2"></span><span class="hx">#F0E8D2</span></div><div class="chip"><span class="sw" style="background:#FDF6E3"></span><span class="hx">#FDF6E3</span></div><div class="chip"><span class="sw" style="background:#FFFFFF"></span><span class="hx">#FFFFFF</span></div><div class="chip"><span class="sw" style="background:#F5EED9"></span><span class="hx">#F5EED9</span></div><div class="chip"><span class="sw" style="background:#EEE8D5"></span><span class="hx">#EEE8D5</span></div><div class="chip"><span class="sw" style="background:#E4DABC"></span><span class="hx">#E4DABC</span></div><div class="chip"><span class="sw" style="background:#E7DFC7"></span><span class="hx">#E7DFC7</span></div><div class="chip"><span class="sw" style="background:#F2ECDB"></span><span class="hx">#F2ECDB</span></div><div class="chip"><span class="sw" style="background:#073642"></span><span class="hx">#073642</span></div><div class="chip"><span class="sw" style="background:#586E75"></span><span class="hx">#586E75</span></div>
+    </div>
+    <p class="ratios">头/卡 1.16 · hover/卡 1.23 · 选中/侧栏 1.14 · 边框/卡 1.33 · 正文/页 12.05 · 次要/页 4.99</p>
+  </section>
+
+
+  <section class="pcard">
+    <h2>蛋黄·极淡（×0.5）</h2>
+    <p class="note">比“蛋黄·淡”再淡一半——很轻微的暖黄</p>
+    <div class="mock" style="background:#FBF9F5;border-color:#F2F0EC">
+      <div class="side" style="background:#EFEAE3">
+        <div class="sitem" style="color:#66645C">概览</div>
+        <div class="sitem" style="background:#E6DFD4;color:#141413">列表</div>
+        <div class="sitem" style="background:#E3DACD;color:#141413;font-weight:600">设置</div>
+      </div>
+      <div class="main">
+        <div class="card" style="background:#FFFFFF;border-color:#EEEBE5">
+          <div class="chead" style="background:#EEE6D9;border-color:#EEEBE5">面板头</div>
+          <div class="cbody">
+            <div class="btnrow">
+              <span class="btn primary" style="background:#C6613F;color:#fff">主按钮</span>
+              <span class="btn" style="background:#FFFFFF;border-color:#EEEBE5;color:#141413">默认</span>
+              <span class="tag" style="background:#d2f6d8;color:#467650">success</span>
+            </div>
+            <div class="tbl">
+              <div class="tr th" style="background:#EEE6D9;border-color:#F2F0EC;color:#66645C">表头</div>
+              <div class="tr" style="background:#E6DFD4;border-color:#F2F0EC;color:#141413">悬停行</div>
+              <div class="tr" style="border-color:#F2F0EC;color:#66645C">普通行</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><span class="sw" style="background:#EFEAE3"></span><span class="hx">#EFEAE3</span></div><div class="chip"><span class="sw" style="background:#FBF9F5"></span><span class="hx">#FBF9F5</span></div><div class="chip"><span class="sw" style="background:#FFFFFF"></span><span class="hx">#FFFFFF</span></div><div class="chip"><span class="sw" style="background:#EEE6D9"></span><span class="hx">#EEE6D9</span></div><div class="chip"><span class="sw" style="background:#E6DFD4"></span><span class="hx">#E6DFD4</span></div><div class="chip"><span class="sw" style="background:#E3DACD"></span><span class="hx">#E3DACD</span></div><div class="chip"><span class="sw" style="background:#EEEBE5"></span><span class="hx">#EEEBE5</span></div><div class="chip"><span class="sw" style="background:#F2F0EC"></span><span class="hx">#F2F0EC</span></div>
+    </div>
+    <p class="ratios">头/卡 1.24 · hover/卡 1.32 · 选中/侧栏 1.16 · 边框/卡 1.19</p>
+  </section>
+
+  <section class="pcard">
+    <h2>蛋黄·微黄（×0.28）</h2>
+    <p class="note">最淡的一档——几乎看不出的蛋黄倾向</p>
+    <div class="mock" style="background:#FAF9F7;border-color:#F1F0EE">
+      <div class="side" style="background:#EDEBE7">
+        <div class="sitem" style="color:#66645C">概览</div>
+        <div class="sitem" style="background:#E3DFD9;color:#141413">列表</div>
+        <div class="sitem" style="background:#DFDBD3;color:#141413;font-weight:600">设置</div>
+      </div>
+      <div class="main">
+        <div class="card" style="background:#FFFFFF;border-color:#EDEBE8">
+          <div class="chead" style="background:#EBE6DF;border-color:#EDEBE8">面板头</div>
+          <div class="cbody">
+            <div class="btnrow">
+              <span class="btn primary" style="background:#C6613F;color:#fff">主按钮</span>
+              <span class="btn" style="background:#FFFFFF;border-color:#EDEBE8;color:#141413">默认</span>
+              <span class="tag" style="background:#d2f6d8;color:#467650">success</span>
+            </div>
+            <div class="tbl">
+              <div class="tr th" style="background:#EBE6DF;border-color:#F1F0EE;color:#66645C">表头</div>
+              <div class="tr" style="background:#E3DFD9;border-color:#F1F0EE;color:#141413">悬停行</div>
+              <div class="tr" style="border-color:#F1F0EE;color:#66645C">普通行</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><span class="sw" style="background:#EDEBE7"></span><span class="hx">#EDEBE7</span></div><div class="chip"><span class="sw" style="background:#FAF9F7"></span><span class="hx">#FAF9F7</span></div><div class="chip"><span class="sw" style="background:#FFFFFF"></span><span class="hx">#FFFFFF</span></div><div class="chip"><span class="sw" style="background:#EBE6DF"></span><span class="hx">#EBE6DF</span></div><div class="chip"><span class="sw" style="background:#E3DFD9"></span><span class="hx">#E3DFD9</span></div><div class="chip"><span class="sw" style="background:#DFDBD3"></span><span class="hx">#DFDBD3</span></div><div class="chip"><span class="sw" style="background:#EDEBE8"></span><span class="hx">#EDEBE8</span></div><div class="chip"><span class="sw" style="background:#F1F0EE"></span><span class="hx">#F1F0EE</span></div>
+    </div>
+    <p class="ratios">头/卡 1.24 · hover/卡 1.33 · 选中/侧栏 1.16 · 边框/卡 1.19</p>
+  </section>
+
+
+  <section class="pcard">
+    <h2>蛋黄·淡</h2>
+    <p class="note">色相转到蛋黄黄 (H≈78°)，彩度低档——淡淡的暖黄</p>
+    <div class="mock" style="background:#FDF8F2;border-color:#F5EFE7">
+      <div class="side" style="background:#F3EADB">
+        <div class="sitem" style="color:#66645C">概览</div>
+        <div class="sitem" style="background:#ECDEC9;color:#141413">列表</div>
+        <div class="sitem" style="background:#EAD9BF;color:#141413;font-weight:600">设置</div>
+      </div>
+      <div class="main">
+        <div class="card" style="background:#FFFFFF;border-color:#F1EAE0">
+          <div class="chead" style="background:#F6E5CC;border-color:#F1EAE0">面板头</div>
+          <div class="cbody">
+            <div class="btnrow">
+              <span class="btn primary" style="background:#C6613F;color:#fff">主按钮</span>
+              <span class="btn" style="background:#FFFFFF;border-color:#F1EAE0;color:#141413">默认</span>
+              <span class="tag" style="background:#d2f6d8;color:#467650">success</span>
+            </div>
+            <div class="tbl">
+              <div class="tr th" style="background:#F6E5CC;border-color:#F5EFE7;color:#66645C">表头</div>
+              <div class="tr" style="background:#ECDEC9;border-color:#F5EFE7;color:#141413">悬停行</div>
+              <div class="tr" style="border-color:#F5EFE7;color:#66645C">普通行</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><span class="sw" style="background:#F3EADB"></span><span class="hx">#F3EADB</span></div><div class="chip"><span class="sw" style="background:#FDF8F2"></span><span class="hx">#FDF8F2</span></div><div class="chip"><span class="sw" style="background:#FFFFFF"></span><span class="hx">#FFFFFF</span></div><div class="chip"><span class="sw" style="background:#F6E5CC"></span><span class="hx">#F6E5CC</span></div><div class="chip"><span class="sw" style="background:#ECDEC9"></span><span class="hx">#ECDEC9</span></div><div class="chip"><span class="sw" style="background:#EAD9BF"></span><span class="hx">#EAD9BF</span></div><div class="chip"><span class="sw" style="background:#F1EAE0"></span><span class="hx">#F1EAE0</span></div><div class="chip"><span class="sw" style="background:#F5EFE7"></span><span class="hx">#F5EFE7</span></div>
+    </div>
+    <p class="ratios">头/卡 1.24 · hover/卡 1.32 · 选中/侧栏 1.16 · 边框/卡 1.19</p>
+  </section>
+
+  <section class="pcard">
+    <h2>蛋黄·中</h2>
+    <p class="note">中档彩度——清楚的蛋黄暖调，不偏羊皮纸灰</p>
+    <div class="mock" style="background:#FEF8EF;border-color:#F7EFE3">
+      <div class="side" style="background:#F9E9D1">
+        <div class="sitem" style="color:#66645C">概览</div>
+        <div class="sitem" style="background:#F3DDBB;color:#141413">列表</div>
+        <div class="sitem" style="background:#F2D7AE;color:#141413;font-weight:600">设置</div>
+      </div>
+      <div class="main">
+        <div class="card" style="background:#FFFFFF;border-color:#F5E9D8">
+          <div class="chead" style="background:#FDE3BC;border-color:#F5E9D8">面板头</div>
+          <div class="cbody">
+            <div class="btnrow">
+              <span class="btn primary" style="background:#C6613F;color:#fff">主按钮</span>
+              <span class="btn" style="background:#FFFFFF;border-color:#F5E9D8;color:#141413">默认</span>
+              <span class="tag" style="background:#d2f6d8;color:#467650">success</span>
+            </div>
+            <div class="tbl">
+              <div class="tr th" style="background:#FDE3BC;border-color:#F7EFE3;color:#66645C">表头</div>
+              <div class="tr" style="background:#F3DDBB;border-color:#F7EFE3;color:#141413">悬停行</div>
+              <div class="tr" style="border-color:#F7EFE3;color:#66645C">普通行</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><span class="sw" style="background:#F9E9D1"></span><span class="hx">#F9E9D1</span></div><div class="chip"><span class="sw" style="background:#FEF8EF"></span><span class="hx">#FEF8EF</span></div><div class="chip"><span class="sw" style="background:#FFFFFF"></span><span class="hx">#FFFFFF</span></div><div class="chip"><span class="sw" style="background:#FDE3BC"></span><span class="hx">#FDE3BC</span></div><div class="chip"><span class="sw" style="background:#F3DDBB"></span><span class="hx">#F3DDBB</span></div><div class="chip"><span class="sw" style="background:#F2D7AE"></span><span class="hx">#F2D7AE</span></div><div class="chip"><span class="sw" style="background:#F5E9D8"></span><span class="hx">#F5E9D8</span></div><div class="chip"><span class="sw" style="background:#F7EFE3"></span><span class="hx">#F7EFE3</span></div>
+    </div>
+    <p class="ratios">头/卡 1.24 · hover/卡 1.32 · 选中/侧栏 1.17 · 边框/卡 1.20</p>
+  </section>
+
+  <section class="pcard">
+    <h2>蛋黄·浓</h2>
+    <p class="note">高档彩度——明显的蛋黄/金黄纸感</p>
+    <div class="mock" style="background:#FFF8EF;border-color:#FAEEDD">
+      <div class="side" style="background:#FFE8C5">
+        <div class="sitem" style="color:#66645C">概览</div>
+        <div class="sitem" style="background:#FADBAC;color:#141413">列表</div>
+        <div class="sitem" style="background:#FCD599;color:#141413;font-weight:600">设置</div>
+      </div>
+      <div class="main">
+        <div class="card" style="background:#FFFFFF;border-color:#FAE9CF">
+          <div class="chead" style="background:#FFE3B9;border-color:#FAE9CF">面板头</div>
+          <div class="cbody">
+            <div class="btnrow">
+              <span class="btn primary" style="background:#C6613F;color:#fff">主按钮</span>
+              <span class="btn" style="background:#FFFFFF;border-color:#FAE9CF;color:#141413">默认</span>
+              <span class="tag" style="background:#d2f6d8;color:#467650">success</span>
+            </div>
+            <div class="tbl">
+              <div class="tr th" style="background:#FFE3B9;border-color:#FAEEDD;color:#66645C">表头</div>
+              <div class="tr" style="background:#FADBAC;border-color:#FAEEDD;color:#141413">悬停行</div>
+              <div class="tr" style="border-color:#FAEEDD;color:#66645C">普通行</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><span class="sw" style="background:#FFE8C5"></span><span class="hx">#FFE8C5</span></div><div class="chip"><span class="sw" style="background:#FFF8EF"></span><span class="hx">#FFF8EF</span></div><div class="chip"><span class="sw" style="background:#FFFFFF"></span><span class="hx">#FFFFFF</span></div><div class="chip"><span class="sw" style="background:#FFE3B9"></span><span class="hx">#FFE3B9</span></div><div class="chip"><span class="sw" style="background:#FADBAC"></span><span class="hx">#FADBAC</span></div><div class="chip"><span class="sw" style="background:#FCD599"></span><span class="hx">#FCD599</span></div><div class="chip"><span class="sw" style="background:#FAE9CF"></span><span class="hx">#FAE9CF</span></div><div class="chip"><span class="sw" style="background:#FAEEDD"></span><span class="hx">#FAEEDD</span></div>
+    </div>
+    <p class="ratios">头/卡 1.24 · hover/卡 1.33 · 选中/侧栏 1.16 · 边框/卡 1.19</p>
+  </section>
+
+
+  <section class="pcard">
+    <h2>V3+ · 彩度 ×1.5</h2>
+    <p class="note">在 V3 基础上把中性层彩度 ×1.5（暖调增强一档）</p>
+    <div class="mock" style="background:#FBF9F3;border-color:#F2F0E9">
+      <div class="side" style="background:#EEEBE2">
+        <div class="sitem" style="color:#66645C">概览</div>
+        <div class="sitem" style="background:#E5E2D6;color:#141413">列表</div>
+        <div class="sitem" style="background:#DCD6C7;color:#141413;font-weight:600">设置</div>
+      </div>
+      <div class="main">
+        <div class="card" style="background:#FFFFFF;border-color:#EEEBE2">
+          <div class="chead" style="background:#EEE7D5;border-color:#EEEBE2">面板头</div>
+          <div class="cbody">
+            <div class="btnrow">
+              <span class="btn primary" style="background:#C6613F;color:#fff">主按钮</span>
+              <span class="btn" style="background:#FFFFFF;border-color:#EEEBE2;color:#141413">默认</span>
+              <span class="tag" style="background:#d2f6d8;color:#467650">success</span>
+            </div>
+            <div class="tbl">
+              <div class="tr th" style="background:#EEE7D5;border-color:#F2F0E9;color:#66645C">表头</div>
+              <div class="tr" style="background:#E5E2D6;border-color:#F2F0E9;color:#141413">悬停行</div>
+              <div class="tr" style="border-color:#F2F0E9;color:#66645C">普通行</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><span class="sw" style="background:#EEEBE2"></span><span class="hx">#EEEBE2</span></div><div class="chip"><span class="sw" style="background:#FBF9F3"></span><span class="hx">#FBF9F3</span></div><div class="chip"><span class="sw" style="background:#FFFFFF"></span><span class="hx">#FFFFFF</span></div><div class="chip"><span class="sw" style="background:#EEE7D5"></span><span class="hx">#EEE7D5</span></div><div class="chip"><span class="sw" style="background:#E5E2D6"></span><span class="hx">#E5E2D6</span></div><div class="chip"><span class="sw" style="background:#DCD6C7"></span><span class="hx">#DCD6C7</span></div><div class="chip"><span class="sw" style="background:#EEEBE2"></span><span class="hx">#EEEBE2</span></div><div class="chip"><span class="sw" style="background:#F2F0E9"></span><span class="hx">#F2F0E9</span></div>
+    </div>
+    <p class="ratios">头/卡 1.23 · hover/卡 1.30 · 选中/侧栏 1.22 · 边框/卡 1.19</p>
+  </section>
+
+  <section class="pcard">
+    <h2>V3+ · 彩度 ×2</h2>
+    <p class="note">彩度 ×2（羊皮纸/oat 感明显）</p>
+    <div class="mock" style="background:#FBF9F1;border-color:#F2F0E6">
+      <div class="side" style="background:#EFEBDF">
+        <div class="sitem" style="color:#66645C">概览</div>
+        <div class="sitem" style="background:#E6E2D2;color:#141413">列表</div>
+        <div class="sitem" style="background:#DED6C2;color:#141413;font-weight:600">设置</div>
+      </div>
+      <div class="main">
+        <div class="card" style="background:#FFFFFF;border-color:#EFEBDF">
+          <div class="chead" style="background:#F1E7CE;border-color:#EFEBDF">面板头</div>
+          <div class="cbody">
+            <div class="btnrow">
+              <span class="btn primary" style="background:#C6613F;color:#fff">主按钮</span>
+              <span class="btn" style="background:#FFFFFF;border-color:#EFEBDF;color:#141413">默认</span>
+              <span class="tag" style="background:#d2f6d8;color:#467650">success</span>
+            </div>
+            <div class="tbl">
+              <div class="tr th" style="background:#F1E7CE;border-color:#F2F0E6;color:#66645C">表头</div>
+              <div class="tr" style="background:#E6E2D2;border-color:#F2F0E6;color:#141413">悬停行</div>
+              <div class="tr" style="border-color:#F2F0E6;color:#66645C">普通行</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><span class="sw" style="background:#EFEBDF"></span><span class="hx">#EFEBDF</span></div><div class="chip"><span class="sw" style="background:#FBF9F1"></span><span class="hx">#FBF9F1</span></div><div class="chip"><span class="sw" style="background:#FFFFFF"></span><span class="hx">#FFFFFF</span></div><div class="chip"><span class="sw" style="background:#F1E7CE"></span><span class="hx">#F1E7CE</span></div><div class="chip"><span class="sw" style="background:#E6E2D2"></span><span class="hx">#E6E2D2</span></div><div class="chip"><span class="sw" style="background:#DED6C2"></span><span class="hx">#DED6C2</span></div><div class="chip"><span class="sw" style="background:#EFEBDF"></span><span class="hx">#EFEBDF</span></div><div class="chip"><span class="sw" style="background:#F2F0E6"></span><span class="hx">#F2F0E6</span></div>
+    </div>
+    <p class="ratios">头/卡 1.23 · hover/卡 1.30 · 选中/侧栏 1.21 · 边框/卡 1.19</p>
+  </section>
+
+  <section class="pcard">
+    <h2>V3+ · 彩度 ×2.5</h2>
+    <p class="note">彩度 ×2.5（更浓的暖纸感）</p>
+    <div class="mock" style="background:#FCF9EF;border-color:#F3F0E4">
+      <div class="side" style="background:#F0EBDC">
+        <div class="sitem" style="color:#66645C">概览</div>
+        <div class="sitem" style="background:#E7E2CE;color:#141413">列表</div>
+        <div class="sitem" style="background:#E0D6BC;color:#141413;font-weight:600">设置</div>
+      </div>
+      <div class="main">
+        <div class="card" style="background:#FFFFFF;border-color:#F0EBDC">
+          <div class="chead" style="background:#F3E6C8;border-color:#F0EBDC">面板头</div>
+          <div class="cbody">
+            <div class="btnrow">
+              <span class="btn primary" style="background:#C6613F;color:#fff">主按钮</span>
+              <span class="btn" style="background:#FFFFFF;border-color:#F0EBDC;color:#141413">默认</span>
+              <span class="tag" style="background:#d2f6d8;color:#467650">success</span>
+            </div>
+            <div class="tbl">
+              <div class="tr th" style="background:#F3E6C8;border-color:#F3F0E4;color:#66645C">表头</div>
+              <div class="tr" style="background:#E7E2CE;border-color:#F3F0E4;color:#141413">悬停行</div>
+              <div class="tr" style="border-color:#F3F0E4;color:#66645C">普通行</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><span class="sw" style="background:#F0EBDC"></span><span class="hx">#F0EBDC</span></div><div class="chip"><span class="sw" style="background:#FCF9EF"></span><span class="hx">#FCF9EF</span></div><div class="chip"><span class="sw" style="background:#FFFFFF"></span><span class="hx">#FFFFFF</span></div><div class="chip"><span class="sw" style="background:#F3E6C8"></span><span class="hx">#F3E6C8</span></div><div class="chip"><span class="sw" style="background:#E7E2CE"></span><span class="hx">#E7E2CE</span></div><div class="chip"><span class="sw" style="background:#E0D6BC"></span><span class="hx">#E0D6BC</span></div><div class="chip"><span class="sw" style="background:#F0EBDC"></span><span class="hx">#F0EBDC</span></div><div class="chip"><span class="sw" style="background:#F3F0E4"></span><span class="hx">#F3F0E4</span></div>
+    </div>
+    <p class="ratios">头/卡 1.24 · hover/卡 1.30 · 选中/侧栏 1.21 · 边框/卡 1.19</p>
+  </section>
+
+  <section class="pcard">
+    <h2>V3+ · 彩度 ×3</h2>
+    <p class="note">彩度 ×3（最浓，接近羊皮纸/牛皮纸）</p>
+    <div class="mock" style="background:#FCF9ED;border-color:#F3F0E1">
+      <div class="side" style="background:#F1EBD9">
+        <div class="sitem" style="color:#66645C">概览</div>
+        <div class="sitem" style="background:#E8E2CA;color:#141413">列表</div>
+        <div class="sitem" style="background:#E2D5B7;color:#141413;font-weight:600">设置</div>
+      </div>
+      <div class="main">
+        <div class="card" style="background:#FFFFFF;border-color:#F1EBD9">
+          <div class="chead" style="background:#F6E6C2;border-color:#F1EBD9">面板头</div>
+          <div class="cbody">
+            <div class="btnrow">
+              <span class="btn primary" style="background:#C6613F;color:#fff">主按钮</span>
+              <span class="btn" style="background:#FFFFFF;border-color:#F1EBD9;color:#141413">默认</span>
+              <span class="tag" style="background:#d2f6d8;color:#467650">success</span>
+            </div>
+            <div class="tbl">
+              <div class="tr th" style="background:#F6E6C2;border-color:#F3F0E1;color:#66645C">表头</div>
+              <div class="tr" style="background:#E8E2CA;border-color:#F3F0E1;color:#141413">悬停行</div>
+              <div class="tr" style="border-color:#F3F0E1;color:#66645C">普通行</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><span class="sw" style="background:#F1EBD9"></span><span class="hx">#F1EBD9</span></div><div class="chip"><span class="sw" style="background:#FCF9ED"></span><span class="hx">#FCF9ED</span></div><div class="chip"><span class="sw" style="background:#FFFFFF"></span><span class="hx">#FFFFFF</span></div><div class="chip"><span class="sw" style="background:#F6E6C2"></span><span class="hx">#F6E6C2</span></div><div class="chip"><span class="sw" style="background:#E8E2CA"></span><span class="hx">#E8E2CA</span></div><div class="chip"><span class="sw" style="background:#E2D5B7"></span><span class="hx">#E2D5B7</span></div><div class="chip"><span class="sw" style="background:#F1EBD9"></span><span class="hx">#F1EBD9</span></div><div class="chip"><span class="sw" style="background:#F3F0E1"></span><span class="hx">#F3F0E1</span></div>
+    </div>
+    <p class="ratios">头/卡 1.23 · hover/卡 1.30 · 选中/侧栏 1.22 · 边框/卡 1.19</p>
+  </section>
+
+
+  <section class="pcard">
+    <h2>V1 · 初版 ivory 页</h2>
+    <p class="note">commit b75044e · 第一版 Claude 浅色（页面 #F0EEE6、卡片 #FAF9F5、oat #E3DACC）</p>
+    <div class="mock" style="background:#F0EEE6;border-color:#E7E4DA">
+      <div class="side" style="background:#E9E6DC">
+        <div class="sitem" style="color:#66645C">概览</div>
+        <div class="sitem" style="background:#E3DACC;color:#141413">列表</div>
+        <div class="sitem" style="background:#E3DACC;color:#141413;font-weight:600">设置</div>
+      </div>
+      <div class="main">
+        <div class="card" style="background:#FAF9F5;border-color:#DEDCD1">
+          <div class="chead" style="background:#F5F3EC;border-color:#DEDCD1">面板头</div>
+          <div class="cbody">
+            <div class="btnrow">
+              <span class="btn primary" style="background:#C6613F;color:#fff">主按钮</span>
+              <span class="btn" style="background:#FAF9F5;border-color:#DEDCD1;color:#141413">默认</span>
+              <span class="tag" style="background:#d2f6d8;color:#467650">success</span>
+            </div>
+            <div class="tbl">
+              <div class="tr th" style="background:#EAE7DE;border-color:#E7E4DA;color:#66645C">表头</div>
+              <div class="tr" style="background:#F0EEE6;border-color:#E7E4DA;color:#141413">悬停行</div>
+              <div class="tr" style="border-color:#E7E4DA;color:#66645C">普通行</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><span class="sw" style="background:#E9E6DC"></span><span class="hx">#E9E6DC</span></div><div class="chip"><span class="sw" style="background:#F0EEE6"></span><span class="hx">#F0EEE6</span></div><div class="chip"><span class="sw" style="background:#FAF9F5"></span><span class="hx">#FAF9F5</span></div><div class="chip"><span class="sw" style="background:#F5F3EC"></span><span class="hx">#F5F3EC</span></div><div class="chip"><span class="sw" style="background:#E3DACC"></span><span class="hx">#E3DACC</span></div><div class="chip"><span class="sw" style="background:#E3DACC"></span><span class="hx">#E3DACC</span></div><div class="chip"><span class="sw" style="background:#DEDCD1"></span><span class="hx">#DEDCD1</span></div><div class="chip"><span class="sw" style="background:#E7E4DA"></span><span class="hx">#E7E4DA</span></div>
+    </div>
+    <p class="ratios">头/卡 1.05 · hover/卡 1.31 · 选中/侧栏 1.11 · 边框/卡 1.31</p>
+  </section>
+
+  <section class="pcard">
+    <h2>V2 · 方案 A 降彩度</h2>
+    <p class="note">commit fa004e5 · 彩度降到 0.008–0.013、亮度阶梯重排（页面 #F4F2EC）</p>
+    <div class="mock" style="background:#F4F2EC;border-color:#EAE7DF">
+      <div class="side" style="background:#EFEDE7">
+        <div class="sitem" style="color:#66645C">概览</div>
+        <div class="sitem" style="background:#EAE7DF;color:#141413">列表</div>
+        <div class="sitem" style="background:#EAE7DF;color:#141413;font-weight:600">设置</div>
+      </div>
+      <div class="main">
+        <div class="card" style="background:#FBFAF7;border-color:#E1DED6">
+          <div class="chead" style="background:#F8F7F1;border-color:#E1DED6">面板头</div>
+          <div class="cbody">
+            <div class="btnrow">
+              <span class="btn primary" style="background:#C6613F;color:#fff">主按钮</span>
+              <span class="btn" style="background:#FBFAF7;border-color:#E1DED6;color:#141413">默认</span>
+              <span class="tag" style="background:#d2f6d8;color:#467650">success</span>
+            </div>
+            <div class="tbl">
+              <div class="tr th" style="background:#EFECE5;border-color:#EAE7DF;color:#66645C">表头</div>
+              <div class="tr" style="background:#F4F2EC;border-color:#EAE7DF;color:#141413">悬停行</div>
+              <div class="tr" style="border-color:#EAE7DF;color:#66645C">普通行</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><span class="sw" style="background:#EFEDE7"></span><span class="hx">#EFEDE7</span></div><div class="chip"><span class="sw" style="background:#F4F2EC"></span><span class="hx">#F4F2EC</span></div><div class="chip"><span class="sw" style="background:#FBFAF7"></span><span class="hx">#FBFAF7</span></div><div class="chip"><span class="sw" style="background:#F8F7F1"></span><span class="hx">#F8F7F1</span></div><div class="chip"><span class="sw" style="background:#EAE7DF"></span><span class="hx">#EAE7DF</span></div><div class="chip"><span class="sw" style="background:#EAE7DF"></span><span class="hx">#EAE7DF</span></div><div class="chip"><span class="sw" style="background:#E1DED6"></span><span class="hx">#E1DED6</span></div><div class="chip"><span class="sw" style="background:#EAE7DF"></span><span class="hx">#EAE7DF</span></div>
+    </div>
+    <p class="ratios">头/卡 1.03 · hover/卡 1.18 · 选中/侧栏 1.06 · 边框/卡 1.29</p>
+  </section>
+
+  <section class="pcard">
+    <h2>V3 · 当前工作区（未提交）</h2>
+    <p class="note">#FAF9F5 页 + 纯白卡 + 羊皮纸头 #ECE7DB（“发脏”的那版）</p>
+    <div class="mock" style="background:#FAF9F5;border-color:#F1F0EB">
+      <div class="side" style="background:#EDEBE5">
+        <div class="sitem" style="color:#66645C">概览</div>
+        <div class="sitem" style="background:#E4E2DA;color:#141413">列表</div>
+        <div class="sitem" style="background:#DAD6CC;color:#141413;font-weight:600">设置</div>
+      </div>
+      <div class="main">
+        <div class="card" style="background:#FFFFFF;border-color:#EDEBE5">
+          <div class="chead" style="background:#ECE7DB;border-color:#EDEBE5">面板头</div>
+          <div class="cbody">
+            <div class="btnrow">
+              <span class="btn primary" style="background:#C6613F;color:#fff">主按钮</span>
+              <span class="btn" style="background:#FFFFFF;border-color:#EDEBE5;color:#141413">默认</span>
+              <span class="tag" style="background:#d2f6d8;color:#467650">success</span>
+            </div>
+            <div class="tbl">
+              <div class="tr th" style="background:#ECE7DB;border-color:#F1F0EB;color:#66645C">表头</div>
+              <div class="tr" style="background:#E4E2DA;border-color:#F1F0EB;color:#141413">悬停行</div>
+              <div class="tr" style="border-color:#F1F0EB;color:#66645C">普通行</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><span class="sw" style="background:#EDEBE5"></span><span class="hx">#EDEBE5</span></div><div class="chip"><span class="sw" style="background:#FAF9F5"></span><span class="hx">#FAF9F5</span></div><div class="chip"><span class="sw" style="background:#FFFFFF"></span><span class="hx">#FFFFFF</span></div><div class="chip"><span class="sw" style="background:#ECE7DB"></span><span class="hx">#ECE7DB</span></div><div class="chip"><span class="sw" style="background:#E4E2DA"></span><span class="hx">#E4E2DA</span></div><div class="chip"><span class="sw" style="background:#DAD6CC"></span><span class="hx">#DAD6CC</span></div><div class="chip"><span class="sw" style="background:#EDEBE5"></span><span class="hx">#EDEBE5</span></div><div class="chip"><span class="sw" style="background:#F1F0EB"></span><span class="hx">#F1F0EB</span></div>
+    </div>
+    <p class="ratios">头/卡 1.23 · hover/卡 1.30 · 选中/侧栏 1.22 · 边框/卡 1.19</p>
+  </section>
+
+  <section class="pcard">
+    <h2>A · 净暖（低彩度、亮度分层）</h2>
+    <p class="note">全层共享 C 0.005–0.008 暖调，层次全靠亮度差</p>
+    <div class="mock" style="background:#FAF9F5;border-color:#EFEEEB">
+      <div class="side" style="background:#EBE9E5">
+        <div class="sitem" style="color:#66645C">概览</div>
+        <div class="sitem" style="background:#E9E8E3;color:#141413">列表</div>
+        <div class="sitem" style="background:#E1E0DA;color:#141413;font-weight:600">设置</div>
+      </div>
+      <div class="main">
+        <div class="card" style="background:#FFFFFF;border-color:#E7E6E2">
+          <div class="chead" style="background:#F2F1ED;border-color:#E7E6E2">面板头</div>
+          <div class="cbody">
+            <div class="btnrow">
+              <span class="btn primary" style="background:#C6613F;color:#fff">主按钮</span>
+              <span class="btn" style="background:#FFFFFF;border-color:#E7E6E2;color:#141413">默认</span>
+              <span class="tag" style="background:#d2f6d8;color:#467650">success</span>
+            </div>
+            <div class="tbl">
+              <div class="tr th" style="background:#F2F1ED;border-color:#EFEEEB;color:#66645C">表头</div>
+              <div class="tr" style="background:#E9E8E3;border-color:#EFEEEB;color:#141413">悬停行</div>
+              <div class="tr" style="border-color:#EFEEEB;color:#66645C">普通行</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><span class="sw" style="background:#EBE9E5"></span><span class="hx">#EBE9E5</span></div><div class="chip"><span class="sw" style="background:#FAF9F5"></span><span class="hx">#FAF9F5</span></div><div class="chip"><span class="sw" style="background:#FFFFFF"></span><span class="hx">#FFFFFF</span></div><div class="chip"><span class="sw" style="background:#F2F1ED"></span><span class="hx">#F2F1ED</span></div><div class="chip"><span class="sw" style="background:#E9E8E3"></span><span class="hx">#E9E8E3</span></div><div class="chip"><span class="sw" style="background:#E1E0DA"></span><span class="hx">#E1E0DA</span></div><div class="chip"><span class="sw" style="background:#E7E6E2"></span><span class="hx">#E7E6E2</span></div><div class="chip"><span class="sw" style="background:#EFEEEB"></span><span class="hx">#EFEEEB</span></div>
+    </div>
+    <p class="ratios">头/卡 1.13 · hover/卡 1.23 · 选中/侧栏 1.09 · 边框/卡 1.25</p>
+  </section>
+
+  <section class="pcard">
+    <h2>B · 近中性（几乎零彩度）</h2>
+    <p class="note">彩度 0.002–0.004，干净中性灰，无暖纸感</p>
+    <div class="mock" style="background:#F9F9F8;border-color:#EFEEEC">
+      <div class="side" style="background:#EAE9E7">
+        <div class="sitem" style="color:#66645C">概览</div>
+        <div class="sitem" style="background:#E8E8E6;color:#141413">列表</div>
+        <div class="sitem" style="background:#E0E0DD;color:#141413;font-weight:600">设置</div>
+      </div>
+      <div class="main">
+        <div class="card" style="background:#FFFFFF;border-color:#E7E6E4">
+          <div class="chead" style="background:#F2F1EF;border-color:#E7E6E4">面板头</div>
+          <div class="cbody">
+            <div class="btnrow">
+              <span class="btn primary" style="background:#C6613F;color:#fff">主按钮</span>
+              <span class="btn" style="background:#FFFFFF;border-color:#E7E6E4;color:#141413">默认</span>
+              <span class="tag" style="background:#d2f6d8;color:#467650">success</span>
+            </div>
+            <div class="tbl">
+              <div class="tr th" style="background:#F2F1EF;border-color:#EFEEEC;color:#66645C">表头</div>
+              <div class="tr" style="background:#E8E8E6;border-color:#EFEEEC;color:#141413">悬停行</div>
+              <div class="tr" style="border-color:#EFEEEC;color:#66645C">普通行</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><span class="sw" style="background:#EAE9E7"></span><span class="hx">#EAE9E7</span></div><div class="chip"><span class="sw" style="background:#F9F9F8"></span><span class="hx">#F9F9F8</span></div><div class="chip"><span class="sw" style="background:#FFFFFF"></span><span class="hx">#FFFFFF</span></div><div class="chip"><span class="sw" style="background:#F2F1EF"></span><span class="hx">#F2F1EF</span></div><div class="chip"><span class="sw" style="background:#E8E8E6"></span><span class="hx">#E8E8E6</span></div><div class="chip"><span class="sw" style="background:#E0E0DD"></span><span class="hx">#E0E0DD</span></div><div class="chip"><span class="sw" style="background:#E7E6E4"></span><span class="hx">#E7E6E4</span></div><div class="chip"><span class="sw" style="background:#EFEEEC"></span><span class="hx">#EFEEEC</span></div>
+    </div>
+    <p class="ratios">头/卡 1.13 · hover/卡 1.23 · 选中/侧栏 1.09 · 边框/卡 1.25</p>
+  </section>
+
+  <section class="pcard">
+    <h2>C · 单层羊皮纸（推荐）</h2>
+    <p class="note">只有面板头带 oat 暖调 #F0EBDF，其余全部近中性</p>
+    <div class="mock" style="background:#FAF9F5;border-color:#EFEEEB">
+      <div class="side" style="background:#EDEBE5">
+        <div class="sitem" style="color:#66645C">概览</div>
+        <div class="sitem" style="background:#E8E8E5;color:#141413">列表</div>
+        <div class="sitem" style="background:#E0E0DC;color:#141413;font-weight:600">设置</div>
+      </div>
+      <div class="main">
+        <div class="card" style="background:#FFFFFF;border-color:#E7E6E2">
+          <div class="chead" style="background:#F0EBDF;border-color:#E7E6E2">面板头</div>
+          <div class="cbody">
+            <div class="btnrow">
+              <span class="btn primary" style="background:#C6613F;color:#fff">主按钮</span>
+              <span class="btn" style="background:#FFFFFF;border-color:#E7E6E2;color:#141413">默认</span>
+              <span class="tag" style="background:#d2f6d8;color:#467650">success</span>
+            </div>
+            <div class="tbl">
+              <div class="tr th" style="background:#F0EBDF;border-color:#EFEEEB;color:#66645C">表头</div>
+              <div class="tr" style="background:#E8E8E5;border-color:#EFEEEB;color:#141413">悬停行</div>
+              <div class="tr" style="border-color:#EFEEEB;color:#66645C">普通行</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><span class="sw" style="background:#EDEBE5"></span><span class="hx">#EDEBE5</span></div><div class="chip"><span class="sw" style="background:#FAF9F5"></span><span class="hx">#FAF9F5</span></div><div class="chip"><span class="sw" style="background:#FFFFFF"></span><span class="hx">#FFFFFF</span></div><div class="chip"><span class="sw" style="background:#F0EBDF"></span><span class="hx">#F0EBDF</span></div><div class="chip"><span class="sw" style="background:#E8E8E5"></span><span class="hx">#E8E8E5</span></div><div class="chip"><span class="sw" style="background:#E0E0DC"></span><span class="hx">#E0E0DC</span></div><div class="chip"><span class="sw" style="background:#E7E6E2"></span><span class="hx">#E7E6E2</span></div><div class="chip"><span class="sw" style="background:#EFEEEB"></span><span class="hx">#EFEEEB</span></div>
+    </div>
+    <p class="ratios">头/卡 1.19 · hover/卡 1.23 · 选中/侧栏 1.11 · 边框/卡 1.25</p>
+  </section>
+
+  <section class="pcard">
+    <h2>D · 大跨度少层</h2>
+    <p class="note">只有 4 个中调层，每档亮度差 ≥0.05，选中兼最强填充</p>
+    <div class="mock" style="background:#FAF9F5;border-color:#EEEDE9">
+      <div class="side" style="background:#EAE9E6">
+        <div class="sitem" style="color:#66645C">概览</div>
+        <div class="sitem" style="background:#E5E4DF;color:#141413">列表</div>
+        <div class="sitem" style="background:#D8D7D2;color:#141413;font-weight:600">设置</div>
+      </div>
+      <div class="main">
+        <div class="card" style="background:#FFFFFF;border-color:#E6E4E0">
+          <div class="chead" style="background:#F3F2EE;border-color:#E6E4E0">面板头</div>
+          <div class="cbody">
+            <div class="btnrow">
+              <span class="btn primary" style="background:#C6613F;color:#fff">主按钮</span>
+              <span class="btn" style="background:#FFFFFF;border-color:#E6E4E0;color:#141413">默认</span>
+              <span class="tag" style="background:#d2f6d8;color:#467650">success</span>
+            </div>
+            <div class="tbl">
+              <div class="tr th" style="background:#F3F2EE;border-color:#EEEDE9;color:#66645C">表头</div>
+              <div class="tr" style="background:#E5E4DF;border-color:#EEEDE9;color:#141413">悬停行</div>
+              <div class="tr" style="border-color:#EEEDE9;color:#66645C">普通行</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><span class="sw" style="background:#EAE9E6"></span><span class="hx">#EAE9E6</span></div><div class="chip"><span class="sw" style="background:#FAF9F5"></span><span class="hx">#FAF9F5</span></div><div class="chip"><span class="sw" style="background:#FFFFFF"></span><span class="hx">#FFFFFF</span></div><div class="chip"><span class="sw" style="background:#F3F2EE"></span><span class="hx">#F3F2EE</span></div><div class="chip"><span class="sw" style="background:#E5E4DF"></span><span class="hx">#E5E4DF</span></div><div class="chip"><span class="sw" style="background:#D8D7D2"></span><span class="hx">#D8D7D2</span></div><div class="chip"><span class="sw" style="background:#E6E4E0"></span><span class="hx">#E6E4E0</span></div><div class="chip"><span class="sw" style="background:#EEEDE9"></span><span class="hx">#EEEDE9</span></div>
+    </div>
+    <p class="ratios">头/卡 1.12 · hover/卡 1.27 · 选中/侧栏 1.19 · 边框/卡 1.27</p>
+  </section>
+</div>
+<footer>共享色：文字 #141413 / #66645C / #6E6C64 / #A8A498，主色 clay #C6613F，主色文字 #A94F33，链接 #4B5BD8。</footer>
+</body>
+</html>
