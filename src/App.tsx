@@ -15,8 +15,8 @@ import {
   MappingSection,
   OverviewSection,
   StatusSection,
-  type View,
 } from "./demo/sections";
+import type { View } from "./demo/view";
 import * as full from "./paseo-full/theme";
 import * as claude from "./claude/theme";
 import { PaseoThemeProvider } from "./claude/Provider";
@@ -30,40 +30,28 @@ const VIEW_OPTIONS = [
   { label: "Paseo 深色", value: "dark" },
 ] as const;
 
-type Section =
-  | "overview"
-  | "agents"
-  | "diff"
-  | "status"
-  | "hosts"
-  | "components"
-  | "mapping";
+const SECTIONS = [
+  { key: "overview", label: "概览", title: "概览 · antd 基础组件", hint: "antd 基础组件" },
+  { key: "agents", label: "Agent 列表", title: "Agent 列表", hint: "表格 + diff 统计 + Host 徽章" },
+  { key: "diff", label: "Diff 视图", title: "Diff 视图", hint: "diff 行底色 token" },
+  { key: "status", label: "状态圆点", title: "状态圆点", hint: "状态圆点 token" },
+  { key: "hosts", label: "Host 身份色", title: "Host 身份色", hint: "十色身份盘 + selection" },
+  {
+    key: "components",
+    label: "组件 Token",
+    title: "组件 Token",
+    hint: "Layout/Menu/Table/Tabs/Modal/Message…",
+  },
+  { key: "mapping", label: "Token 映射", title: "Token 映射", hint: "映射 / 派生 / 自定义 token" },
+] as const;
 
-const SECTIONS: { key: Section; label: string; hint: string }[] = [
-  { key: "overview", label: "概览", hint: "antd 基础组件" },
-  { key: "agents", label: "Agent 列表", hint: "表格 + diff 统计 + Host 徽章" },
-  { key: "diff", label: "Diff 视图", hint: "diff 行底色 token" },
-  { key: "status", label: "状态圆点", hint: "状态圆点 token" },
-  { key: "hosts", label: "Host 身份色", hint: "十色身份盘 + selection" },
-  { key: "components", label: "组件 Token", hint: "Layout/Menu/Table/Tabs/Modal/Message…" },
-  { key: "mapping", label: "Token 映射", hint: "映射 / 派生 / 自定义 token" },
-];
+type Section = (typeof SECTIONS)[number]["key"];
 
 function themeFor(view: View) {
   if (view === "claude") return claude.claudeLightTheme;
   if (view === "dark") return full.paseoDarkTheme;
   return full.antdDefaultLightTheme;
 }
-
-const SECTION_TITLES: Record<Section, string> = {
-  overview: "概览 · antd 基础组件",
-  agents: "Agent 列表",
-  diff: "Diff 视图",
-  status: "状态圆点",
-  hosts: "Host 身份色",
-  components: "组件 Token",
-  mapping: "Token 映射",
-};
 
 function Dashboard({
   view,
@@ -119,7 +107,7 @@ function Dashboard({
             padding: "0 24px",
           }}
         >
-          <Text strong>{SECTION_TITLES[section]}</Text>
+          <Text strong>{SECTIONS.find((s) => s.key === section)?.title}</Text>
           <Segmented
             value={view}
             onChange={(value) => setView(value as View)}
