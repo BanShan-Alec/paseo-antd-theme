@@ -48,6 +48,24 @@ const SECTIONS = [
 
 type Section = (typeof SECTIONS)[number]["key"];
 
+const VIEW_STORAGE_KEY = "paseo-demo-view";
+
+// Only explicit user choices are persisted; the system-derived view is not,
+// so the demo keeps following the OS preference until the user picks one.
+function resolveInitialView(): View {
+  try {
+    const stored = localStorage.getItem(VIEW_STORAGE_KEY);
+    if (stored === "light" || stored === "claude" || stored === "dark") {
+      return stored;
+    }
+  } catch {
+    // localStorage unavailable (privacy mode) — fall through to system preference
+  }
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "claude";
+}
+
 function themeFor(view: View) {
   if (view === "claude") return claude.claudeLightTheme;
   if (view === "dark") return full.paseoDarkTheme;
@@ -57,12 +75,12 @@ function themeFor(view: View) {
 function Dashboard({
   view,
   section,
-  setView,
+  changeView,
   setSection,
 }: {
   view: View;
   section: Section;
-  setView: (view: View) => void;
+  changeView: (view: View) => void;
   setSection: (section: Section) => void;
 }) {
   const { token } = antdTheme.useToken();
@@ -117,7 +135,7 @@ function Dashboard({
           <Text strong>{SECTIONS.find((s) => s.key === section)?.title}</Text>
           <Segmented
             value={view}
-            onChange={(value) => setView(value as View)}
+            onChange={(value) => changeView(value as View)}
             options={VIEW_OPTIONS.map((o) => ({ ...o }))}
           />
         </Header>
@@ -136,8 +154,17 @@ function Dashboard({
 }
 
 export default function App() {
-  const [view, setView] = useState<View>("claude");
+  const [view, setView] = useState<View>(resolveInitialView);
   const [section, setSection] = useState<Section>("overview");
+
+  const changeView = (next: View) => {
+    setView(next);
+    try {
+      localStorage.setItem(VIEW_STORAGE_KEY, next);
+    } catch {
+      // ignore persistence failures (privacy mode)
+    }
+  };
 
   // Remount on theme change: antd's cssinjs does not fully reclaim the
   // previous theme's style tags when components are reused, which leaves
@@ -150,13 +177,13 @@ export default function App() {
     view === "light" ? (
       <ConfigProvider theme={themeFor(view)}>
         <AntApp>
-          <Dashboard view={view} section={section} setView={setView} setSection={setSection} />
+          <Dashboard view={view} section={section} changeView={changeView} setSection={setSection} />
         </AntApp>
       </ConfigProvider>
     ) : (
       <PaseoThemeProvider key={view} theme={themeFor(view)}>
         <AntApp>
-          <Dashboard view={view} section={section} setView={setView} setSection={setSection} />
+          <Dashboard view={view} section={section} changeView={changeView} setSection={setSection} />
         </AntApp>
       </PaseoThemeProvider>
     );
