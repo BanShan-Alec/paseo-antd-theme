@@ -7,7 +7,9 @@ import { describe, expect, it } from "vitest";
 import {
   resolveTailwindVariables,
   TAILWIND_VARIABLES,
-} from "./build";
+} from "../src/tailwind/build";
+
+const ROOT = join(import.meta.dirname, "..");
 
 /**
  * theme.css is a committed build artifact: regenerating it must produce a
@@ -19,16 +21,16 @@ const generated = () => {
   const entry = join(tmpdir(), `tailwind-theme-gen-${process.pid}.ts`);
   const script = `
     import { writeFileSync } from "node:fs";
-    import { buildTailwindCss } from ${JSON.stringify(pathToFileURL(join(import.meta.dirname, "build.ts")).href)};
+    import { buildTailwindCss } from ${JSON.stringify(pathToFileURL(join(ROOT, "src/tailwind/build.ts")).href)};
     writeFileSync(${JSON.stringify(out)}, buildTailwindCss());
   `;
   writeFileSync(entry, script);
-  execFileSync("npx", ["vite-node", entry], { cwd: join(import.meta.dirname, "../..") });
+  execFileSync("npx", ["vite-node", entry], { cwd: ROOT });
   return readFileSync(out, "utf8");
 };
 
 describe("tailwind css artifact", () => {
-  const css = readFileSync(join(import.meta.dirname, "theme.css"), "utf8");
+  const css = readFileSync(join(ROOT, "src/tailwind/theme.css"), "utf8");
 
   it("is fresh — regeneration reproduces the committed file byte for byte", () => {
     expect(generated()).toBe(css);

@@ -1,16 +1,16 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Button, ConfigProvider, Table } from "antd";
-import { contrast, luminance } from "../../testing/contrast";
-import { resolveTokens } from "../../testing/theme";
+import { contrast, luminance } from "../src/testing/contrast";
+import { resolveTokens } from "../src/testing/theme";
 import {
   PASEO_DARK_TOKEN_MAPPING,
   PASEO_DERIVED_TOKENS,
   antdDefaultLightTheme,
   paseoDarkTheme,
-} from "./theme";
-import { paseoDark, paseoIdentityDark } from "./tokens";
-import { PASEO_FONT_STACK } from "../../shared/fonts";
+} from "../src/themes/paseo-dark/theme";
+import { paseoDark, paseoIdentityDark } from "../src/themes/paseo-dark/tokens";
+import { PASEO_FONT_STACK } from "../src/shared/fonts";
 
 const dark = resolveTokens(paseoDarkTheme);
 const light = resolveTokens(antdDefaultLightTheme);

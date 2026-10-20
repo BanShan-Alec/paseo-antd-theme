@@ -1,14 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Button, ConfigProvider, Table } from "antd";
-import { contrast, luminance } from "../../testing/contrast";
-import { resolveTokens } from "../../testing/theme";
+import { contrast, luminance } from "../src/testing/contrast";
+import { resolveTokens } from "../src/testing/theme";
 import {
   CLAUDE_LIGHT_DERIVED_TOKENS,
   CLAUDE_LIGHT_TOKEN_MAPPING,
   claudeLightTheme,
-} from "./theme";
-import { claudeIdentityLight, claudeLight, claudeLightStatusFamilies } from "./tokens";
+} from "../src/themes/claude/theme";
+import { claudeIdentityLight, claudeLight, claudeLightStatusFamilies } from "../src/themes/claude/tokens";
 
 const light = resolveTokens(claudeLightTheme);
 

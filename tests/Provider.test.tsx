@@ -9,12 +9,12 @@ import {
 } from "antd";
 import { hydrateRoot } from "react-dom/client";
 import { renderToString } from "react-dom/server";
-import { claudeLightTheme } from "./themes/claude/theme";
-import { paseoDarkTheme } from "./themes/paseo-dark/theme";
+import { claudeLightTheme } from "../src/themes/claude/theme";
+import { paseoDarkTheme } from "../src/themes/paseo-dark/theme";
 import {
   PaseoThemeProvider,
   resolvePaseoTheme,
-} from "./Provider";
+} from "../src/Provider";
 
 function LayoutProbe({ onLayout }: { onLayout: (layout: string) => void }) {
   const { token } = antdTheme.useToken();
