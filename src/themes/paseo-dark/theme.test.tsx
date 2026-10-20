@@ -1,51 +1,19 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { Button, ConfigProvider, Table, theme as antdTheme } from "antd";
+import { Button, ConfigProvider, Table } from "antd";
+import { contrast, luminance } from "../../testing/contrast";
+import { resolveTokens } from "../../testing/theme";
 import {
   PASEO_DARK_TOKEN_MAPPING,
   PASEO_DERIVED_TOKENS,
   antdDefaultLightTheme,
   paseoDarkTheme,
-  paseoTheme,
-  type PaseoColorScheme,
 } from "./theme";
 import { paseoDark, paseoIdentityDark } from "./tokens";
 import { PASEO_FONT_STACK } from "../../shared/fonts";
 
-// ---------------------------------------------------------------------------
-// WCAG contrast — paseo's own palette discipline ("retune with the contrast
-// band, not by eye"), applied to the integrated dark tokens.
-// ---------------------------------------------------------------------------
-
-function luminance(hex: string): number {
-  const value = hex.replace("#", "");
-  const channels = [0, 2, 4].map((i) => parseInt(value.slice(i, i + 2), 16) / 255);
-  const [r, g, b] = channels.map((c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-}
-
-function contrast(a: string, b: string): number {
-  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
-  return (hi + 0.05) / (lo + 0.05);
-}
-
-function resolveTokens(scheme: PaseoColorScheme): Record<string, string | number> {
-  let resolved: Record<string, string | number> = {};
-  function Probe() {
-    const { token } = antdTheme.useToken();
-    resolved = token as unknown as Record<string, string | number>;
-    return null;
-  }
-  render(
-    <ConfigProvider theme={paseoTheme(scheme)}>
-      <Probe />
-    </ConfigProvider>,
-  );
-  return resolved;
-}
-
-const dark = resolveTokens("dark");
-const light = resolveTokens("light");
+const dark = resolveTokens(paseoDarkTheme);
+const light = resolveTokens(antdDefaultLightTheme);
 
 // ---------------------------------------------------------------------------
 // Dark mapping reaches antd's token pipeline
@@ -150,9 +118,9 @@ describe("light mode", () => {
     // Colors, sizes, radii and components stay stock; only fontFamily is
     // pinned, and through the algorithm — a seed in `token` would be
     // stripped by formatToken.
-    expect(paseoTheme("light").token).toBeUndefined();
-    expect(paseoTheme("light").components).toBeUndefined();
-    expect(paseoTheme("light").algorithm).toBeDefined();
+    expect(antdDefaultLightTheme.token).toBeUndefined();
+    expect(antdDefaultLightTheme.components).toBeUndefined();
+    expect(antdDefaultLightTheme.algorithm).toBeDefined();
   });
 
   it("resolves to antd's own default values", () => {

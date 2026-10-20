@@ -4,4 +4,4 @@ export {
   paseoDarkTheme,
 } from "./themes/paseo-dark/theme";
 export { paseoDark } from "./themes/paseo-dark/tokens";
-export type { DerivedToken, TokenMapping } from "./themes/paseo-dark/theme";
+export type { DerivedToken, TokenMapping } from "./shared/theme";

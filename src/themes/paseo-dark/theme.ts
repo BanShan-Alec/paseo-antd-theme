@@ -1,32 +1,18 @@
 import { generate } from "@ant-design/colors";
 import type { ThemeConfig } from "antd";
 import { theme as antdTheme } from "antd";
-import { paseoDark, paseoIdentityDark } from "./tokens";
+import {
+  antdDefaultLightTheme,
+  buildToken,
+  extras,
+  familyTokens,
+  type AntdComponents,
+  type AntdToken,
+  type DerivedToken,
+  type TokenMapping,
+} from "../../shared/theme";
 import { PASEO_FONT_STACK, PASEO_MONO_FONT_STACK } from "../../shared/fonts";
-
-export type PaseoColorScheme = "light" | "dark";
-
-/** `ThemeConfig["token"]` minus the `undefined` — antd does not export `AliasToken` itself. */
-type AntdToken = NonNullable<ThemeConfig["token"]>;
-type AntdComponents = NonNullable<ThemeConfig["components"]>;
-
-export interface TokenMapping {
-  /** antd v6 token name. Typed against antd's own token union, so typos fail the build. */
-  readonly antdToken: keyof AntdToken;
-  /** `seed` feeds the theme algorithm; `map` replaces a value the algorithm derived. */
-  readonly kind: "seed" | "map";
-  readonly value: string | number;
-  /** Source token in paseo, for traceability. */
-  readonly paseoToken: string;
-  /** Rationale, recorded where the mapping is a judgement call rather than a rename. */
-  readonly note?: string;
-}
-
-export interface DerivedToken {
-  readonly antdToken: string;
-  /** The token antd derives this from. We control that one, so we never set this. */
-  readonly derivedFrom: string;
-}
+import { paseoDark, paseoIdentityDark } from "./tokens";
 
 // ---------------------------------------------------------------------------
 // Pinned color families
@@ -86,23 +72,6 @@ function darkPalette(base: string): DarkPalette {
     textHover: raw[9],
     textActive: raw[7],
   };
-}
-
-type FamilyPrefix = "colorPrimary" | "colorSuccess" | "colorWarning" | "colorError" | "colorInfo";
-
-function familyTokens(prefix: FamilyPrefix, palette: DarkPalette): AntdToken {
-  return {
-    [`${prefix}`]: palette.base,
-    [`${prefix}Hover`]: palette.hover,
-    [`${prefix}Active`]: palette.active,
-    [`${prefix}Bg`]: palette.bg,
-    [`${prefix}BgHover`]: palette.bgHover,
-    [`${prefix}Border`]: palette.border,
-    [`${prefix}BorderHover`]: palette.borderHover,
-    [`${prefix}Text`]: palette.text,
-    [`${prefix}TextHover`]: palette.textHover,
-    [`${prefix}TextActive`]: palette.textActive,
-  } as AntdToken;
 }
 
 const primary = darkPalette(paseoDark.accent);
@@ -361,35 +330,26 @@ const darkDerivedTokens: readonly DerivedToken[] = [
 // not the diff band.
 // ---------------------------------------------------------------------------
 
-function capitalize(value: string): string {
-  return value.charAt(0).toUpperCase() + value.slice(1);
-}
-
-function extras(): AntdToken {
-  return {
-    paseoSurface0: paseoDark.surface0,
-    paseoSurface1: paseoDark.surface1,
-    paseoSurface2: paseoDark.surface2,
-    paseoSurface3: paseoDark.surface3,
-    paseoSurface4: paseoDark.surface4,
-    paseoSurfaceSidebar: paseoDark.surfaceSidebar,
-    paseoDiffAddition: paseoDark.diffAddition,
-    paseoDiffDeletion: paseoDark.diffDeletion,
-    paseoDiffAdditionText: paseoDark.statusSuccess,
-    paseoDiffDeletionText: paseoDark.statusDanger,
-    paseoStatusDotSuccess: paseoDark.statusDotSuccess,
-    paseoStatusDotDanger: paseoDark.statusDotDanger,
-    paseoStatusDotWarning: paseoDark.statusDotWarning,
-    paseoStatusDotRunning: paseoDark.statusDotRunning,
-    paseoStatusMerged: paseoDark.statusMerged,
-    paseoSelection: paseoDark.selection,
-    ...Object.fromEntries(
-      Object.entries(paseoIdentityDark).map(([name, value]) => [
-        `paseoIdentity${capitalize(name)}`,
-        value,
-      ]),
-    ),
-  } as unknown as AntdToken;
+function darkExtras(): AntdToken {
+  return extras({
+    surface0: paseoDark.surface0,
+    surface1: paseoDark.surface1,
+    surface2: paseoDark.surface2,
+    surface3: paseoDark.surface3,
+    surface4: paseoDark.surface4,
+    surfaceSidebar: paseoDark.surfaceSidebar,
+    diffAddition: paseoDark.diffAddition,
+    diffDeletion: paseoDark.diffDeletion,
+    diffAdditionText: paseoDark.statusSuccess,
+    diffDeletionText: paseoDark.statusDanger,
+    statusDotSuccess: paseoDark.statusDotSuccess,
+    statusDotDanger: paseoDark.statusDotDanger,
+    statusDotWarning: paseoDark.statusDotWarning,
+    statusDotRunning: paseoDark.statusDotRunning,
+    statusMerged: paseoDark.statusMerged,
+    selection: paseoDark.selection,
+    identity: paseoIdentityDark,
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -462,41 +422,17 @@ const darkComponents: AntdComponents = {
 // Public API
 // ---------------------------------------------------------------------------
 
-function buildToken(mappings: readonly TokenMapping[], extra: AntdToken): AntdToken {
-  const token = Object.fromEntries(mappings.map((row) => [row.antdToken, row.value])) as AntdToken;
-  return { ...token, ...extra };
-}
-
 /** The paseo dark theme as an antd v6 `ThemeConfig`. Drop into `ConfigProvider theme={...}`. */
 export const paseoDarkTheme: ThemeConfig = {
   algorithm: paseoDarkAlgorithm,
-  token: buildToken(darkMappings, extras()),
+  token: buildToken(darkMappings, darkExtras()),
   components: darkComponents,
 };
 
-/**
- * Light mode is antd's stock theme with a single exception: the font stack is
- * pinned to the same stack the dark theme uses. antd's default stack
- * (`-apple-system, …`) resolves to Segoe UI on Windows while `system-ui`
- * resolves to a ~7% wider system font, so without the pin every content-sized
- * element (buttons, tags, segmented, menu items) shifts by a few pixels when
- * switching schemes. Everything else — colors, sizes, radii, components — is
- * antd's default.
- */
-const lightFontAlgorithm: typeof antdTheme.defaultAlgorithm = (seed) =>
-  ({
-    ...antdTheme.defaultAlgorithm(seed),
-    fontFamily: PASEO_FONT_STACK,
-  }) as ReturnType<typeof antdTheme.defaultAlgorithm>;
-
-export const antdDefaultLightTheme: ThemeConfig = {
-  algorithm: lightFontAlgorithm,
-};
-
-/** Dark → paseo, light → antd's default theme, untouched. */
-export function paseoTheme(scheme: PaseoColorScheme): ThemeConfig {
-  return scheme === "light" ? antdDefaultLightTheme : paseoDarkTheme;
-}
+export {
+  antdDefaultLightTheme,
+  lightFontAlgorithm,
+} from "../../shared/theme";
 
 /** The full dark mapping, for docs, swatch panels and tests. */
 export const PASEO_DARK_TOKEN_MAPPING: readonly TokenMapping[] = darkMappings;

@@ -1,7 +1,16 @@
 import { generate } from "@ant-design/colors";
 import type { ThemeConfig } from "antd";
 import { theme as antdTheme } from "antd";
-import type { DerivedToken, TokenMapping } from "../paseo-dark/theme";
+import {
+  buildToken,
+  capitalize,
+  extras,
+  familyTokens,
+  type AntdComponents,
+  type AntdToken,
+  type DerivedToken,
+  type TokenMapping,
+} from "../../shared/theme";
 import { normalizedLightFamily, type LightFamily } from "../../shared/colors";
 import {
   CLAUDE_LIGHT_STATUS_HUES,
@@ -10,10 +19,6 @@ import {
   claudeLightStatusFamilies,
 } from "./tokens";
 import { PASEO_FONT_STACK, PASEO_MONO_FONT_STACK } from "../../shared/fonts";
-
-/** `ThemeConfig["token"]` minus the `undefined` — antd does not export `AliasToken` itself. */
-type AntdToken = NonNullable<ThemeConfig["token"]>;
-type AntdComponents = NonNullable<ThemeConfig["components"]>;
 
 // ---------------------------------------------------------------------------
 // Pinned color families
@@ -50,23 +55,6 @@ const success = claudeLightStatusFamilies.success;
 const warning = claudeLightStatusFamilies.warning;
 const danger = claudeLightStatusFamilies.danger;
 const info = normalizedLightFamily(CLAUDE_LIGHT_STATUS_HUES.running);
-
-type FamilyPrefix = "colorPrimary" | "colorSuccess" | "colorWarning" | "colorError" | "colorInfo";
-
-function familyTokens(prefix: FamilyPrefix, palette: LightFamily): AntdToken {
-  return {
-    [`${prefix}`]: palette.base,
-    [`${prefix}Hover`]: palette.hover,
-    [`${prefix}Active`]: palette.active,
-    [`${prefix}Bg`]: palette.bg,
-    [`${prefix}BgHover`]: palette.bgHover,
-    [`${prefix}Border`]: palette.border,
-    [`${prefix}BorderHover`]: palette.borderHover,
-    [`${prefix}Text`]: palette.text,
-    [`${prefix}TextHover`]: palette.textHover,
-    [`${prefix}TextActive`]: palette.textActive,
-  } as AntdToken;
-}
 
 const pinnedLightColors: AntdToken = {
   ...familyTokens("colorPrimary", primaryPalette),
@@ -319,40 +307,31 @@ const lightDerivedTokens: readonly DerivedToken[] = [
 // Custom tokens
 // ---------------------------------------------------------------------------
 
-function capitalize(value: string): string {
-  return value.charAt(0).toUpperCase() + value.slice(1);
-}
-
-function extras(): AntdToken {
-  return {
-    paseoSurfaceHead: claudeLight.surfaceHead,
-    paseoSurfaceHover: claudeLight.surfaceHover,
-    paseoSurface0: claudeLight.surface0,
-    paseoSurface1: claudeLight.surface1,
-    paseoSurface2: claudeLight.surface2,
-    paseoSurface3: claudeLight.surface3,
-    paseoSurface4: claudeLight.surface4,
-    paseoSurfaceSidebar: claudeLight.surfaceSidebar,
-    paseoDiffAddition: claudeLight.diffAddition,
-    paseoDiffDeletion: claudeLight.diffDeletion,
+function lightExtras(): AntdToken {
+  return extras({
+    surfaceHead: claudeLight.surfaceHead,
+    surfaceHover: claudeLight.surfaceHover,
+    surface0: claudeLight.surface0,
+    surface1: claudeLight.surface1,
+    surface2: claudeLight.surface2,
+    surface3: claudeLight.surface3,
+    surface4: claudeLight.surface4,
+    surfaceSidebar: claudeLight.surfaceSidebar,
+    diffAddition: claudeLight.diffAddition,
+    diffDeletion: claudeLight.diffDeletion,
     // The base status colors are only 4.30:1 on the pale diff fills; the
     // family's text-hover slot is one step darker and still passes on both
     // the fill and the page surface.
-    paseoDiffAdditionText: success.textHover,
-    paseoDiffDeletionText: danger.textHover,
-    paseoStatusDotSuccess: claudeLight.statusSuccess,
-    paseoStatusDotDanger: claudeLight.statusDanger,
-    paseoStatusDotWarning: claudeLight.statusWarning,
-    paseoStatusDotRunning: claudeLight.statusRunning,
-    paseoStatusMerged: claudeLight.statusMerged,
-    paseoSelection: claudeLight.selection,
-    ...Object.fromEntries(
-      Object.entries(claudeIdentityLight).map(([name, value]) => [
-        `paseoIdentity${capitalize(name)}`,
-        value,
-      ]),
-    ),
-  } as unknown as AntdToken;
+    diffAdditionText: success.textHover,
+    diffDeletionText: danger.textHover,
+    statusDotSuccess: claudeLight.statusSuccess,
+    statusDotDanger: claudeLight.statusDanger,
+    statusDotWarning: claudeLight.statusWarning,
+    statusDotRunning: claudeLight.statusRunning,
+    statusMerged: claudeLight.statusMerged,
+    selection: claudeLight.selection,
+    identity: claudeIdentityLight,
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -450,14 +429,10 @@ const lightComponents: AntdComponents = {
 // Public API
 // ---------------------------------------------------------------------------
 
-function buildToken(mappings: readonly TokenMapping[], extra: AntdToken): AntdToken {
-  return { ...Object.fromEntries(mappings.map((row) => [row.antdToken, row.value])), ...extra } as AntdToken;
-}
-
 /** Claude light as an antd v6 `ThemeConfig`. Drop into `ConfigProvider theme={...}`. */
 export const claudeLightTheme: ThemeConfig = {
   algorithm: claudeLightAlgorithm,
-  token: buildToken(lightMappings, extras()),
+  token: buildToken(lightMappings, lightExtras()),
   components: lightComponents,
 };
 
