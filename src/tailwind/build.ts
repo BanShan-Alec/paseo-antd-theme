@@ -1,19 +1,35 @@
 /**
- * Generates `src/tailwind/theme.css` — the Tailwind v4 distribution of both
- * themes. Values are resolved through antd's own token pipeline
+ * Generates `src/tailwind/theme.css` — the Tailwind v4 distribution of a
+ * light/dark theme pair. Values are resolved through antd's own token pipeline
  * (`theme.getDesignToken`) at generation time, so the shipped CSS carries the
  * complete alias set (hover/active/ramps/split) as static values and needs no
  * antd dependency on the consumer side.
  *
- * Layering: light (Claude Light) values live on `:root`; dark (Paseo Dark)
- * values are written twice — under `@media (prefers-color-scheme: dark)` for
- * Tailwind's default dark strategy and under `.dark` (after the media block,
- * so the class wins when both apply) for the class strategy. This mirrors
- * PaseoThemeProvider's mode mapping: light → claude, dark → paseo.
+ * The default pair is Claude Light + Paseo Dark, which is also
+ * PaseoThemeProvider's default slot pairing. Consumers who mix other slots
+ * (for example antd's own light with Paseo dark) call `generateTailwindCss`
+ * from `paseo-antd-themes/tailwind` with their pair and import that file
+ * instead, so utilities and components cannot drift apart.
+ *
+ * Layering: the light slot lives on `:root`; the dark slot is written twice —
+ * under `@media (prefers-color-scheme: dark)` for Tailwind's default dark
+ * strategy and under `.dark` (after the media block, so the class wins when
+ * both apply) for the class strategy.
  */
-import { theme as antdTheme } from "antd";
+import { theme as antdTheme, type ThemeConfig } from "antd";
 import { claudeLightTheme } from "../themes/claude/theme";
 import { paseoDarkTheme } from "../themes/paseo-dark/theme";
+
+export interface TailwindThemePair {
+  readonly light: ThemeConfig;
+  readonly dark: ThemeConfig;
+}
+
+/** The provider's default slot pairing. */
+export const DEFAULT_TAILWIND_THEMES: TailwindThemePair = {
+  light: claudeLightTheme,
+  dark: paseoDarkTheme,
+};
 
 export interface TailwindVariable {
   /** Tailwind-facing name: the variable is `--paseo-<name>`, the `@theme` key `--color-<name>`. */
@@ -22,6 +38,12 @@ export interface TailwindVariable {
   readonly source: string;
   /** Alternative token for the dark scheme, for claude-only concepts antd has no dark slot for. */
   readonly darkSource?: string;
+  /**
+   * Stock antd has no `paseo*` custom tokens. These aliases let the same
+   * stylesheet be generated for a pair that contains antd's own themes, so the
+   * documented mixed setup (antd light + paseo dark) keeps working.
+   */
+  readonly fallback?: readonly string[];
   /** `kind: "other"` variables carry an explicit `@theme` namespace key (`--font-*`, `--radius-*`). */
   readonly themeKey?: string;
   readonly kind: "color" | "other";
@@ -73,16 +95,53 @@ export const TAILWIND_VARIABLES: readonly TailwindVariable[] = [
   { name: "bg-elevated", source: "colorBgElevated", kind: "color", group: "表面" },
   { name: "bg-spotlight", source: "colorBgSpotlight", kind: "color", group: "表面" },
   { name: "bg-mask", source: "colorBgMask", kind: "color", group: "表面" },
-  { name: "surface-0", source: "paseoSurface0", kind: "color", group: "表面" },
-  { name: "surface-1", source: "paseoSurface1", kind: "color", group: "表面" },
-  { name: "surface-2", source: "paseoSurface2", kind: "color", group: "表面" },
-  { name: "surface-3", source: "paseoSurface3", kind: "color", group: "表面" },
-  { name: "surface-4", source: "paseoSurface4", kind: "color", group: "表面" },
-  { name: "surface-sidebar", source: "paseoSurfaceSidebar", kind: "color", group: "表面" },
+  {
+    name: "surface-0",
+    source: "paseoSurface0",
+    fallback: ["colorBgLayout"],
+    kind: "color",
+    group: "表面",
+  },
+  {
+    name: "surface-1",
+    source: "paseoSurface1",
+    fallback: ["colorBgContainer"],
+    kind: "color",
+    group: "表面",
+  },
+  {
+    name: "surface-2",
+    source: "paseoSurface2",
+    fallback: ["colorBgElevated"],
+    kind: "color",
+    group: "表面",
+  },
+  {
+    name: "surface-3",
+    source: "paseoSurface3",
+    fallback: ["colorFillSecondary"],
+    kind: "color",
+    group: "表面",
+  },
+  {
+    name: "surface-4",
+    source: "paseoSurface4",
+    fallback: ["colorFill"],
+    kind: "color",
+    group: "表面",
+  },
+  {
+    name: "surface-sidebar",
+    source: "paseoSurfaceSidebar",
+    fallback: ["colorBgLayout"],
+    kind: "color",
+    group: "表面",
+  },
   {
     name: "surface-head",
     source: "paseoSurfaceHead",
     darkSource: "paseoSurface1",
+    fallback: ["colorFillSecondary"],
     kind: "color",
     group: "表面",
     note: "深色主题没有 paper-on-paper 表头概念，用面板色 surface1 补位（与 Table.headerBg 一致）。",
@@ -91,6 +150,7 @@ export const TAILWIND_VARIABLES: readonly TailwindVariable[] = [
     name: "surface-hover",
     source: "paseoSurfaceHover",
     darkSource: "paseoSurface1",
+    fallback: ["colorFillTertiary"],
     kind: "color",
     group: "表面",
     note: "深色主题的卡片 hover 就是面板色 surface1（与 Table.rowHoverBg 一致）。",
@@ -112,26 +172,146 @@ export const TAILWIND_VARIABLES: readonly TailwindVariable[] = [
   { name: "link", source: "colorLink", kind: "color", group: "链接" },
   { name: "link-hover", source: "colorLinkHover", kind: "color", group: "链接" },
   { name: "link-active", source: "colorLinkActive", kind: "color", group: "链接" },
-  { name: "diff-addition", source: "paseoDiffAddition", kind: "color", group: "Diff" },
-  { name: "diff-addition-text", source: "paseoDiffAdditionText", kind: "color", group: "Diff" },
-  { name: "diff-deletion", source: "paseoDiffDeletion", kind: "color", group: "Diff" },
-  { name: "diff-deletion-text", source: "paseoDiffDeletionText", kind: "color", group: "Diff" },
-  { name: "status-dot-success", source: "paseoStatusDotSuccess", kind: "color", group: "状态点" },
-  { name: "status-dot-danger", source: "paseoStatusDotDanger", kind: "color", group: "状态点" },
-  { name: "status-dot-warning", source: "paseoStatusDotWarning", kind: "color", group: "状态点" },
-  { name: "status-dot-running", source: "paseoStatusDotRunning", kind: "color", group: "状态点" },
-  { name: "status-merged", source: "paseoStatusMerged", kind: "color", group: "状态点" },
-  { name: "selection", source: "paseoSelection", kind: "color", group: "选区" },
-  { name: "identity-violet", source: "paseoIdentityViolet", kind: "color", group: "身份色" },
-  { name: "identity-sky", source: "paseoIdentitySky", kind: "color", group: "身份色" },
-  { name: "identity-emerald", source: "paseoIdentityEmerald", kind: "color", group: "身份色" },
-  { name: "identity-orange", source: "paseoIdentityOrange", kind: "color", group: "身份色" },
-  { name: "identity-pink", source: "paseoIdentityPink", kind: "color", group: "身份色" },
-  { name: "identity-indigo", source: "paseoIdentityIndigo", kind: "color", group: "身份色" },
-  { name: "identity-teal", source: "paseoIdentityTeal", kind: "color", group: "身份色" },
-  { name: "identity-red", source: "paseoIdentityRed", kind: "color", group: "身份色" },
-  { name: "identity-amber", source: "paseoIdentityAmber", kind: "color", group: "身份色" },
-  { name: "identity-blue", source: "paseoIdentityBlue", kind: "color", group: "身份色" },
+  {
+    name: "diff-addition",
+    source: "paseoDiffAddition",
+    fallback: ["colorSuccessBg"],
+    kind: "color",
+    group: "Diff",
+  },
+  {
+    name: "diff-addition-text",
+    source: "paseoDiffAdditionText",
+    fallback: ["colorSuccessText"],
+    kind: "color",
+    group: "Diff",
+  },
+  {
+    name: "diff-deletion",
+    source: "paseoDiffDeletion",
+    fallback: ["colorErrorBg"],
+    kind: "color",
+    group: "Diff",
+  },
+  {
+    name: "diff-deletion-text",
+    source: "paseoDiffDeletionText",
+    fallback: ["colorErrorText"],
+    kind: "color",
+    group: "Diff",
+  },
+  {
+    name: "status-dot-success",
+    source: "paseoStatusDotSuccess",
+    fallback: ["colorSuccess"],
+    kind: "color",
+    group: "状态点",
+  },
+  {
+    name: "status-dot-danger",
+    source: "paseoStatusDotDanger",
+    fallback: ["colorError"],
+    kind: "color",
+    group: "状态点",
+  },
+  {
+    name: "status-dot-warning",
+    source: "paseoStatusDotWarning",
+    fallback: ["colorWarning"],
+    kind: "color",
+    group: "状态点",
+  },
+  {
+    name: "status-dot-running",
+    source: "paseoStatusDotRunning",
+    fallback: ["colorInfo"],
+    kind: "color",
+    group: "状态点",
+  },
+  {
+    name: "status-merged",
+    source: "paseoStatusMerged",
+    fallback: ["colorPrimary"],
+    kind: "color",
+    group: "状态点",
+  },
+  {
+    name: "selection",
+    source: "paseoSelection",
+    fallback: ["colorPrimaryBg"],
+    kind: "color",
+    group: "选区",
+  },
+  {
+    name: "identity-violet",
+    source: "paseoIdentityViolet",
+    fallback: ["purple6"],
+    kind: "color",
+    group: "身份色",
+  },
+  {
+    name: "identity-sky",
+    source: "paseoIdentitySky",
+    fallback: ["cyan6"],
+    kind: "color",
+    group: "身份色",
+  },
+  {
+    name: "identity-emerald",
+    source: "paseoIdentityEmerald",
+    fallback: ["green6"],
+    kind: "color",
+    group: "身份色",
+  },
+  {
+    name: "identity-orange",
+    source: "paseoIdentityOrange",
+    fallback: ["orange6"],
+    kind: "color",
+    group: "身份色",
+  },
+  {
+    name: "identity-pink",
+    source: "paseoIdentityPink",
+    fallback: ["magenta6"],
+    kind: "color",
+    group: "身份色",
+  },
+  {
+    name: "identity-indigo",
+    source: "paseoIdentityIndigo",
+    fallback: ["geekblue6"],
+    kind: "color",
+    group: "身份色",
+  },
+  {
+    name: "identity-teal",
+    source: "paseoIdentityTeal",
+    fallback: ["cyan6"],
+    kind: "color",
+    group: "身份色",
+  },
+  {
+    name: "identity-red",
+    source: "paseoIdentityRed",
+    fallback: ["red6"],
+    kind: "color",
+    group: "身份色",
+  },
+  {
+    name: "identity-amber",
+    source: "paseoIdentityAmber",
+    fallback: ["gold6"],
+    kind: "color",
+    group: "身份色",
+  },
+  {
+    name: "identity-blue",
+    source: "paseoIdentityBlue",
+    fallback: ["blue6"],
+    kind: "color",
+    group: "身份色",
+  },
   { name: "font", source: "fontFamily", themeKey: "--font-sans", kind: "other", group: "字体" },
   { name: "font-mono", source: "fontFamilyCode", themeKey: "--font-mono", kind: "other", group: "字体" },
   { name: "radius-xs", source: "borderRadiusXS", themeKey: "--radius-xs", kind: "other", group: "圆角" },
@@ -142,12 +322,14 @@ export const TAILWIND_VARIABLES: readonly TailwindVariable[] = [
 
 type DesignToken = ReturnType<typeof antdTheme.getDesignToken>;
 
-function tokenValue(tokens: DesignToken, source: string): string | number {
-  const raw = (tokens as unknown as Record<string, unknown>)[source];
-  if (raw === undefined || raw === "") {
-    throw new Error(`tailwind export: token "${source}" is missing from the resolved design tokens`);
+function pickValue(tokens: DesignToken, sources: readonly string[]): string | number {
+  for (const source of sources) {
+    const raw = (tokens as unknown as Record<string, unknown>)[source];
+    if (raw !== undefined && raw !== "") return raw as string | number;
   }
-  return raw as string | number;
+  throw new Error(
+    `tailwind export: none of ${sources.map((source) => `"${source}"`).join(", ")} exist in the resolved design tokens`,
+  );
 }
 
 function formatValue(value: string | number): string {
@@ -159,14 +341,19 @@ export interface ResolvedTailwindVariables {
   dark: Record<string, string>;
 }
 
-export function resolveTailwindVariables(): ResolvedTailwindVariables {
-  const lightTokens = antdTheme.getDesignToken(claudeLightTheme);
-  const darkTokens = antdTheme.getDesignToken(paseoDarkTheme);
+export function resolveTailwindVariables(
+  themes: TailwindThemePair = DEFAULT_TAILWIND_THEMES,
+): ResolvedTailwindVariables {
+  const lightTokens = antdTheme.getDesignToken(themes.light);
+  const darkTokens = antdTheme.getDesignToken(themes.dark);
   const light: Record<string, string> = {};
   const dark: Record<string, string> = {};
   for (const spec of TAILWIND_VARIABLES) {
-    light[spec.name] = formatValue(tokenValue(lightTokens, spec.source));
-    dark[spec.name] = formatValue(tokenValue(darkTokens, spec.darkSource ?? spec.source));
+    const fallback = spec.fallback ?? [];
+    light[spec.name] = formatValue(pickValue(lightTokens, [spec.source, ...fallback]));
+    dark[spec.name] = formatValue(
+      pickValue(darkTokens, [spec.darkSource ?? spec.source, spec.source, ...fallback]),
+    );
   }
   return { light, dark };
 }
@@ -190,8 +377,10 @@ function declarations(
 const HEADER = `/*
  * 由 scripts/gen-tailwind.ts 生成（npm run gen:tailwind），请勿手改。
  *
- * 浅色 = Claude Light（:root）；深色 = Paseo Dark，同时写在
+ * 默认配对：浅色槽 = Claude Light（:root）；深色槽 = Paseo Dark，同时写在
  * @media (prefers-color-scheme: dark) 与 .dark（类选择器在后，两种同时命中时类胜出）。
+ * 换配对时用 paseo-antd-themes/tailwind 的 generateTailwindCss({ light, dark })
+ * 重新生成这份 CSS，否则工具类色值和组件主题会对不上。
  *
  * Tailwind v4 用法：在入口 CSS 里
  *   @import "tailwindcss";
@@ -200,8 +389,10 @@ const HEADER = `/*
  * 注意 --font-sans 与 --radius-* 覆盖了 Tailwind 的默认刻度（字体用 paseo 的系统栈，圆角对齐 12px 形态）。
  */`;
 
-export function buildTailwindCss(): string {
-  const { light, dark } = resolveTailwindVariables();
+export function generateTailwindCss(
+  themes: TailwindThemePair = DEFAULT_TAILWIND_THEMES,
+): string {
+  const { light, dark } = resolveTailwindVariables(themes);
 
   const themeLines: string[] = ["@theme inline {"];
   let group = "";

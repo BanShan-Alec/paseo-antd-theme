@@ -5,9 +5,13 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { describe, expect, it } from "vitest";
 import {
+  generateTailwindCss,
   resolveTailwindVariables,
   TAILWIND_VARIABLES,
 } from "../src/tailwind/build";
+import { antdLightTheme } from "../src/themes/antd/theme";
+import { claudeLightTheme } from "../src/themes/claude/theme";
+import { paseoDarkTheme } from "../src/themes/paseo-dark/theme";
 
 const ROOT = join(import.meta.dirname, "..");
 
@@ -21,8 +25,8 @@ const generated = () => {
   const entry = join(tmpdir(), `tailwind-theme-gen-${process.pid}.ts`);
   const script = `
     import { writeFileSync } from "node:fs";
-    import { buildTailwindCss } from ${JSON.stringify(pathToFileURL(join(ROOT, "src/tailwind/build.ts")).href)};
-    writeFileSync(${JSON.stringify(out)}, buildTailwindCss());
+    import { generateTailwindCss } from ${JSON.stringify(pathToFileURL(join(ROOT, "src/tailwind/build.ts")).href)};
+    writeFileSync(${JSON.stringify(out)}, generateTailwindCss());
   `;
   writeFileSync(entry, script);
   execFileSync("npx", ["vite-node", entry], { cwd: ROOT });
@@ -86,5 +90,27 @@ describe("tailwind css artifact", () => {
       expect(light[spec.name], `light ${spec.name}`).toBeTruthy();
       expect(dark[spec.name], `dark ${spec.name}`).toBeTruthy();
     }
+  });
+
+  it("generates a mixed pair through the documented stock fallbacks", () => {
+    const { light, dark } = resolveTailwindVariables({
+      light: antdLightTheme,
+      dark: paseoDarkTheme,
+    });
+
+    expect(light.primary).toBe("#1677ff");
+    expect(dark.primary).toBe("#20744A");
+    // antd has no paseo custom tokens; these aliases keep the export total.
+    expect(light["surface-0"]).toBe("#f5f5f5");
+    expect(light["surface-1"]).toBe("#ffffff");
+    expect(light["status-dot-success"]).toBe("#52c41a");
+    expect(light.selection).toBe("#e6f4ff");
+    expect(light["identity-violet"]).toBe("#722ed1");
+  });
+
+  it("generates the same stylesheet for the explicit default pair", () => {
+    expect(generateTailwindCss({ light: claudeLightTheme, dark: paseoDarkTheme })).toBe(
+      generateTailwindCss(),
+    );
   });
 });

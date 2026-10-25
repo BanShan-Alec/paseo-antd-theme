@@ -1,8 +1,10 @@
 /*
  * 由 scripts/gen-tailwind.ts 生成（npm run gen:tailwind），请勿手改。
  *
- * 浅色 = Claude Light（:root）；深色 = Paseo Dark，同时写在
+ * 默认配对：浅色槽 = Claude Light（:root）；深色槽 = Paseo Dark，同时写在
  * @media (prefers-color-scheme: dark) 与 .dark（类选择器在后，两种同时命中时类胜出）。
+ * 换配对时用 paseo-antd-themes/tailwind 的 generateTailwindCss({ light, dark })
+ * 重新生成这份 CSS，否则工具类色值和组件主题会对不上。
  *
  * Tailwind v4 用法：在入口 CSS 里
  *   @import "tailwindcss";
