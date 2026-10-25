@@ -1,5 +1,5 @@
-import { act, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { act, cleanup, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   Button,
   Segmented,
@@ -11,10 +11,15 @@ import { hydrateRoot } from "react-dom/client";
 import { renderToString } from "react-dom/server";
 import { claudeLightTheme } from "../src/themes/claude/theme";
 import { paseoDarkTheme } from "../src/themes/paseo-dark/theme";
+import { antdLightTheme } from "../src/themes/antd/theme";
 import {
   PaseoThemeProvider,
   resolvePaseoTheme,
 } from "../src/Provider";
+
+afterEach(cleanup);
+
+const stockLightLayout = String(antdTheme.getDesignToken(antdLightTheme).colorBgLayout);
 
 function LayoutProbe({ onLayout }: { onLayout: (layout: string) => void }) {
   const { token } = antdTheme.useToken();
@@ -133,14 +138,34 @@ describe("PaseoThemeProvider", () => {
     expect(layout).toBe("#F0EDE2");
   });
 
-  it("resolves mode, system preference and theme override", () => {
+  it("mixes slot contents independently", () => {
+    let layout = "";
+    render(
+      <PaseoThemeProvider mode="light" themes={{ light: antdLightTheme }}>
+        <LayoutProbe onLayout={(value) => (layout = value)} />
+      </PaseoThemeProvider>,
+    );
+    expect(layout).toBe(stockLightLayout);
+
+    layout = "";
+    render(
+      <PaseoThemeProvider mode="dark" themes={{ light: antdLightTheme }}>
+        <LayoutProbe onLayout={(value) => (layout = value)} />
+      </PaseoThemeProvider>,
+    );
+    // The omitted dark slot keeps the built-in default.
+    expect(layout).toBe("#181B1A");
+  });
+
+  it("resolves mode, system preference and both slots", () => {
     expect(resolvePaseoTheme({ mode: "dark" })).toBe(paseoDarkTheme);
     expect(resolvePaseoTheme({ mode: "light" })).toBe(claudeLightTheme);
     expect(resolvePaseoTheme({ mode: "system", systemDark: true })).toBe(paseoDarkTheme);
     expect(resolvePaseoTheme({ mode: "system", systemDark: false })).toBe(claudeLightTheme);
 
-    const override = { token: { colorBgLayout: "#123456" } };
-    expect(resolvePaseoTheme({ mode: "dark", theme: override })).toBe(override);
+    const custom = { token: { colorBgLayout: "#123456" } };
+    expect(resolvePaseoTheme({ mode: "light", themes: { light: custom } })).toBe(custom);
+    expect(resolvePaseoTheme({ mode: "dark", themes: { light: custom } })).toBe(paseoDarkTheme);
   });
 
   it("subscribes to prefers-color-scheme in system mode", () => {
@@ -165,26 +190,67 @@ describe("PaseoThemeProvider", () => {
     }
   });
 
-  it("lets the theme prop win over mode", () => {
-    let layout = "";
-    render(
-      <PaseoThemeProvider mode="dark" theme={{ token: { colorBgLayout: "#123456" } }}>
-        <LayoutProbe onLayout={(value) => (layout = value)} />
-      </PaseoThemeProvider>,
-    );
-
-    expect(layout).toBe("#123456");
-  });
-
-  it("lets loadingIcon replace the default spinner", () => {
+  it("accepts a custom loading icon through behaviors", () => {
     const { container } = render(
-      <PaseoThemeProvider loadingIcon={<span data-custom-loading="" />}>
+      <PaseoThemeProvider behaviors={{ loadingIcon: <span data-custom-loading="" /> }}>
         <Button loading>Run agent</Button>
       </PaseoThemeProvider>,
     );
 
     expect(container.querySelector("[data-custom-loading]")).toBeTruthy();
     expect(container.querySelector("svg[data-paseo-loading]")).toBeNull();
+  });
+
+  it("keeps antd's own spinner when loadingIcon is false", () => {
+    const { container } = render(
+      <PaseoThemeProvider behaviors={{ loadingIcon: false }}>
+        <Button loading>Run agent</Button>
+      </PaseoThemeProvider>,
+    );
+
+    expect(container.querySelector("svg[data-paseo-loading]")).toBeNull();
+    expect(container.querySelector(".anticon-loading")).toBeTruthy();
+    const css = container.querySelector("style[data-paseo-theme]")?.textContent ?? "";
+    expect(css).not.toContain("paseo-loading-rotate");
+    // Only the loading behavior was turned off.
+    expect(css).toContain("margin-inline-end");
+  });
+
+  it("turns the Segmented gap off on its own", () => {
+    const { container } = render(
+      <PaseoThemeProvider behaviors={{ segmentedGap: false }}>
+        <Segmented options={["A", "B"]} />
+      </PaseoThemeProvider>,
+    );
+
+    expect(container.querySelector(".paseo-segmented-item")).toBeNull();
+    const css = container.querySelector("style[data-paseo-theme]")?.textContent ?? "";
+    expect(css).not.toContain("margin-inline-end");
+    expect(css).toContain("border-top: 2px solid transparent");
+  });
+
+  it("turns the Select gap off on its own", () => {
+    render(
+      <PaseoThemeProvider behaviors={{ selectGap: false }}>
+        <Select open options={[{ value: "claude", label: "Claude Code" }]} />
+      </PaseoThemeProvider>,
+    );
+
+    expect(document.querySelectorAll(".paseo-select-item").length).toBe(0);
+  });
+
+  it("injects no CSS at all when every behavior is off", () => {
+    const { container } = render(
+      <PaseoThemeProvider
+        behaviors={{ loadingIcon: false, segmentedGap: false, selectGap: false }}
+      >
+        <Button loading>Run agent</Button>
+        <Segmented options={["A", "B"]} />
+      </PaseoThemeProvider>,
+    );
+
+    expect(container.querySelector("style[data-paseo-theme]")).toBeNull();
+    expect(container.querySelector(".paseo-segmented-item")).toBeNull();
   });
 
   it("passes other ConfigProvider props through", () => {

@@ -1,5 +1,5 @@
 /**
- * OKLCH helpers for the Claude light scheme.
+ * Color-space helpers shared by the two built-in themes and `extendTheme`.
  *
  * The status family is normalized the way paseo defines it: one perceived
  * lightness and one chroma fraction across every hue, so no status is louder
@@ -8,7 +8,13 @@
  * for the *background* slots of such low-chroma bases — it washes them into
  * neutral grey (#467650 → #aab5ab). These helpers derive every slot from the
  * same hue at stepped lightness instead.
+ *
+ * The dark family mirrors antd's own dark mapping (`themes/dark/colors.js`)
+ * but keeps paseo's exact hex in the base slot instead of the darkened hex
+ * antd would put there.
  */
+import { generate } from "@ant-design/colors";
+import type { ColorFamilySlots } from "./theme";
 
 export interface LightFamily {
   readonly base: string;
@@ -107,4 +113,97 @@ export function normalizedLightFamily(
     textHover: at(baseL - 0.04),
     textActive: at(baseL - 0.08),
   };
+}
+
+export interface Oklch {
+  readonly L: number;
+  readonly C: number;
+  readonly H: number;
+}
+
+function hexChannels(hex: string): readonly [number, number, number] {
+  let value = hex.trim().replace(/^#/, "");
+  // antd's own dark theme resolves colorBgBase to "#000"; accept the short
+  // form so scheme detection works on stock themes too.
+  if (/^[0-9a-f]{3}$/i.test(value)) {
+    value = value
+      .split("")
+      .map((channel) => channel + channel)
+      .join("");
+  }
+  if (!/^[0-9a-f]{6}$/i.test(value)) {
+    throw new Error(`expected a 3- or 6-digit hex color, got "${hex}"`);
+  }
+  return [0, 2, 4].map((offset) => parseInt(value.slice(offset, offset + 2), 16) / 255) as unknown as readonly [
+    number,
+    number,
+    number,
+  ];
+}
+
+/** Hex → OKLCH, the inverse of `oklchHex`. */
+export function hexToOklch(hex: string): Oklch {
+  const [red, green, blue] = hexChannels(hex).map(linearize);
+  const l = Math.cbrt(0.4122214708 * red + 0.5363325363 * green + 0.0514459929 * blue);
+  const m = Math.cbrt(0.2119034982 * red + 0.6806995451 * green + 0.1073969566 * blue);
+  const s = Math.cbrt(0.0883024619 * red + 0.2817188376 * green + 0.6299787005 * blue);
+  const okL = 0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s;
+  const okA = 1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s;
+  const okB = 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s;
+  return {
+    L: okL,
+    C: Math.hypot(okA, okB),
+    H: ((Math.atan2(okB, okA) * 180) / Math.PI + 360) % 360,
+  };
+}
+
+/** sRGB relative luminance (WCAG). `extendTheme` uses it to detect the scheme. */
+export function hexLuminance(hex: string): number {
+  const [red, green, blue] = hexChannels(hex).map(linearize);
+  return 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+}
+
+export interface DarkFamily extends ColorFamilySlots {
+  /** The raw @ant-design/colors ramp for the base color, dark variant. */
+  readonly raw: readonly string[];
+}
+
+/**
+ * antd's dark palette mapping around paseo's exact hex instead of the darkened
+ * hex antd would put in the base slot. Text slots deliberately deviate from
+ * antd's mapping: antd reuses the darkened base there, which is unreadable on
+ * a dark surface (~1.9:1), while the light slots of the same ramp sit at 4:1
+ * or better.
+ */
+export function darkFamily(base: string): DarkFamily {
+  const raw = generate(base, { theme: "dark" });
+  return {
+    raw,
+    base,
+    bg: raw[0],
+    bgHover: raw[1],
+    border: raw[2],
+    borderHover: raw[3],
+    hover: raw[6],
+    active: raw[4],
+    text: raw[8],
+    textHover: raw[9],
+    textActive: raw[7],
+  };
+}
+
+/**
+ * The light counterpart, anchored at an arbitrary base color: read its OKLCH
+ * hue / lightness / chroma, then step every other slot from there. Used by
+ * `extendTheme` where the caller supplies a base hex rather than a hue.
+ *
+ * The stepping lightness is clamped so very light or very dark inputs cannot
+ * push a derived slot outside sRGB; the `base` slot keeps the exact input.
+ */
+export function lightFamilyFromBase(base: string): LightFamily {
+  const { L, C, H } = hexToOklch(base);
+  const steppedL = Math.min(0.86, Math.max(0.3, L));
+  const maximum = maxChroma(steppedL, H);
+  const chromaFraction = maximum > 1e-6 ? Math.min(1, C / maximum) : 0;
+  return { ...normalizedLightFamily(H, steppedL, chromaFraction), base };
 }

@@ -134,13 +134,13 @@ export function buildToken(mappings: readonly TokenMapping[], extra: AntdToken):
 }
 
 /**
- * Light mode is antd's stock theme with a single exception: the font stack is
- * pinned to the same stack the dark theme uses. antd's default stack
+ * antd's own algorithms with a single shared delta: `fontFamily` is pinned to
+ * the same stack the built-in themes use. antd's default stack
  * (`-apple-system, …`) resolves to Segoe UI on Windows while `system-ui`
  * resolves to a ~7% wider system font, so without the pin every content-sized
- * element (buttons, tags, segmented, menu items) shifts by a few pixels when
- * switching schemes. Everything else — colors, sizes, radii, components — is
- * antd's default.
+ * element (buttons, tags, segmented, menu items) shifts by a few pixels when a
+ * stock slot is mixed with a Paseo slot. Everything else — colors, sizes,
+ * radii, components — stays antd's default.
  */
 export const lightFontAlgorithm: typeof antdTheme.defaultAlgorithm = (seed) =>
   ({
@@ -148,6 +148,8 @@ export const lightFontAlgorithm: typeof antdTheme.defaultAlgorithm = (seed) =>
     fontFamily: PASEO_FONT_STACK,
   }) as ReturnType<typeof antdTheme.defaultAlgorithm>;
 
-export const antdDefaultLightTheme: ThemeConfig = {
-  algorithm: lightFontAlgorithm,
-};
+export const darkFontAlgorithm: typeof antdTheme.darkAlgorithm = (seed) =>
+  ({
+    ...antdTheme.darkAlgorithm(seed),
+    fontFamily: PASEO_FONT_STACK,
+  }) as ReturnType<typeof antdTheme.darkAlgorithm>;

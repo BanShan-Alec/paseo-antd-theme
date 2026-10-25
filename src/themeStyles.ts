@@ -1,9 +1,11 @@
 /**
  * Global CSS for the component-level behaviors that antd tokens cannot express.
- * It is injected once by PaseoThemeProvider, so consumers do not need a
- * separate CSS import.
+ * PaseoThemeProvider injects only the parts that are still enabled, so turning
+ * a behavior off leaves no orphan rules behind.
  */
-export const PASEO_THEME_CSS = `
+
+/** Only needed by the default Paseo spinner. */
+export const PASEO_LOADING_CSS = `
 @keyframes paseo-loading-rotate {
   to {
     transform: rotate(360deg);
@@ -21,7 +23,10 @@ export const PASEO_THEME_CSS = `
   transform-box: fill-box;
   transform-origin: center;
 }
+`;
 
+/** Paired with the `paseo-select-item` class the provider adds to list rows. */
+export const PASEO_SELECT_GAP_CSS = `
 /* Real transparent gaps between Select options: the hover/selected background
    stops at the padding box, so the 2px top/bottom borders reveal the dropdown
    background instead of letting adjacent rows touch. The border is included in
@@ -33,10 +38,17 @@ export const PASEO_THEME_CSS = `
   border-bottom: 2px solid transparent;
   background-clip: padding-box;
 }
+`;
 
-/* antd has no gap token for Segmented items; the provider adds this class to
-   every item, and the rule keeps the gap out of the trailing edge. */
+/** antd has no gap token for Segmented items; the provider adds the class. */
+export const PASEO_SEGMENTED_GAP_CSS = `
+/* The rule keeps the gap out of the trailing edge. */
 .paseo-segmented-item:not(:last-child) {
   margin-inline-end: 4px;
 }
 `;
+
+/** All behaviors, for anyone who prefers one import over the provider. */
+export const PASEO_THEME_CSS = [PASEO_LOADING_CSS, PASEO_SELECT_GAP_CSS, PASEO_SEGMENTED_GAP_CSS].join(
+  "\n",
+);

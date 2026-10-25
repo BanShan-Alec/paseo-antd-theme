@@ -6,14 +6,14 @@ import { resolveTokens } from "../src/testing/theme";
 import {
   PASEO_DARK_TOKEN_MAPPING,
   PASEO_DERIVED_TOKENS,
-  antdDefaultLightTheme,
   paseoDarkTheme,
 } from "../src/themes/paseo-dark/theme";
+import { antdLightTheme } from "../src/themes/antd/theme";
 import { paseoDark, paseoIdentityDark } from "../src/themes/paseo-dark/tokens";
 import { PASEO_FONT_STACK } from "../src/shared/fonts";
 
 const dark = resolveTokens(paseoDarkTheme);
-const light = resolveTokens(antdDefaultLightTheme);
+const light = resolveTokens(antdLightTheme);
 
 // ---------------------------------------------------------------------------
 // Dark mapping reaches antd's token pipeline
@@ -110,17 +110,17 @@ describe("paseo → antd dark token mapping", () => {
 });
 
 // ---------------------------------------------------------------------------
-// Light mode is antd's stock theme — nothing overridden
+// The stock light slot — antd's own theme, font stack aside
 // ---------------------------------------------------------------------------
 
-describe("light mode", () => {
+describe("antd stock light theme", () => {
   it("overrides nothing but the shared font stack", () => {
     // Colors, sizes, radii and components stay stock; only fontFamily is
     // pinned, and through the algorithm — a seed in `token` would be
     // stripped by formatToken.
-    expect(antdDefaultLightTheme.token).toBeUndefined();
-    expect(antdDefaultLightTheme.components).toBeUndefined();
-    expect(antdDefaultLightTheme.algorithm).toBeDefined();
+    expect(antdLightTheme.token).toBeUndefined();
+    expect(antdLightTheme.components).toBeUndefined();
+    expect(antdLightTheme.algorithm).toBeDefined();
   });
 
   it("resolves to antd's own default values", () => {
@@ -269,7 +269,7 @@ describe("rendering", () => {
 
   it("renders antd components under the stock light theme", () => {
     render(
-      <ConfigProvider theme={antdDefaultLightTheme}>
+      <ConfigProvider theme={antdLightTheme}>
         <Table
           columns={[{ title: "Agent", dataIndex: "name", key: "name" }]}
           dataSource={[{ key: "1", name: "claude-code" }]}

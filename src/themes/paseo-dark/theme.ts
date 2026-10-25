@@ -1,8 +1,6 @@
-import { generate } from "@ant-design/colors";
 import type { ThemeConfig } from "antd";
 import { theme as antdTheme } from "antd";
 import {
-  antdDefaultLightTheme,
   buildToken,
   extras,
   familyTokens,
@@ -11,6 +9,7 @@ import {
   type DerivedToken,
   type TokenMapping,
 } from "../../shared/theme";
+import { darkFamily } from "../../shared/colors";
 import { PASEO_FONT_STACK, PASEO_MONO_FONT_STACK } from "../../shared/fonts";
 import { paseoDark, paseoIdentityDark } from "./tokens";
 
@@ -34,48 +33,8 @@ import { paseoDark, paseoIdentityDark } from "./tokens";
 // antd's per-color dark adjustment would break exactly that relationship.
 // ---------------------------------------------------------------------------
 
-interface DarkPalette {
-  /** The raw @ant-design/colors ramp for the base color, dark variant. */
-  readonly raw: readonly string[];
-  readonly base: string;
-  readonly bg: string;
-  readonly bgHover: string;
-  readonly border: string;
-  readonly borderHover: string;
-  readonly hover: string;
-  readonly active: string;
-  /** Light slots of the ramp — text on a dark surface needs these, not the base. */
-  readonly text: string;
-  readonly textHover: string;
-  readonly textActive: string;
-}
-
-/**
- * Rebuilds antd's dark palette mapping (themes/dark/colors.js) around paseo's
- * exact hex instead of the darkened hex antd would put in the base slot. Text
- * slots deliberately deviate from antd's mapping: antd reuses the darkened
- * base there, which is unreadable on a dark surface (~1.9:1), while the light
- * slots of the same ramp sit at 4:1 or better.
- */
-function darkPalette(base: string): DarkPalette {
-  const raw = generate(base, { theme: "dark" });
-  return {
-    raw,
-    base,
-    bg: raw[0],
-    bgHover: raw[1],
-    border: raw[2],
-    borderHover: raw[3],
-    hover: raw[6],
-    active: raw[4],
-    text: raw[8],
-    textHover: raw[9],
-    textActive: raw[7],
-  };
-}
-
-const primary = darkPalette(paseoDark.accent);
-const primaryBright = darkPalette(paseoDark.accentBright);
+const primary = darkFamily(paseoDark.accent);
+const primaryBright = darkFamily(paseoDark.accentBright);
 
 // Claude.ai's soft elevation, black-tinted for the dark scheme. The original
 // paseo chrome was flat; Q14 syncs the full dark scheme to the same form
@@ -99,10 +58,10 @@ const pinnedDarkColors: AntdToken = {
   colorPrimaryText: paseoDark.accentBright,
   colorPrimaryTextHover: primaryBright.raw[9],
   colorPrimaryTextActive: primaryBright.raw[7],
-  ...familyTokens("colorSuccess", darkPalette(paseoDark.statusSuccess)),
-  ...familyTokens("colorWarning", darkPalette(paseoDark.statusWarning)),
-  ...familyTokens("colorError", darkPalette(paseoDark.statusDanger)),
-  ...familyTokens("colorInfo", darkPalette(paseoDark.statusDotRunning)),
+  ...familyTokens("colorSuccess", darkFamily(paseoDark.statusSuccess)),
+  ...familyTokens("colorWarning", darkFamily(paseoDark.statusWarning)),
+  ...familyTokens("colorError", darkFamily(paseoDark.statusDanger)),
+  ...familyTokens("colorInfo", darkFamily(paseoDark.statusDotRunning)),
   // Links: the deep accent is ~2.4:1 on the dark background, so links take
   // accentBright (4.5:1+) — the same call paseo's own design makes.
   colorLink: paseoDark.accentBright,
@@ -428,11 +387,6 @@ export const paseoDarkTheme: ThemeConfig = {
   token: buildToken(darkMappings, darkExtras()),
   components: darkComponents,
 };
-
-export {
-  antdDefaultLightTheme,
-  lightFontAlgorithm,
-} from "../../shared/theme";
 
 /** The full dark mapping, for docs, swatch panels and tests. */
 export const PASEO_DARK_TOKEN_MAPPING: readonly TokenMapping[] = darkMappings;
