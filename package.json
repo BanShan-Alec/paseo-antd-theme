@@ -43,6 +43,16 @@
       "import": "./dist/paseo.js",
       "default": "./dist/paseo.js"
     },
+    "./antd": {
+      "types": "./dist/antd.d.ts",
+      "import": "./dist/antd.js",
+      "default": "./dist/antd.js"
+    },
+    "./tailwind": {
+      "types": "./dist/tailwind.d.ts",
+      "import": "./dist/tailwind.js",
+      "default": "./dist/tailwind.js"
+    },
     "./tailwind.css": "./dist/tailwind.css",
     "./package.json": "./package.json"
   },

@@ -26,7 +26,7 @@ export default defineConfig({
       exclude: [
         "src/demo/**",
         "src/testing/**",
-        "src/tailwind/**",
+        "src/tailwind/theme.css",
         "src/App.tsx",
         "src/main.tsx",
         "src/test-setup.ts",
@@ -40,6 +40,8 @@ export default defineConfig({
         index: "src/index.ts",
         claude: "src/claude.ts",
         paseo: "src/paseo.ts",
+        antd: "src/antd.ts",
+        tailwind: "src/tailwind.ts",
       },
       formats: ["es"],
       fileName: (format, entryName) =>

@@ -62,6 +62,10 @@ try {
     "dist/claude.d.ts",
     "dist/paseo.js",
     "dist/paseo.d.ts",
+    "dist/antd.js",
+    "dist/antd.d.ts",
+    "dist/tailwind.js",
+    "dist/tailwind.d.ts",
     "dist/tailwind.css",
   ];
   for (const file of required) {
@@ -81,7 +85,7 @@ try {
     }
   }
 
-  for (const entry of ["index", "claude", "paseo"]) {
+  for (const entry of ["index", "claude", "paseo", "antd", "tailwind"]) {
     const mod = await import(pathToFileURL(join(dist, `${entry}.js`)).href);
     if (Object.keys(mod).length === 0) fail(`empty ESM entry: ${entry}`);
   }
