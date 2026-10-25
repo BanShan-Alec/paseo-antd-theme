@@ -1,1 +1,1 @@
-export type View = "light" | "claude" | "dark";
+export type View = "antd" | "paseo" | "mixed";

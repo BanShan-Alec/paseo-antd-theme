@@ -9,12 +9,14 @@ import type { View } from "../view";
 
 const { Paragraph, Text } = Typography;
 
-export function MappingSection({ view }: { view: View }) {
+export function MappingSection({ view, isLight }: { view: View; isLight: boolean }) {
   const { token } = antdTheme.useToken();
   const t = token as unknown as Record<string, string>;
-  const isStockLight = view === "light";
-  const isPaseoDark = view === "dark";
-  const isClaude = view === "claude";
+  // Which theme is actually on screen depends on both the pair and the
+  // resolved scheme — the demo follows the OS inside every view.
+  const isStock = view === "antd" || (view === "mixed" && isLight);
+  const isPaseoDark = !isLight && view !== "antd";
+  const isClaude = isLight && view === "paseo";
   const mapping = isPaseoDark
     ? full.PASEO_DARK_TOKEN_MAPPING
     : claude.CLAUDE_LIGHT_TOKEN_MAPPING;
@@ -38,12 +40,12 @@ export function MappingSection({ view }: { view: View }) {
         variant="borderless"
         title="Token 映射（实时解析值）"
         size="small"
-        extra={isStockLight ? null : <Text type="secondary">{mapping.length} 个 antd token</Text>}
+        extra={isStock ? null : <Text type="secondary">{mapping.length} 个 antd token</Text>}
       >
-        {isStockLight ? (
+        {isStock ? (
           <Paragraph type="secondary" style={{ marginBottom: 0 }}>
-            这是 Antd 默认浅色主题，未覆盖任何 antd 变量（唯一例外：字体栈与深色一致，避免切换时元素位移）。
-            切到「Claude 浅色」查看完整浅色方案。
+            这是 Antd 原生主题，未覆盖任何 antd 变量（唯一例外：字体栈与内置主题一致，避免切换时元素位移）。
+            切到「Claude + Paseo」查看完整方案。
           </Paragraph>
         ) : (
           mapping.map((row) => <TokenSwatchRow key={row.antdToken} row={row} live={t[row.antdToken]} />)

@@ -89,7 +89,16 @@ export function ComponentsSection({ isLight }: { isLight: boolean }) {
 
       <Col xs={24} xl={12}>
         <Card variant="borderless" title="Layout" size="small">
-          <Layout style={{ height: 220, borderRadius: 8, overflow: "hidden" }}>
+          <style>{`
+            /* antd anchors the Sider trigger with position: fixed — it is
+               built for a full-page sider, so inside this 220px demo card it
+               would ride the page scrollbar. The Sider is already
+               position: relative, so absolute keeps it in the card. */
+            .paseo-demo-layout .ant-layout-sider-trigger {
+              position: absolute;
+            }
+          `}</style>
+          <Layout className="paseo-demo-layout" style={{ height: 220, borderRadius: 8, overflow: "hidden" }}>
             <Sider
               theme={isLight ? "light" : "dark"}
               width={150}

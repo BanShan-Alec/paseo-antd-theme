@@ -1,13 +1,5 @@
 import { useState } from "react";
-import {
-  App as AntApp,
-  ConfigProvider,
-  Layout,
-  Menu,
-  Segmented,
-  Typography,
-  theme as antdTheme,
-} from "antd";
+import { App as AntApp, Breadcrumb, Layout, Menu, Segmented, Typography, theme as antdTheme } from "antd";
 import {
   AgentsSection,
   ComponentsSection,
@@ -18,103 +10,152 @@ import {
   StatusSection,
 } from "./demo/sections";
 import type { View } from "./demo/view";
-import * as full from "./themes/paseo-dark/theme";
-import * as claude from "./themes/claude/theme";
-import { PaseoThemeProvider } from "./Provider";
+import { antdDarkTheme, antdLightTheme } from "./themes/antd/theme";
+import { paseoDarkTheme } from "./themes/paseo-dark/theme";
+import { PaseoThemeProvider, type PaseoBehaviors, type PaseoThemeMode, type PaseoThemeSlots } from "./Provider";
+import { hexLuminance } from "./shared/colors";
+import { MoonIcon, SunIcon, SystemIcon } from "./demo/icons";
 
 const { Header, Sider, Content } = Layout;
 const { Title, Text } = Typography;
 
 const VIEW_OPTIONS = [
-  { label: "Antd 默认", value: "light" },
-  { label: "Claude 浅色", value: "claude" },
-  { label: "Paseo 深色", value: "dark" },
+  { label: "Antd 原生", value: "antd" },
+  { label: "Claude + Paseo", value: "paseo" },
+  { label: "混搭", value: "mixed" },
+] as const;
+
+const MODE_OPTIONS = [
+  { value: "system", icon: <SystemIcon />, title: "跟随系统" },
+  { value: "light", icon: <SunIcon />, title: "亮色" },
+  { value: "dark", icon: <MoonIcon />, title: "暗色" },
 ] as const;
 
 const SECTIONS = [
-  { key: "overview", label: "概览", title: "概览 · antd 基础组件", hint: "antd 基础组件" },
-  { key: "agents", label: "Agent 列表", title: "Agent 列表", hint: "表格 + diff 统计 + Host 徽章" },
-  { key: "diff", label: "Diff 视图", title: "Diff 视图", hint: "diff 行底色 token" },
-  { key: "status", label: "状态圆点", title: "状态圆点", hint: "状态圆点 token" },
-  { key: "hosts", label: "Host 身份色", title: "Host 身份色", hint: "十色身份盘 + selection" },
-  {
-    key: "components",
-    label: "组件 Token",
-    title: "组件 Token",
-    hint: "Layout/Menu/Table/Tabs/Modal/Message…",
-  },
-  { key: "mapping", label: "Token 映射", title: "Token 映射", hint: "映射 / 派生 / 自定义 token" },
+  { key: "overview", label: "概览" },
+  { key: "agents", label: "Agent 列表" },
+  { key: "diff", label: "Diff 视图" },
+  { key: "status", label: "状态圆点" },
+  { key: "hosts", label: "Host 身份色" },
+  { key: "components", label: "组件 Token" },
+  { key: "mapping", label: "Token 映射" },
 ] as const;
 
 type Section = (typeof SECTIONS)[number]["key"];
 
-const VIEW_STORAGE_KEY = "paseo-demo-view";
+const VIEW_STORAGE_KEY = "paseo-demo-pair";
+const MODE_STORAGE_KEY = "paseo-demo-mode";
 
-// Only explicit user choices are persisted; the system-derived view is not,
-// so the demo keeps following the OS preference until the user picks one.
+// Each view is a light/dark *pair*; the scheme inside the pair follows the OS.
+// Only the explicit pair choice is persisted.
+const VIEW_PRESETS: Record<View, { themes?: PaseoThemeSlots; behaviors?: PaseoBehaviors }> = {
+  antd: {
+    themes: { light: antdLightTheme, dark: antdDarkTheme },
+    // Stock antd has neither the Paseo spinner nor the extra gaps: turn every
+    // behavior off so this view stays an honest baseline.
+    behaviors: { loadingIcon: false, segmentedGap: false, selectGap: false },
+  },
+  paseo: {},
+  mixed: { themes: { light: antdLightTheme, dark: paseoDarkTheme } },
+};
+
 function resolveInitialView(): View {
   try {
     const stored = localStorage.getItem(VIEW_STORAGE_KEY);
-    if (stored === "light" || stored === "claude" || stored === "dark") {
+    if (stored === "antd" || stored === "paseo" || stored === "mixed") {
       return stored;
     }
   } catch {
-    // localStorage unavailable (privacy mode) — fall through to system preference
+    // localStorage unavailable (privacy mode) — fall through to the default
   }
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "claude";
+  return "paseo";
 }
 
-function themeFor(view: View) {
-  if (view === "claude") return claude.claudeLightTheme;
-  if (view === "dark") return full.paseoDarkTheme;
-  return full.antdDefaultLightTheme;
+function resolveInitialMode(): PaseoThemeMode {
+  try {
+    const stored = localStorage.getItem(MODE_STORAGE_KEY);
+    if (stored === "system" || stored === "light" || stored === "dark") {
+      return stored;
+    }
+  } catch {
+    // localStorage unavailable (privacy mode) — fall through to the default
+  }
+  return "system";
+}
+
+/** Non-hex backgrounds (none in these themes) fall back to the light chrome. */
+function isLightSurface(color: string): boolean {
+  try {
+    return hexLuminance(color) > 0.5;
+  } catch {
+    return true;
+  }
 }
 
 function Dashboard({
   view,
+  mode,
   section,
   changeView,
+  changeMode,
   setSection,
 }: {
   view: View;
+  mode: PaseoThemeMode;
   section: Section;
   changeView: (view: View) => void;
+  changeMode: (mode: PaseoThemeMode) => void;
   setSection: (section: Section) => void;
 }) {
   const { token } = antdTheme.useToken();
-  // The two light views need a light Sider and light Menu; the paseo dark view
-  // keeps the dark chrome both themes were designed around.
-  const isLight = view === "light" || view === "claude";
+  // The pair is fixed per view but the resolved scheme follows the OS, so the
+  // chrome (Sider/Menu variant) has to follow the resolved background rather
+  // than the view name.
+  const isLight = isLightSurface(String(token.colorBgLayout));
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <Sider width={248} theme={isLight ? "light" : "dark"}>
-        <div style={{ padding: "16px 20px", color: token.colorText }}>
-          <Title level={5} style={{ color: "inherit", margin: 0 }}>
-            Paseo × antd v6
-          </Title>
-          <Text style={{ color: token.colorTextSecondary, fontSize: 12 }}>
-            agent orchestration
-          </Text>
-        </div>
-        <Menu
-          theme={isLight ? "light" : "dark"}
-          mode="inline"
-          selectedKeys={[section]}
-          onClick={({ key }) => setSection(key as Section)}
-          items={SECTIONS.map((s) => ({ key: s.key, label: s.label }))}
-        />
+      <Sider
+        width={248}
+        theme={isLight ? "light" : "dark"}
+        // Sticky + viewport height: the sidebar and its footer stay put while
+        // the content column scrolls, instead of growing with the page.
+        style={{ position: "sticky", top: 0, height: "100vh" }}
+      >
         <div
           style={{
-            padding: "12px 20px",
-            color: token.colorTextTertiary,
-            fontSize: 11,
-            lineHeight: 1.6,
+            display: "flex",
+            flexDirection: "column",
+            height: "100%",
+            overflow: "hidden",
           }}
         >
-          {SECTIONS.find((s) => s.key === section)?.hint}
+          <div style={{ flexShrink: 0, padding: "16px 20px", color: token.colorText }}>
+            <Title level={5} style={{ color: "inherit", margin: 0 }}>
+              Paseo × antd v6
+            </Title>
+            <Text style={{ color: token.colorTextSecondary, fontSize: 12 }}>
+              agent orchestration
+            </Text>
+          </div>
+          <div style={{ flex: 1, minHeight: 0, overflowY: "auto" }}>
+            <Menu
+              theme={isLight ? "light" : "dark"}
+              mode="inline"
+              selectedKeys={[section]}
+              onClick={({ key }) => setSection(key as Section)}
+              items={SECTIONS.map((s) => ({ key: s.key, label: s.label }))}
+            />
+          </div>
+          <div style={{ flexShrink: 0, padding: "12px 20px 20px" }}>
+            <Segmented
+              shape="round"
+              size="small"
+              value={mode}
+              onChange={(value) => changeMode(value as PaseoThemeMode)}
+              options={MODE_OPTIONS.map((o) => ({ ...o }))}
+            />
+          </div>
         </div>
       </Sider>
       <Layout>
@@ -124,15 +165,25 @@ function Dashboard({
             alignItems: "center",
             justifyContent: "space-between",
             padding: "0 24px",
-            // antd's stock headerBg is dark navy #001529 while headerColor
-            // stays the normal dark text — unreadable. Both light views
-            // override headerBg to the sider tone in their themes; the stock
-            // view pins it to colorBgLayout here so the header stays readable
-            // without touching the stock theme itself.
-            background: view === "light" ? token.colorBgLayout : undefined,
+            // antd's stock light header is dark navy #001529 while headerColor
+            // stays the normal dark text — unreadable. The Paseo/Claude themes
+            // override headerBg; the stock-light views pin it to colorBgLayout
+            // here so the header stays readable without touching the theme.
+            background: view !== "paseo" && isLight ? token.colorBgLayout : undefined,
           }}
         >
-          <Text strong>{SECTIONS.find((s) => s.key === section)?.title}</Text>
+          <Breadcrumb
+            items={[
+              { title: "工作台" },
+              {
+                title: (
+                  <Text strong>
+                    {SECTIONS.find((s) => s.key === section)?.label}
+                  </Text>
+                ),
+              },
+            ]}
+          />
           <Segmented
             value={view}
             onChange={(value) => changeView(value as View)}
@@ -146,7 +197,7 @@ function Dashboard({
           {section === "status" && <StatusSection />}
           {section === "hosts" && <HostsSection />}
           {section === "components" && <ComponentsSection isLight={isLight} />}
-          {section === "mapping" && <MappingSection view={view} />}
+          {section === "mapping" && <MappingSection view={view} isLight={isLight} />}
         </Content>
       </Layout>
     </Layout>
@@ -155,6 +206,7 @@ function Dashboard({
 
 export default function App() {
   const [view, setView] = useState<View>(resolveInitialView);
+  const [mode, setMode] = useState<PaseoThemeMode>(resolveInitialMode);
   const [section, setSection] = useState<Section>("overview");
 
   const changeView = (next: View) => {
@@ -166,26 +218,32 @@ export default function App() {
     }
   };
 
-  // Remount on theme change: antd's cssinjs does not fully reclaim the
-  // previous theme's style tags when components are reused, which leaves
-  // some elements (buttons, tags) painted with the old theme's colors.
-  // Keying the provider forces every component to re-register its styles.
-  // The stock view bypasses PaseoThemeProvider on purpose: it must show antd
-  // without the package's Segmented gap, Select row gap or loading icon, so
-  // the comparison against the two real themes stays honest.
-  const page =
-    view === "light" ? (
-      <ConfigProvider theme={themeFor(view)}>
-        <AntApp>
-          <Dashboard view={view} section={section} changeView={changeView} setSection={setSection} />
-        </AntApp>
-      </ConfigProvider>
-    ) : (
-      <PaseoThemeProvider key={view} theme={themeFor(view)}>
-        <AntApp>
-          <Dashboard view={view} section={section} changeView={changeView} setSection={setSection} />
-        </AntApp>
-      </PaseoThemeProvider>
-    );
-  return page;
+  const changeMode = (next: PaseoThemeMode) => {
+    setMode(next);
+    try {
+      localStorage.setItem(MODE_STORAGE_KEY, next);
+    } catch {
+      // ignore persistence failures (privacy mode)
+    }
+  };
+
+  // Remount when the pair or the resolved slot changes: antd's cssinjs does
+  // not fully reclaim the previous theme's style tags when components are
+  // reused, which leaves some elements (buttons, tags) painted with the old
+  // theme's colors. Keying the provider forces every component to re-register
+  // its styles.
+  return (
+    <PaseoThemeProvider key={`${view}:${mode}`} mode={mode} {...VIEW_PRESETS[view]}>
+      <AntApp>
+        <Dashboard
+          view={view}
+          mode={mode}
+          section={section}
+          changeView={changeView}
+          changeMode={changeMode}
+          setSection={setSection}
+        />
+      </AntApp>
+    </PaseoThemeProvider>
+  );
 }
