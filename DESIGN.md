@@ -68,30 +68,36 @@ antd v6 的 token 管线有两个行为决定了“直接写 `theme.token`”行
 
 所以两个完整方案都用算法包装器：深色包 `darkAlgorithm`，浅色包 `defaultAlgorithm`，在返回值里钉回精确色值。浅色额外显式钉住所有 `*Text` / `*TextHover` / `*TextActive` 槽位，并自己推导状态族的背景/边框阶梯。
 
+这两个行为也是 `extendTheme` 存在的原因：包装器在算法末尾重新铺一遍色族，嵌套 `ConfigProvider` 的 `token` 覆盖会被它盖掉。`extendTheme` 把覆盖值折进算法链的最后一步，并在覆盖色族基色时重建该族十槽（深色用 `darkFamily` 的 ramp 映射，浅色用 `lightFamilyFromBase` 的 OKLCH 阶梯），所以 `extendTheme(paseoDarkTheme, { token: { colorPrimary } })` 得到的是一套自洽的色族，而不只是 base 变色。
+
 ## 仓库结构
 
 ```
 src/
-  index.ts  claude.ts  paseo.ts      # 三个包入口，路径与 package.json exports 一致
-  Provider.tsx                        # PaseoThemeProvider（组合层：唯一同时认识两个主题的文件）
+  index.ts  claude.ts  paseo.ts  antd.ts  tailwind.ts
+                                      # 五个包入口，路径与 package.json exports 一致
+  Provider.tsx                        # PaseoThemeProvider（亮/暗槽位 + 行为开关）
+  extendTheme.ts                      # 从任意 ThemeConfig 派生新主题
   LoadingIcon.tsx                     # PaseoLoadingIcon
-  themeStyles.ts                      # PASEO_THEME_CSS
+  themeStyles.ts                      # 三段行为 CSS（loading / select gap / segmented gap）
   shared/                             # 主题基座，只依赖 antd，不依赖 themes
-    theme.ts                          # TokenMapping/DerivedToken 类型 + familyTokens/capitalize/extras/buildToken + antdDefaultLightTheme
-    colors.ts                         # OKLCH 数学（normalizedLightFamily 等）
+    theme.ts                          # TokenMapping/DerivedToken 类型 + familyTokens/capitalize/extras/buildToken + light/darkFontAlgorithm
+    colors.ts                         # OKLCH 数学、hex↔OKLCH、亮度、darkFamily / lightFamilyFromBase
     fonts.ts                          # PASEO_FONT_STACK / PASEO_MONO_FONT_STACK
   themes/
-    claude/      theme.ts  tokens.ts  theme.test.tsx
-    paseo-dark/  theme.ts  tokens.ts  theme.test.tsx
+    antd/        theme.ts             # antd 原生亮/暗（仅钉字体栈）
+    claude/      theme.ts  tokens.ts
+    paseo-dark/  theme.ts  tokens.ts
+  tailwind/      build.ts  theme.css  # 生成器与提交的产物
   demo/                               # demo 应用（不进 npm 包）
   testing/                            # 测试共用工具（不进 npm 包）
 ```
 
-分层规则：`shared/` 只依赖 antd；`themes/*` 依赖 `shared/`；`Provider.tsx` 在 src 根层组合两个主题，是唯一同时 import 两个主题的文件；`demo/` 与 `testing/` 不进包。
+分层规则：`shared/` 只依赖 antd；`themes/*` 依赖 `shared/`；`Provider.tsx` 只认槽位与默认配对；`extendTheme.ts` 只依赖 `shared/` 的类型与色彩工具，不认识任何具体主题；`demo/` 与 `testing/` 不进包。
 
 ## Provider 注入的类名契约
 
-`PaseoThemeProvider` 通过 antd 的 `classNames` 插槽和自身 SVG 的 `className` 往消费者 DOM 里写入以下类，CSS 由 `PASEO_THEME_CSS` 以字符串形式随 Provider 注入（无需单独 import）。这些类与 `prefixCls` 无关，只在 Provider 子树内生效。
+`PaseoThemeProvider` 通过 antd 的 `classNames` 插槽和自身 SVG 的 `className` 往消费者 DOM 里写入以下类。CSS 由 `themeStyles.ts` 以字符串形式随 Provider 注入（无需单独 import），且**只注入仍启用的行为**：`behaviors` 关掉哪一项，对应的类、CSS 甚至 spinner 一起消失。这些类与 `prefixCls` 无关，只在 Provider 子树内生效。
 
 | 类名 | 落点 | 改了什么 | 为什么是 (0,2,0) | 想覆盖时写什么 |
 | --- | --- | --- | --- | --- |
