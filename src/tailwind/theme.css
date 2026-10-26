@@ -222,9 +222,9 @@
   --paseo-control-item-bg-hover: #DDD9CE;
   --paseo-control-item-bg-active: #FAF1EB;
   /* 链接 */
-  --paseo-link: #4B5BD8;
-  --paseo-link-hover: #3640b3;
-  --paseo-link-active: #23288c;
+  --paseo-link: #A34E2D;
+  --paseo-link-hover: #7D351D;
+  --paseo-link-active: #571F10;
   /* Diff */
   --paseo-diff-addition: #c1f4ca;
   --paseo-diff-addition-text: #3e6947;
@@ -330,7 +330,7 @@
     /* 文字 */
     --paseo-text: #fafafa;
     --paseo-text-secondary: #A1A5A4;
-    --paseo-text-tertiary: #717574;
+    --paseo-text-tertiary: #8A8E8D;
     --paseo-text-quaternary: #595B5B;
     --paseo-text-light-solid: #fff;
     /* 边框与分隔 */
@@ -454,7 +454,7 @@
   /* 文字 */
   --paseo-text: #fafafa;
   --paseo-text-secondary: #A1A5A4;
-  --paseo-text-tertiary: #717574;
+  --paseo-text-tertiary: #8A8E8D;
   --paseo-text-quaternary: #595B5B;
   --paseo-text-light-solid: #fff;
   /* 边框与分隔 */

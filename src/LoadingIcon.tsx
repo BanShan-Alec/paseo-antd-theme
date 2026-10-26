@@ -1,4 +1,5 @@
-import { useId, type SVGProps } from "react";
+import { useContext, useId, useInsertionEffect, type SVGProps } from "react";
+import { PaseoLoadingCssContext, ensureLoadingCss } from "./loadingCss";
 
 function joinClassNames(...values: (string | undefined)[]): string {
   return values.filter(Boolean).join(" ");
@@ -12,9 +13,20 @@ function joinClassNames(...values: (string | undefined)[]): string {
  *
  * The rotation lives on the inner <g>, matching the reference: the outer 1em
  * box stays static, so the icon does not shimmer or jitter at small sizes.
+ *
+ * Standalone-safe: used outside `PaseoThemeProvider`, the first mounted icon
+ * injects the keyframes once. Inside the provider the effect is a no-op — the
+ * provider context says its own <style> already carries them.
  */
 export function PaseoLoadingIcon(props: SVGProps<SVGSVGElement>) {
   const { className, ...rest } = props;
+
+  const injectedByProvider = useContext(PaseoLoadingCssContext);
+
+  useInsertionEffect(() => {
+    if (!injectedByProvider) ensureLoadingCss();
+  }, [injectedByProvider]);
+
   // useId keeps the SVG gradient ids unique per rendered instance; colons are
   // stripped because they are awkward inside url(#...) references.
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, "");

@@ -44,7 +44,8 @@ export function MappingSection({ view, isLight }: { view: View; isLight: boolean
       >
         {isStock ? (
           <Paragraph type="secondary" style={{ marginBottom: 0 }}>
-            这是 Antd 原生主题，未覆盖任何 antd 变量（唯一例外：字体栈与内置主题一致，避免切换时元素位移）。
+            antd 原生配色 + 本包形态：颜色、填充、边框、阴影全部由 antd 算法派生；控件高度、圆角、
+            Select 行高、Segmented 轨道内边距和字体栈与内置主题一致，所以换槽位只换颜色、不跳尺寸。
             切到「Claude + Paseo」查看完整方案。
           </Paragraph>
         ) : (

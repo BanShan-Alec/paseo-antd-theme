@@ -32,7 +32,7 @@ Diff 行底已降饱和为 `#32573a` / `#783630`。
 | `colorBgMask` | map | `rgba(0, 0, 0, 0.65)` | `—` | paseo defines no mask; matched to its overlay darkness. |
 | `colorText` | map | `#fafafa` | `foreground` |  |
 | `colorTextSecondary` | map | `#A1A5A4` | `foregroundMuted` |  |
-| `colorTextTertiary` | map | `#717574` | `foregroundExtraMuted` |  |
+| `colorTextTertiary` | map | `#8A8E8D` | `foregroundExtraMuted` |  |
 | `colorTextQuaternary` | map | `#595B5B` | `surface4` |  |
 | `colorBorder` | map | `#252B2A` | `border` |  |
 | `colorBorderSecondary` | map | `#2F3534` | `borderAccent` |  |
@@ -64,7 +64,7 @@ Diff 行底已降饱和为 `#32573a` / `#783630`。
 ### Claude 浅色（Claude Light）
 
 Claude 品牌表面 + Claude Code 信号色 + paseo 归一化状态色（OKLCH L*=0.52 / 55% 彩度）。
-主色 clay 的按钮文字为白字（4.53:1）；链接为压暗后的 Claude suggestion 蓝。
+主色 clay 的按钮文字为白字（4.53:1）；链接复用主色的 text 档（4.86:1），不再单独引入蓝色。
 
 | antd token | 类型 | 值 | paseo 来源 | 说明 |
 | --- | --- | --- | --- | --- |
@@ -72,10 +72,10 @@ Claude 品牌表面 + Claude Code 信号色 + paseo 归一化状态色（OKLCH L
 | `colorSuccess` | seed | `#467650` | `statusSuccess` | Paseo's normalized rule re-solved at L*=0.52, C=55% gamut max. |
 | `colorWarning` | seed | `#806340` | `statusWarning` |  |
 | `colorError` | seed | `#a14b43` | `statusDanger` |  |
-| `colorInfo` | seed | `#436c96` | `statusRunning` | Claude Code's suggestion blue hue is reserved for links; info uses paseo's running blue. |
+| `colorInfo` | seed | `#436c96` | `statusRunning` | paseo's 'running' blue is the only informational hue in the system; links stay in the primary family. |
 | `colorTextBase` | seed | `#3C3C2C` | `foreground` |  |
 | `colorBgBase` | seed | `#F5F4EC` | `surface1` |  |
-| `colorLink` | seed | `#4B5BD8` | `link` | Claude Code's suggestion hue #5769F7 darkened until it clears 4.5:1 on #F0EDE2. |
+| `colorLink` | seed | `#A34E2D` | `accentText` | Links reuse the primary family's text tone (4.86:1 on the page) instead of a separate hue. |
 | `fontFamily` | seed | `system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif` | `fontFamily.ui` |  |
 | `fontFamilyCode` | seed | `SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace` | `fontFamily.mono` |  |
 | `fontSize` | seed | `14` | `—` | 14px body — the 16px Claude.ai scale felt cramped in dense app chrome. |
@@ -192,7 +192,7 @@ hover/active/色阶槽位），浅色写在 `:root`，深色同时写在 `@media
 | `--paseo-surface-hover` | `#DDD9CE` | `#1E2120` | `paseoSurfaceHover` / `paseoSurface1` | 深色主题的卡片 hover 就是面板色 surface1（与 Table.rowHoverBg 一致）。 |
 | `--paseo-text` | `#3C3C2C` | `#fafafa` | `colorText` |  |
 | `--paseo-text-secondary` | `#5C5C54` | `#A1A5A4` | `colorTextSecondary` |  |
-| `--paseo-text-tertiary` | `#65635E` | `#717574` | `colorTextTertiary` |  |
+| `--paseo-text-tertiary` | `#65635E` | `#8A8E8D` | `colorTextTertiary` |  |
 | `--paseo-text-quaternary` | `#878681` | `#595B5B` | `colorTextQuaternary` |  |
 | `--paseo-text-light-solid` | `#FFFFFF` | `#fff` | `colorTextLightSolid` |  |
 | `--paseo-border` | `#DBD9D0` | `#252B2A` | `colorBorder` |  |
@@ -204,9 +204,9 @@ hover/active/色阶槽位），浅色写在 `:root`，深色同时写在 `@media
 | `--paseo-fill-quaternary` | `#EDEBE0` | `#252B2A` | `colorFillQuaternary` |  |
 | `--paseo-control-item-bg-hover` | `#DDD9CE` | `#1E2120` | `controlItemBgHover` |  |
 | `--paseo-control-item-bg-active` | `#FAF1EB` | `#183124` | `controlItemBgActive` |  |
-| `--paseo-link` | `#4B5BD8` | `#7ccba0` | `colorLink` |  |
-| `--paseo-link-hover` | `#3640b3` | `#deebe3` | `colorLinkHover` |  |
-| `--paseo-link-active` | `#23288c` | `#cbdcd2` | `colorLinkActive` |  |
+| `--paseo-link` | `#A34E2D` | `#7ccba0` | `colorLink` |  |
+| `--paseo-link-hover` | `#7D351D` | `#deebe3` | `colorLinkHover` |  |
+| `--paseo-link-active` | `#571F10` | `#cbdcd2` | `colorLinkActive` |  |
 | `--paseo-diff-addition` | `#c1f4ca` | `#32573a` | `paseoDiffAddition` |  |
 | `--paseo-diff-addition-text` | `#3e6947` | `#6cb17b` | `paseoDiffAdditionText` |  |
 | `--paseo-diff-deletion` | `#f3dfdd` | `#783630` | `paseoDiffDeletion` |  |

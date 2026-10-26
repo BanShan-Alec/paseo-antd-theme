@@ -3,11 +3,13 @@ import { App as AntApp, Breadcrumb, Layout, Menu, Segmented, Typography, theme a
 import {
   AgentsSection,
   ComponentsSection,
+  DesignSection,
   DiffSection,
   HostsSection,
   MappingSection,
   OverviewSection,
   StatusSection,
+  TypographySection,
 } from "./demo/sections";
 import type { View } from "./demo/view";
 import { antdDarkTheme, antdLightTheme } from "./themes/antd/theme";
@@ -37,8 +39,10 @@ const SECTIONS = [
   { key: "diff", label: "Diff 视图" },
   { key: "status", label: "状态圆点" },
   { key: "hosts", label: "Host 身份色" },
+  { key: "typography", label: "文字阶梯" },
   { key: "components", label: "组件 Token" },
   { key: "mapping", label: "Token 映射" },
+  { key: "design", label: "设计规范" },
 ] as const;
 
 type Section = (typeof SECTIONS)[number]["key"];
@@ -196,8 +200,10 @@ function Dashboard({
           {section === "diff" && <DiffSection />}
           {section === "status" && <StatusSection />}
           {section === "hosts" && <HostsSection />}
+          {section === "typography" && <TypographySection />}
           {section === "components" && <ComponentsSection isLight={isLight} />}
           {section === "mapping" && <MappingSection view={view} isLight={isLight} />}
+          {section === "design" && <DesignSection />}
         </Content>
       </Layout>
     </Layout>

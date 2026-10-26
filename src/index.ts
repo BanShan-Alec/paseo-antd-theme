@@ -1,4 +1,4 @@
-export { PaseoThemeProvider, resolvePaseoTheme } from "./Provider";
+export { PaseoThemeProvider } from "./Provider";
 export type {
   PaseoBehaviors,
   PaseoThemeMode,
@@ -11,3 +11,5 @@ export { claudeLightTheme } from "./themes/claude/theme";
 export { paseoDarkTheme } from "./themes/paseo-dark/theme";
 export { extendTheme } from "./extendTheme";
 export type { ThemeExtension } from "./extendTheme";
+export { generateTailwindCss } from "./tailwind/build";
+export type { TailwindThemePair } from "./tailwind/build";

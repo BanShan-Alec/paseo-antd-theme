@@ -110,17 +110,18 @@ describe("paseo → antd dark token mapping", () => {
 });
 
 // ---------------------------------------------------------------------------
-// The stock light slot — antd's own theme, font stack aside
+// The stock light slot — antd's colors on the package's skeleton
 // ---------------------------------------------------------------------------
 
 describe("antd stock light theme", () => {
-  it("overrides nothing but the shared font stack", () => {
-    // Colors, sizes, radii and components stay stock; only fontFamily is
-    // pinned, and through the algorithm — a seed in `token` would be
-    // stripped by formatToken.
+  it("keeps antd's colors and adopts the shared geometry", () => {
+    // Colours come straight from antd's algorithm; heights, radii and Select
+    // rows follow the complete themes so a mixed pair cannot resize on switch.
     expect(antdLightTheme.token).toBeUndefined();
-    expect(antdLightTheme.components).toBeUndefined();
     expect(antdLightTheme.algorithm).toBeDefined();
+    expect(light.controlHeight).toBe(40);
+    expect(light.borderRadius).toBe(12);
+    expect(antdLightTheme.components?.Select?.optionHeight).toBe(44);
   });
 
   it("resolves to antd's own default values", () => {
@@ -215,6 +216,26 @@ describe("dark contrast", () => {
     expect(contrast(paseoDark.foreground, paseoDark.surface1)).toBeGreaterThanOrEqual(4.5);
   });
 
+  it("tertiary text clears 4.5:1 on the page and card surfaces", () => {
+    // Raised from paseo's #717574 (3.72:1) because tier 3 is where timestamps
+    // and meta text live. Popovers (surface2) are intentionally not covered —
+    // the design spec sends elevated meta text to tier 2.
+    expect(contrast(paseoDark.foregroundExtraMuted, paseoDark.surface0)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(paseoDark.foregroundExtraMuted, paseoDark.surface1)).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("keeps the text ladder ordered", () => {
+    const tiers = [
+      paseoDark.foreground,
+      paseoDark.foregroundMuted,
+      paseoDark.foregroundExtraMuted,
+      paseoDark.surface4, // colorTextQuaternary
+    ].map(luminance);
+    for (let i = 1; i < tiers.length; i += 1) {
+      expect(tiers[i - 1], `tier ${i}`).toBeGreaterThan(tiers[i]);
+    }
+  });
+
   it("primary button label clears 4.5:1 on the primary fill", () => {
     expect(contrast("#ffffff", paseoDark.accent)).toBeGreaterThanOrEqual(4.5);
   });
@@ -223,6 +244,12 @@ describe("dark contrast", () => {
     // The reason the text slots deviate from antd's dark mapping.
     expect(contrast(String(dark.colorPrimaryText), paseoDark.surface0)).toBeGreaterThanOrEqual(4.5);
     expect(contrast(String(dark.colorLink), paseoDark.surface0)).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("keeps the primary fill out of body text", () => {
+    // #20744A on #181B1A is 3.02:1 — a graphic, never body copy.
+    expect(contrast(paseoDark.accent, paseoDark.surface0)).toBeGreaterThanOrEqual(3);
+    expect(contrast(paseoDark.accent, paseoDark.surface0)).toBeLessThan(4.5);
   });
 
   it("status colors clear 3:1 as non-text signals on the dark surface", () => {

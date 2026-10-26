@@ -1,4 +1,3 @@
-import { generate } from "@ant-design/colors";
 import type { ThemeConfig } from "antd";
 import { theme as antdTheme } from "antd";
 import {
@@ -49,8 +48,6 @@ const primaryPalette: LightFamily = {
   textActive: "#571F10",
 };
 
-const linkRamp = generate(claudeLight.link);
-
 const success = claudeLightStatusFamilies.success;
 const warning = claudeLightStatusFamilies.warning;
 const danger = claudeLightStatusFamilies.danger;
@@ -62,11 +59,12 @@ const pinnedLightColors: AntdToken = {
   ...familyTokens("colorWarning", warning),
   ...familyTokens("colorError", danger),
   ...familyTokens("colorInfo", info),
-  // Links darken on hover/active: antd's light ramp would pick #7586e6
-  // (3.16:1) for the hover slot.
-  colorLink: claudeLight.link,
-  colorLinkHover: linkRamp[6],
-  colorLinkActive: linkRamp[7],
+  // Links live in the primary family: the fill tone is 3.86:1 on the page, so
+  // links take the text tone (4.86:1) and darken through the same ramp. No
+  // separate blue hue in the palette.
+  colorLink: primaryPalette.text,
+  colorLinkHover: primaryPalette.textHover,
+  colorLinkActive: primaryPalette.textActive,
   fontFamily: PASEO_FONT_STACK,
   fontFamilyCode: PASEO_MONO_FONT_STACK,
 };
@@ -129,7 +127,7 @@ const lightMappings: readonly TokenMapping[] = [
     kind: "seed",
     value: claudeLight.statusRunning,
     paseoToken: "statusRunning",
-    note: "Claude Code's suggestion blue hue is reserved for links; info uses paseo's running blue.",
+    note: "paseo's 'running' blue is the only informational hue in the system; links stay in the primary family.",
   },
   {
     antdToken: "colorTextBase",
@@ -146,9 +144,9 @@ const lightMappings: readonly TokenMapping[] = [
   {
     antdToken: "colorLink",
     kind: "seed",
-    value: claudeLight.link,
-    paseoToken: "link",
-    note: "Claude Code's suggestion hue #5769F7 darkened until it clears 4.5:1 on #F0EDE2.",
+    value: primaryPalette.text,
+    paseoToken: "accentText",
+    note: "Links reuse the primary family's text tone (4.86:1 on the page) instead of a separate hue.",
   },
   { antdToken: "fontFamily", kind: "seed", value: PASEO_FONT_STACK, paseoToken: "fontFamily.ui" },
   {

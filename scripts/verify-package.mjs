@@ -58,14 +58,6 @@ try {
     "docs/claude-light.png",
     "dist/index.js",
     "dist/index.d.ts",
-    "dist/claude.js",
-    "dist/claude.d.ts",
-    "dist/paseo.js",
-    "dist/paseo.d.ts",
-    "dist/antd.js",
-    "dist/antd.d.ts",
-    "dist/tailwind.js",
-    "dist/tailwind.d.ts",
     "dist/tailwind.css",
   ];
   for (const file of required) {
@@ -85,9 +77,25 @@ try {
     }
   }
 
-  for (const entry of ["index", "claude", "paseo", "antd", "tailwind"]) {
-    const mod = await import(pathToFileURL(join(dist, `${entry}.js`)).href);
-    if (Object.keys(mod).length === 0) fail(`empty ESM entry: ${entry}`);
+  // The public surface is deliberately small; anything added here is a
+  // consumer-facing promise, so keep the list exact rather than open-ended.
+  const publicExports = [
+    "PaseoLoadingIcon",
+    "PaseoThemeProvider",
+    "antdDarkTheme",
+    "antdLightTheme",
+    "claudeLightTheme",
+    "extendTheme",
+    "generateTailwindCss",
+    "paseoDarkTheme",
+  ];
+  {
+    const index = await import(pathToFileURL(join(dist, "index.js")).href);
+    const actual = Object.keys(index);
+    const missing = publicExports.filter((name) => !actual.includes(name));
+    const extra = actual.filter((name) => !publicExports.includes(name));
+    if (missing.length > 0) fail(`index.js is missing exports: ${missing.join(", ")}`);
+    if (extra.length > 0) fail(`index.js has undocumented exports: ${extra.join(", ")}`);
   }
 
   // The Tailwind stylesheet must ship both schemes completely: every variable

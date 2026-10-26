@@ -12,7 +12,9 @@
  *     success #2C7A39, error #AB2B3F, warning #966C1E, suggestion #5769F7,
  *     diff line fills #69DB7C / #FFA8B4, selection #B4D5FF. The CLI defines
  *     no canvas background (the terminal supplies it), which is why the
- *     surfaces above come from the brand palette instead.
+ *     surfaces above come from the brand palette instead. One deliberate
+ *     departure: links do not take the suggestion blue — they reuse the
+ *     primary family's text tone so the whole interface stays clay.
  *
  * The status family deliberately does NOT copy Claude Code's values: this
  * scheme keeps paseo's normalized status rule (one perceived lightness, one
@@ -66,10 +68,7 @@ export const claudeLight = {
   borderAccent: "#E8E6DF",
 
   accent: "#BA5B37", // clay sampled from claude.ai, one step deeper (white label 4.53:1 — clears 4.5)
-  accentText: "#A34E2D", // clay darkened for text (4.86:1 on the page)
-  link: "#4B5BD8", // Claude suggestion hue, darkened from #5769F7
-  linkHover: "#3640B3",
-  linkActive: "#23288C",
+  accentText: "#A34E2D", // clay darkened for text (4.86:1 on the page); also drives links
 
   statusSuccess: status.success.base,
   statusDanger: status.danger.base,
