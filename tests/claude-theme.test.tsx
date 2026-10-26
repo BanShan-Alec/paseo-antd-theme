@@ -101,10 +101,9 @@ describe("claude → antd light token mapping", () => {
     );
     expect(claudeLightTheme.components?.Table?.rowHoverBg).toBe(claudeLight.surfaceHover);
     expect(claudeLightTheme.components?.Table?.headerBg).toBe(claudeLight.surfaceHead);
-    // Segmented's track is a light neutral in the card family, so it needs
-    // no hover override — antd's default (colorFillSecondary = surface3)
-    // already reads 1.21 against it.
-    expect(claudeLightTheme.components?.Segmented?.trackBg).toBe(claudeLight.surfaceTrack);
+    // The track sits on the page tone (surface0), matching the dark theme —
+    // the selected thumb carries the contrast, no hover override needed.
+    expect(claudeLightTheme.components?.Segmented?.trackBg).toBe(claudeLight.surface0);
     expect(claudeLightTheme.components?.Segmented?.itemHoverBg).toBeUndefined();
     expect(claudeLightTheme.components?.Card?.headerBg).toBe(claudeLight.surfaceHead);
     expect(light.colorFillTertiary).toBe(claudeLight.surfaceHover);

@@ -55,7 +55,6 @@ export const claudeLight = {
   surface2: "#FFFFFF", // elevated / popover
   surfaceHead: "#E0DDD0", // card/table head — clearly reads on the card (1.24), above hover (1.08)
   surfaceHover: "#DDD9CE", // hover step on cards — same hue as the page (1.28 vs card)
-  surfaceTrack: "#E9E6DD", // segmented track — light neutral in the card family
   surface3: "#D7D2C7", // one step darker: segmented hover (antd default) + menu hover
   surface4: "#D1CCBF", // strongest fill / menu selected
 

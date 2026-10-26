@@ -371,10 +371,10 @@ const lightComponents: AntdComponents = {
     bodySortBg: "#F5F3EF",
   },
   Segmented: {
-    // A light neutral in the card family (antd's own default is
-    // colorBgLayout). The sidebar tone would be darker than the hover step
-    // and invert the hover direction.
-    trackBg: claudeLight.surfaceTrack,
+    // surface0 — the page tone itself, matching the dark theme. antd's own
+    // default is also colorBgLayout; the track stays quiet and the selected
+    // thumb carries the contrast.
+    trackBg: claudeLight.surface0,
     // Default is lineWidthBold (2). 4 gives the selected thumb visible
     // breathing room inside the 40px track; the item-to-item gap is added by
     // PaseoThemeProvider because antd has no gap token.

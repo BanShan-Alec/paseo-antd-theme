@@ -195,7 +195,7 @@
 | Input / Select | 边框色、hover/active 主色、12px 圆角、40px 高 | 错误态交给 `status="error"`，不要手写红边框；Select 的长列表见上文 `listItemHeight` |
 | Card | `surface-1` 底、12px 圆角、头用 `surface-head`、默认无阴影 | 卡片是页面上的「纸」，不要嵌套三层卡片；卡片头与正文之间用 `border-split`；`hoverable` 才出现悬浮投影 |
 | Table | 表头 `surface-head`、行 hover `surface-hover`、行线 `border-split`、斑马纹 `colorFillAlter`（派生自 `fill-quaternary`） | 斑马纹与行 hover 不要同时开；数字列右对齐并用 mono；空态用 Empty，不要自己画 |
-| Segmented / Tabs | Segmented：`Segmented.trackBg`（浅色 `#E9E6DD`，深色 `surface0`）+ 4px 内边距 + 4px 项间距；Tabs：ink bar 主色 | 两者都表达「切视图」，同一区域只选一个；Segmented 选项不超过 5 个 |
+| Segmented / Tabs | Segmented：`Segmented.trackBg`（亮暗都用页面底 `surface0`）+ 4px 内边距 + 4px 项间距；Tabs：ink bar 主色 | 两者都表达「切视图」，同一区域只选一个；Segmented 选项不超过 5 个 |
 | Menu / Layout | 侧栏底 `surface-sidebar`，hover/选中按表面分层 | 侧栏菜单只用一级图标 + 文字，不塞按钮组；选中项由路由决定，不要手写背景 |
 | Tag / Badge | Tag 8px 圆角；Badge 用胶囊/圆点 | 状态用语义色的 text/bg 槽；分类用身份色；Tag 里不放可点击的主操作 |
 | Alert / Message / Notification | Alert：状态色底 + 12px 圆角；Message / Notification：浮层 `surface-2` | Alert 常驻、Message 瞬时；同一条消息不要同时用两种；错误文案要说「怎么修」 |
