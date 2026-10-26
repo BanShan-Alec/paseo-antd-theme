@@ -237,39 +237,4 @@
 
 **暗色策略**：`mode` 支持 `system` / `light` / `dark`；Tailwind 侧同时输出 `prefers-color-scheme` 与 `.dark` 两套变量，类策略需在项目里加 `@custom-variant dark (&:where(.dark, .dark *));`。
 
-## 附录：取值与实现
-
-这一节解释「为什么值长这样」，改动主题源码前需要读。
-
-- **算法包装**：antd v6 的 `formatToken` 会删掉 `theme.token` 里的 seed 键，随后算法再重新派生色族。所以两套完整主题都用算法包装器（深色包 `darkAlgorithm`、浅色包 `defaultAlgorithm`），在返回值里钉回精确色值；浅色还显式钉住所有 `*Text*` 槽位，因为 antd 的浅色 ramp 会把 hover 指向更浅的一档。`extendTheme` 是这条链路的公开出口。
-- **状态色归一化**：所有语义色共用同一感知明度（深色 `L*=0.70`，浅色 `L*=0.52`）与同一彩度比例（55% 色域上限），只有色相承载语义，所以五色「等响度」——不会有一个状态比另一个更抢眼。
-- **身份色**：十个色相同样归一化，白字对比度被压在 4.2–5.2 区间，色相只负责身份。
-- **diff**：行底取状态色相在 `L*=0.42`（深色）/ `L*=0.92`（浅色）、55% 彩度的值；paseo 原始的 `#4ade80` / `#ef4444` 配白字只有 1.67 / 3.61，已废弃。
-- **扩展槽**：`paseoSurface*` 是 antd 三层表面之外的定点槽位（侧栏、表头、hover），Tailwind 侧与组件 token 指向同一变量，因此工具类和组件永远同色；Segmented 的 track 只存在于组件 token（`Segmented.trackBg`），没有独立的 Tailwind 类。
-
-仓库结构：
-
-```
-src/
-  index.ts                            # 唯一包入口（另有 tailwind.css 资源）
-  Provider.tsx                        # PaseoThemeProvider（亮/暗槽位 + 行为开关）
-  extendTheme.ts                      # 从任意 ThemeConfig 派生新主题
-  LoadingIcon.tsx                     # PaseoLoadingIcon（单独使用时会自动注入关键帧）
-  loadingCss.ts                       # 上面那条自注入路径与 provider 的共用去重
-  themeStyles.ts                      # 三段行为 CSS（loading / select gap / segmented gap）
-  shared/                             # 主题基座，只依赖 antd，不依赖 themes
-    theme.ts                          # TokenMapping/DerivedToken 类型 + familyTokens/extras/buildToken + 字体算法
-    colors.ts                         # OKLCH 数学、hex↔OKLCH、亮度、darkFamily / lightFamilyFromBase
-    fonts.ts                          # PASEO_FONT_STACK / PASEO_MONO_FONT_STACK
-  themes/
-    antd/        theme.ts             # antd 原生亮/暗（仅钉字体栈）
-    claude/      theme.ts  tokens.ts
-    paseo-dark/  theme.ts  tokens.ts
-  tailwind/      build.ts  theme.css  # 生成器与提交的产物
-  demo/                               # demo 应用（不进 npm 包）
-  testing/                            # 测试共用工具（不进 npm 包）
-```
-
-分层规则：`shared/` 只依赖 antd；`themes/*` 依赖 `shared/`；`Provider.tsx` 只认槽位与默认配对；`extendTheme.ts` 只依赖 `shared/` 的类型与色彩工具，不认识任何具体主题。
-
-兼容性备注：支持 cssVar 模式（`theme={{ ...claudeLightTheme, cssVar: true }}`）；`antdLightTheme` / `antdDarkTheme` 的颜色完全走 antd 算法，形态与本包对齐（40 / 32 / 48、12 / 8 / 4、Select 44、Segmented trackPadding 4、Alert 12px 圆角），因此混搭槽位切换只换配色不换骨架。
+**cssVar 模式**：`theme={{ ...claudeLightTheme, cssVar: true }}` 受支持；antd 原生两套的颜色完全走 antd 算法，形态与本包对齐（40 / 32 / 48、12 / 8 / 4、Select 44、Segmented trackPadding 4、Alert 12px 圆角），因此混搭槽位切换只换配色不换骨架。
