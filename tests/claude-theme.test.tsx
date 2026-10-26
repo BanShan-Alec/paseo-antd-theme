@@ -190,6 +190,20 @@ describe("claude light contrast", () => {
     }
   });
 
+  it("keeps the text ladder separated: tier 2 a clear step above tier 3, tier 4 sunken", () => {
+    // The sampled #5C5C54 sat only 0.63 apart from tier 3 and read as the
+    // same level; the deepened secondary restores a visible step.
+    for (const surface of [claudeLight.surface0, claudeLight.surface1]) {
+      const gap = contrast(claudeLight.foregroundMuted, surface) - contrast(claudeLight.foregroundExtraMuted, surface);
+      expect(gap, `tiers 2-3 on ${surface}`).toBeGreaterThanOrEqual(1.2);
+    }
+    // Placeholder/disabled must read as unavailable, not as a fourth text
+    // level — dark enough to recognize, clearly below the 4.5 discipline.
+    expect(contrast(claudeLight.foregroundFaint, claudeLight.surface0)).toBeLessThan(3);
+    expect(contrast(claudeLight.foregroundFaint, claudeLight.surface1)).toBeLessThan(3);
+    expect(contrast(claudeLight.foregroundFaint, claudeLight.surface0)).toBeGreaterThanOrEqual(2.2);
+  });
+
   it("uses the sampled claude.ai clay with a white label above 4.5:1", () => {
     // #BA5B37 is the sampled clay taken one step deeper so white clears 4.5.
     expect(claudeLight.accent).toBe("#BA5B37");

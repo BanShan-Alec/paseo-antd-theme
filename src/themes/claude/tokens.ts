@@ -4,7 +4,7 @@
  * Provenance:
  *   surfaces / neutrals — sampled from the claude.ai UI (V4)
  *     page #F0EDE2, card #F5F4EC (1.06 above the page), hover #E4E4D4,
- *     ink #3C3C2C, secondary #5C5C54, clay #BC5C3C.
+ *     ink #3C3C2C, secondary #55554B, clay #BC5C3C.
  *   clay — #C6613F, the interactive clay used on Claude's site (the brand
  *     palette's #D97757 is its lighter decorative variant). White text on it
  *     is 4.05:1, the theme's one documented contrast exception.
@@ -59,9 +59,9 @@ export const claudeLight = {
   surface4: "#D1CCBF", // strongest fill / menu selected
 
   foreground: "#3C3C2C", // warm ink (9.6:1 on the page)
-  foregroundMuted: "#5C5C54", // warm gray (5.8:1)
+  foregroundMuted: "#55554B", // warm gray (6.4:1) — kept a clear step above tier 3
   foregroundExtraMuted: "#65635E", // 5.1:1
-  foregroundFaint: "#878681", // placeholder/disabled only (3.1:1)
+  foregroundFaint: "#98978F", // placeholder/disabled only (2.5:1)
 
   border: "#DBD9D0",
   borderAccent: "#E8E6DF",

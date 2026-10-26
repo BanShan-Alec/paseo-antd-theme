@@ -90,9 +90,9 @@ Claude 品牌表面 + Claude Code 信号色 + paseo 归一化状态色（OKLCH L
 | `colorBgSpotlight` | map | `#1F1E1D` | `—` | Tooltip stays dark ink with white text. |
 | `colorBgMask` | map | `rgba(20, 20, 19, 0.45)` | `—` |  |
 | `colorText` | map | `#3C3C2C` | `foreground` |  |
-| `colorTextSecondary` | map | `#5C5C54` | `foregroundMuted` |  |
-| `colorTextTertiary` | map | `#65635E` | `foregroundExtraMuted` |  |
-| `colorTextQuaternary` | map | `#878681` | `foregroundFaint` | Placeholder/disabled only — not a body-text level. |
+| `colorTextSecondary` | map | `#55554B` | `foregroundMuted` | Deepened one step from the sampled #5C5C54 so tiers 2→3 stay clearly separated (1.31 apart). |
+| `colorTextTertiary` | map | `#65635E` | `foregroundExtraMuted` | Held at ≥4.5:1 — this tier carries timestamps and meta text. |
+| `colorTextQuaternary` | map | `#98978F` | `foregroundFaint` | Placeholder/disabled only — 2.5:1, visibly sunken; not a body-text level. |
 | `colorTextLightSolid` | map | `#FFFFFF` | `—` | Danger/solid labels stay white; primary buttons override with Button.primaryColor. |
 | `colorBorder` | map | `#DBD9D0` | `border` |  |
 | `colorBorderSecondary` | map | `#E8E6DF` | `borderAccent` |  |
@@ -191,9 +191,9 @@ hover/active/色阶槽位），浅色写在 `:root`，深色同时写在 `@media
 | `--paseo-surface-head` | `#E0DDD0` | `#1E2120` | `paseoSurfaceHead` / `paseoSurface1` | 深色主题没有 paper-on-paper 表头概念，用面板色 surface1 补位（与 Table.headerBg 一致）。 |
 | `--paseo-surface-hover` | `#DDD9CE` | `#1E2120` | `paseoSurfaceHover` / `paseoSurface1` | 深色主题的卡片 hover 就是面板色 surface1（与 Table.rowHoverBg 一致）。 |
 | `--paseo-text` | `#3C3C2C` | `#fafafa` | `colorText` |  |
-| `--paseo-text-secondary` | `#5C5C54` | `#A1A5A4` | `colorTextSecondary` |  |
+| `--paseo-text-secondary` | `#55554B` | `#A1A5A4` | `colorTextSecondary` |  |
 | `--paseo-text-tertiary` | `#65635E` | `#8A8E8D` | `colorTextTertiary` |  |
-| `--paseo-text-quaternary` | `#878681` | `#595B5B` | `colorTextQuaternary` |  |
+| `--paseo-text-quaternary` | `#98978F` | `#595B5B` | `colorTextQuaternary` |  |
 | `--paseo-text-light-solid` | `#FFFFFF` | `#fff` | `colorTextLightSolid` |  |
 | `--paseo-border` | `#DBD9D0` | `#252B2A` | `colorBorder` |  |
 | `--paseo-border-secondary` | `#E8E6DF` | `#2F3534` | `colorBorderSecondary` |  |

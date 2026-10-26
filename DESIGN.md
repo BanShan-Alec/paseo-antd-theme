@@ -59,7 +59,7 @@
 规则：
 
 - **降级强调用 `text-text-secondary`，不要用 `opacity`**。主题已经给了四档，`opacity: 0.6` 在不同表面上会落进对比度盲区。
-- `text-text-quaternary` 在浅色下只有约 3:1，任何需要阅读的内容都不许用它；它只用于 placeholder、disabled。
+- `text-text-quaternary` 在浅色下约 2.5:1，任何需要阅读的内容都不许用它；它只用于 placeholder、disabled。
 - 三级（元信息）的 4.5:1 承诺覆盖页面底与卡片两种表面；浮层（`#FFFFFF` / `#272A29`）上不保证，浮层里的说明文字升一档改用二级。
 - 表格数字、ID、代码、diff 内容用 `font-mono`；金额和统计加 `tabular-nums` 保持列对齐。
 - 标题不需要单独颜色：用 `text-text` + 字重 600 表达层级。
