@@ -169,6 +169,9 @@ function Dashboard({
             alignItems: "center",
             justifyContent: "space-between",
             padding: "0 24px",
+            // DESIGN.md promises the header band is separated from the body by
+            // border-split; the themes only set headerBg, so draw it here.
+            borderBottom: `1px solid ${token.colorSplit}`,
             // antd's stock light header is dark navy #001529 while headerColor
             // stays the normal dark text — unreadable. The Paseo/Claude themes
             // override headerBg; the stock-light views pin it to colorBgLayout
@@ -192,6 +195,10 @@ function Dashboard({
             value={view}
             onChange={(value) => changeView(value as View)}
             options={VIEW_OPTIONS.map((o) => ({ ...o }))}
+            // The content column's Row gutter leaves its cards 8px narrower on
+            // each side; pull the switcher in by the same half-gutter so the
+            // right edges line up.
+            style={{ marginInlineEnd: 8 }}
           />
         </Header>
         <Content style={{ padding: 24 }}>

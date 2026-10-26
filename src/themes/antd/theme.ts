@@ -23,6 +23,7 @@ const alignGeometry: MappingAlgorithm = (_seed, mapToken) =>
 
 function stockGeometryComponents(): NonNullable<ThemeConfig["components"]> {
   return {
+    Layout: { ...SHARED_COMPONENT_GEOMETRY.Layout },
     Select: { ...SHARED_COMPONENT_GEOMETRY.Select },
     Segmented: { ...SHARED_COMPONENT_GEOMETRY.Segmented },
     // antd 6.6's css-var mode leaves the Alert component-token default empty,

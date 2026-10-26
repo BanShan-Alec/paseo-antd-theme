@@ -4,6 +4,7 @@ import {
   buildToken,
   extras,
   familyTokens,
+  SHARED_COMPONENT_GEOMETRY,
   type AntdComponents,
   type AntdToken,
   type DerivedToken,
@@ -320,6 +321,7 @@ const darkComponents: AntdComponents = {
     bodyBg: paseoDark.surface0,
     siderBg: paseoDark.surfaceSidebar,
     headerBg: paseoDark.surface0,
+    ...SHARED_COMPONENT_GEOMETRY.Layout,
     triggerBg: paseoDark.surface1,
   },
   Menu: {
