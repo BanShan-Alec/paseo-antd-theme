@@ -11,7 +11,7 @@
 | `antdLightTheme` / `antdDarkTheme` | antd 原生配色 + 本包形态 | 迁移对照、只换配色的存量页面 |
 | `extendTheme(base, …)` | 从以上任一套派生 | 只换品牌色 / 单个 token，其余保持不变 |
 
-`paseoDarkTheme` 与 `claudeLightTheme` **共享同一套形态规格**——40px 控件、14px 正文、12px 圆角、4px 栅格、软阴影、44px Select 行高、56px Header——只是颜色相反。因此同一份页面代码换槽位不需要改尺寸。
+`paseoDarkTheme` 与 `claudeLightTheme` **共享同一套形态规格**——40px 控件、14px 正文、12px 圆角、4px 栅格、软阴影、44px Select 行高——只是颜色相反。因此同一份页面代码换槽位不需要改尺寸。
 
 `antdLightTheme` / `antdDarkTheme` 的颜色完全遵循 [antd 自身的设计规范](https://ant.design/design.md)，形态则与本包其余主题一致（同样的控件高度、圆角、Select 行高和字体栈），所以「antd 亮 + Paseo 暗」这类混搭切换不跳尺寸；要连尺寸都逐像素等于 antd，自己传 antd 的 algorithm 即可。
 
@@ -156,7 +156,7 @@
 - 栅格是 **4px**（`sizeUnit` / `sizeStep`）。间距只用 4 / 8 / 12 / 16 / 24 / 32；出现 13px、18px、7px 说明设计还没对齐。
 - 控件高度：默认 40、小号 32、大号 48（`controlHeight` / `SM` / `LG`）。不要把两档混排在同一行。
 - 内边距：`padding` 16、`paddingSM` 12、`paddingXS` 8、`paddingXXS` 4、`paddingLG` 24；卡片正文与表单分区用 16/24。
-- 页面骨架：Layout body 用 `bg-layout`，Sider 用 `bg-surface-sidebar`，Header 与 body 同色（`headerBg = surface0`、高 56，`Layout.headerHeight` 已随主题下发），靠 1px `colorSplit` 下边框与内容分隔——Header 自身没有边框 token，边框要自己画。
+- 页面骨架：Layout body 用 `bg-layout`，Sider 用 `bg-surface-sidebar`，Header 与 body 同色（`headerBg = surface0`），靠 `border-split` 与内容分隔。
 - Select 行高是 44（`optionHeight`），由 `optionPadding: 9px 12px` 加上 Provider 注入的上下 2px 透明边框组成；开启虚拟滚动时必须同时传 `<Select listItemHeight={44}>`，否则行高估算错位。
 
 ## 层次与阴影
@@ -272,4 +272,4 @@ src/
 
 分层规则：`shared/` 只依赖 antd；`themes/*` 依赖 `shared/`；`Provider.tsx` 只认槽位与默认配对；`extendTheme.ts` 只依赖 `shared/` 的类型与色彩工具，不认识任何具体主题。
 
-兼容性备注：支持 cssVar 模式（`theme={{ ...claudeLightTheme, cssVar: true }}`）；`antdLightTheme` / `antdDarkTheme` 的颜色完全走 antd 算法，形态与本包对齐（40 / 32 / 48、12 / 8 / 4、Select 44、Segmented trackPadding 4、Header 56、Alert 12px 圆角），因此混搭槽位切换只换配色不换骨架。
+兼容性备注：支持 cssVar 模式（`theme={{ ...claudeLightTheme, cssVar: true }}`）；`antdLightTheme` / `antdDarkTheme` 的颜色完全走 antd 算法，形态与本包对齐（40 / 32 / 48、12 / 8 / 4、Select 44、Segmented trackPadding 4、Alert 12px 圆角），因此混搭槽位切换只换配色不换骨架。

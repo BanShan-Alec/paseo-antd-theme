@@ -58,12 +58,6 @@ describe("antd stock themes", () => {
     expect(antdLightTheme.components?.Select?.optionHeight).toBe(44);
     expect(antdLightTheme.components?.Select?.optionPadding).toBe("9px 12px");
     expect(antdLightTheme.components?.Segmented?.trackPadding).toBe(4);
-    // Header height is part of the shared skeleton too: antd's 80px default
-    // would make a mixed pair jump when switching schemes.
-    expect(antdLightTheme.components?.Layout?.headerHeight).toBe(56);
-    expect(antdDarkTheme.components?.Layout?.headerHeight).toBe(56);
-    expect(claudeLightTheme.components?.Layout?.headerHeight).toBe(56);
-    expect(paseoDarkTheme.components?.Layout?.headerHeight).toBe(56);
     expect(antdDarkTheme.components).toEqual(antdLightTheme.components);
     expect(antdLightTheme.components?.Select?.optionHeight).toBe(
       claudeLightTheme.components?.Select?.optionHeight,

@@ -25,12 +25,6 @@ export const SHARED_GEOMETRY = {
 
 /** The component-level geometry antd has no seed token for. */
 export const SHARED_COMPONENT_GEOMETRY = {
-  Layout: {
-    // antd's default is controlHeight * 2 (80px) — too tall for a demo header
-    // that carries one breadcrumb row. 56 = controlHeightLG + 8 keeps a
-    // comfortable rhythm without the dead space.
-    headerHeight: 56,
-  },
   Select: { optionHeight: 44, optionPadding: "9px 12px" },
   Segmented: { trackPadding: 4 },
 } as const;
