@@ -42,7 +42,7 @@ const SECTIONS = [
   { key: "typography", label: "文字阶梯" },
   { key: "components", label: "组件 Token" },
   { key: "mapping", label: "Token 映射" },
-  { key: "design", label: "设计规范" },
+  { key: "design", label: "DESIGN.md" },
 ] as const;
 
 type Section = (typeof SECTIONS)[number]["key"];
