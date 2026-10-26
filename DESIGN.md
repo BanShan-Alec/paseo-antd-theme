@@ -43,6 +43,7 @@
 - **hover 跟着它所在的表面走**：白卡上的行 hover 用 `bg-surface-hover`（浅色）/ `bg-surface-1`（深色）；侧栏里的菜单 hover 用 `bg-surface-3`（浅色）/ `bg-surface-1`（深色）、选中用 `bg-surface-4`（浅色）/ `bg-surface-2`（深色）。不要拿 `bg-surface-2` 去做卡片 hover——那是浮层色，会让卡片看起来被抬起来。
 - 浮层与底之间用阴影区分（见[层次与阴影](#层次与阴影)），不要在已经有阴影的浮层上再加一圈边框。
 - 深色主题没有「纸上纸」的表头概念，`surface-head` / `surface-hover` 在深色下回落到 `surface-1`，这是有意为之，不是缺值。
+- `bg-layout` / `bg-container` / `bg-elevated` 与 `bg-surface-0/1/2` 同值双名：前者对齐 antd token 名，后者表达层级。自己的标记统一用 `bg-surface-*`。
 - `colorFill` 阶梯（`fill` / `fill-secondary` / `fill-tertiary` / `fill-quaternary`）是 antd 组件内部在用的填充色：hover、禁用、斑马纹。写自己的标记时优先用 `bg-surface-*` 表达「这是哪一层」，只有需要和相邻 antd 组件呼应时才用 `bg-fill-tertiary` 这类语义较弱的名字。
 
 ### 文字：四档 + 反白色
@@ -59,7 +60,7 @@
 
 - **降级强调用 `text-text-secondary`，不要用 `opacity`**。主题已经给了四档，`opacity: 0.6` 在不同表面上会落进对比度盲区。
 - `text-text-quaternary` 在浅色下只有约 3:1，任何需要阅读的内容都不许用它；它只用于 placeholder、disabled。
-- 三级（元信息）的 4.5:1 承诺覆盖页面底与卡片两种表面；浮层（`#FFFFFF` / `#272A29`）上不保证，浮层里的说明文字降一级用二级。
+- 三级（元信息）的 4.5:1 承诺覆盖页面底与卡片两种表面；浮层（`#FFFFFF` / `#272A29`）上不保证，浮层里的说明文字升一档改用二级。
 - 表格数字、ID、代码、diff 内容用 `font-mono`；金额和统计加 `tabular-nums` 保持列对齐。
 - 标题不需要单独颜色：用 `text-text` + 字重 600 表达层级。
 
@@ -92,7 +93,7 @@
 | diff 行底 | `paseoDiffAddition` / `paseoDiffDeletion` | `bg-diff-addition` / `bg-diff-deletion` | 整行背景 |
 | diff 文字 | `paseoDiffAdditionText` / `paseoDiffDeletionText` | `text-diff-addition-text` 等 | 词级高亮与 `+12 −3` 统计 |
 | 身份色 | `paseoIdentity*`（10 色） | `bg-identity-violet` 等 | 主机 / agent / 项目标识；一律配白字 |
-| 选区 | `paseoSelection` | `bg-selection` | `::selection`，不要手写半透明色 |
+| 选区 | `paseoSelection` | `selection:bg-selection` | `::selection` 背景，不要手写半透明色 |
 
 规则：
 
@@ -156,7 +157,7 @@
 - 栅格是 **4px**（`sizeUnit` / `sizeStep`）。间距只用 4 / 8 / 12 / 16 / 24 / 32；出现 13px、18px、7px 说明设计还没对齐。
 - 控件高度：默认 40、小号 32、大号 48（`controlHeight` / `SM` / `LG`）。不要把两档混排在同一行。
 - 内边距：`padding` 16、`paddingSM` 12、`paddingXS` 8、`paddingXXS` 4、`paddingLG` 24；卡片正文与表单分区用 16/24。
-- 页面骨架：Layout body 用 `bg-layout`，Sider 用 `bg-surface-sidebar`，Header 与 body 同色（`headerBg = surface0`），靠 `border-split` 与内容分隔。
+- 页面骨架：Layout body 用 `bg-layout`，Sider 用 `bg-surface-sidebar`，Header 与 body 同色（`headerBg = surface0`）。Header 自身没有边框 token，需要与内容分隔时自己画 1px `colorSplit` 下边框。
 - Select 行高是 44（`optionHeight`），由 `optionPadding: 9px 12px` 加上 Provider 注入的上下 2px 透明边框组成；开启虚拟滚动时必须同时传 `<Select listItemHeight={44}>`，否则行高估算错位。
 
 ## 层次与阴影
@@ -237,4 +238,4 @@
 
 **暗色策略**：`mode` 支持 `system` / `light` / `dark`；Tailwind 侧同时输出 `prefers-color-scheme` 与 `.dark` 两套变量，类策略需在项目里加 `@custom-variant dark (&:where(.dark, .dark *));`。
 
-**cssVar 模式**：`theme={{ ...claudeLightTheme, cssVar: true }}` 受支持；antd 原生两套的颜色完全走 antd 算法，形态与本包对齐（40 / 32 / 48、12 / 8 / 4、Select 44、Segmented trackPadding 4、Alert 12px 圆角），因此混搭槽位切换只换配色不换骨架。
+**cssVar 模式**：`theme={{ ...claudeLightTheme, cssVar: true }}` 受支持；antd 原生两套的形态与骨架对齐细节见[概述](#概述)。
