@@ -8,8 +8,8 @@
  * The default pair is Claude Light + Paseo Dark, which is also
  * PaseoThemeProvider's default slot pairing. Consumers who mix other slots
  * (for example antd's own light with Paseo dark) call `generateTailwindCss`
- * from `paseo-antd-themes/tailwind` with their pair and import that file
- * instead, so utilities and components cannot drift apart.
+ * from the package root with their pair and import that file instead, so
+ * utilities and components cannot drift apart.
  *
  * Layering: the light slot lives on `:root`; the dark slot is written twice —
  * under `@media (prefers-color-scheme: dark)` for Tailwind's default dark

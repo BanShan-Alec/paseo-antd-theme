@@ -33,26 +33,6 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
-    "./claude": {
-      "types": "./dist/claude.d.ts",
-      "import": "./dist/claude.js",
-      "default": "./dist/claude.js"
-    },
-    "./paseo": {
-      "types": "./dist/paseo.d.ts",
-      "import": "./dist/paseo.js",
-      "default": "./dist/paseo.js"
-    },
-    "./antd": {
-      "types": "./dist/antd.d.ts",
-      "import": "./dist/antd.js",
-      "default": "./dist/antd.js"
-    },
-    "./tailwind": {
-      "types": "./dist/tailwind.d.ts",
-      "import": "./dist/tailwind.js",
-      "default": "./dist/tailwind.js"
-    },
     "./tailwind.css": "./dist/tailwind.css",
     "./package.json": "./package.json"
   },
@@ -100,6 +80,7 @@
     "@vitejs/plugin-react": "^5.0.0",
     "antd": "^6.6.6",
     "jsdom": "^26.0.0",
+    "marked": "^9.1.6",
     "publint": "^0.3.25",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

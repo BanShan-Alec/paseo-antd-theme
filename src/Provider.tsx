@@ -2,9 +2,11 @@ import { ConfigProvider, type ConfigProviderProps, type ThemeConfig } from "antd
 import { useSyncExternalStore, type ReactElement } from "react";
 import { paseoDarkTheme } from "./themes/paseo-dark/theme";
 import { PaseoLoadingIcon } from "./LoadingIcon";
+import { PaseoLoadingCssContext } from "./loadingCss";
 import { claudeLightTheme } from "./themes/claude/theme";
 import {
   PASEO_LOADING_CSS,
+  PASEO_LOADING_CSS_ATTRIBUTE,
   PASEO_SEGMENTED_GAP_CSS,
   PASEO_SELECT_GAP_CSS,
 } from "./themeStyles";
@@ -140,8 +142,20 @@ export function PaseoThemeProvider({
       select={select}
       segmented={segmentedGap ? { classNames: { item: "paseo-segmented-item" } } : undefined}
     >
-      {css ? <style data-paseo-theme="">{css}</style> : null}
-      {children}
+      {/* The marker tells a standalone PaseoLoadingIcon mounted in another root
+          (a portal, a static `message` call) that the keyframes are already
+          present; icons inside this tree skip injection through the context. */}
+      {css ? (
+        <style
+          data-paseo-theme=""
+          {...(loadingIcon ? { [PASEO_LOADING_CSS_ATTRIBUTE]: "" } : {})}
+        >
+          {css}
+        </style>
+      ) : null}
+      <PaseoLoadingCssContext.Provider value={Boolean(loadingIcon)}>
+        {children}
+      </PaseoLoadingCssContext.Provider>
     </ConfigProvider>
   );
 }

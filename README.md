@@ -31,7 +31,7 @@ import { PaseoThemeProvider } from "paseo-antd-themes";
 </PaseoThemeProvider>;
 ```
 
-混搭（antd 原生亮色 + Paseo 暗色）：
+混搭（antd 原生亮色 + Paseo 暗色，两套形态一致，切换不跳尺寸）：
 
 ```tsx
 import { PaseoThemeProvider, antdLightTheme } from "paseo-antd-themes";
@@ -66,6 +66,34 @@ import { PaseoThemeProvider, antdLightTheme } from "paseo-antd-themes";
 
 > **虚拟滚动 Select**：下拉列表超过一屏（默认约 256px）时 rc-virtual-list 开始接管渲染。此时必须同时传 `<Select listItemHeight={44}>`，否则虚拟列表仍按 antd 默认 40px 估算行高，行间透明间隔会错位；不开启虚拟滚动的 Select（如 `virtual={false}` 或短列表）不需要。
 
+### 单独使用 PaseoLoadingIcon
+
+`PaseoLoadingIcon` 从主入口单独导出，不依赖主题，也不依赖 Provider。首次挂载时它自己把旋转关键帧注入 `<head>`（仅客户端、只注一次），所以在 provider 外使用照样会转；在 provider 内则复用 provider 的那份 `<style>`，不会多出一份。服务端不输出额外 `<style>`，水合没有差异。
+
+```tsx
+import { PaseoLoadingIcon } from "paseo-antd-themes";
+
+// 自己的标记里：尺寸跟随 font-size（1em）
+<span className="flex items-center gap-2">
+  <PaseoLoadingIcon style={{ fontSize: 16 }} />
+  正在读取工作区
+</span>;
+
+// Spin 的 indicator
+<Spin indicator={<PaseoLoadingIcon />} />;
+
+// Select 的 loadingIcon
+<Select loading loadingIcon={<PaseoLoadingIcon />} options={options} />;
+
+// 静态 message / notification
+message.loading({ content: "部署中", icon: <PaseoLoadingIcon />, duration: 0 });
+```
+
+- 颜色走 `currentColor`，主按钮、文字按钮、深色表面上都自动跟随当前文字色。
+- 旋转作用在内部 `<g>` 上，外层 1em 盒子不动，小尺寸下不会抖。
+- 尺寸由 `font-size` 决定（`1em`），用 `style={{ fontSize: 16 }}` 或外层字号控制即可。
+- Button 没有单组件级的 `loadingIcon` prop（antd 只在 `ConfigProvider` 上有 `button.loadingIcon`），要换按钮图标就走 Provider 的 `behaviors.loadingIcon`。反过来，把该行为关掉后在页面里手动放这个图标，它仍会自己注入关键帧。
+
 ### 从一个内置主题扩展
 
 `extendTheme(base, { token, components })` 返回继承 `base` 的新主题，不改动 `base`。为什么需要它：内置主题在 algorithm 里钉死了调色板，antd 又会把 seed token 从 `theme.token` 覆盖层里删掉，所以直接嵌套 `ConfigProvider theme={{ token: { colorPrimary } }}` **不会生效**。`extendTheme` 把覆盖值放进派生链的最后一步，并重建整个色族，hover/active/bg/border/text 十槽跟着走。
@@ -93,7 +121,7 @@ const violetPaseo = extendTheme(paseoDarkTheme, {
 
 ```tsx
 import { ConfigProvider } from "antd";
-import { claudeLightTheme } from "paseo-antd-themes/claude";
+import { claudeLightTheme } from "paseo-antd-themes";
 
 <ConfigProvider theme={claudeLightTheme}>
   <App />
@@ -101,13 +129,12 @@ import { claudeLightTheme } from "paseo-antd-themes/claude";
 ```
 
 ```tsx
-import { paseoDarkTheme } from "paseo-antd-themes/paseo";
-import { antdLightTheme, antdDarkTheme } from "paseo-antd-themes/antd";
+import { antdDarkTheme, antdLightTheme, paseoDarkTheme } from "paseo-antd-themes";
 ```
 
-> `antdLightTheme` / `antdDarkTheme` 是 antd 原生算法 + 统一字体栈。需要逐像素零改动时直接传 `{ algorithm: antdTheme.defaultAlgorithm }` / `{ algorithm: antdTheme.darkAlgorithm }`。
+> `antdLightTheme` / `antdDarkTheme` 是 antd 原生**配色** + 本包形态：颜色、填充、边框、阴影全部由 antd 算法派生，控件高度、圆角、Select 行高与字体栈则与内置主题一致，所以混搭槽位切换不会跳尺寸。唯一一处配色偏离：antd 把 Layout 的 `headerBg` 硬编码为深蓝 `#001529`（两种配色都是），这里改为透明让 body 背景透出，与内置主题「Header 与 body 同色」的规则一致。需要连尺寸也逐像素等于 antd 时，直接传 `{ algorithm: antdTheme.defaultAlgorithm }` / `{ algorithm: antdTheme.darkAlgorithm }`。
 >
-> 裸主题只包含 token；自定义 loading 图标、Segmented / Select 间隙只在 `PaseoThemeProvider` 中生效。
+> 裸主题只包含 token；Segmented / Select 间隙只在 `PaseoThemeProvider` 中生效（`PaseoLoadingIcon` 本身可单独使用，见上文）。
 
 ### Tailwind v4（纯 CSS，无需 antd）
 
@@ -164,8 +191,7 @@ import { antdLightTheme, antdDarkTheme } from "paseo-antd-themes/antd";
 ```ts
 // scripts/theme-css.ts —— 构建前运行
 import { writeFileSync } from "node:fs";
-import { antdLightTheme, paseoDarkTheme } from "paseo-antd-themes";
-import { generateTailwindCss } from "paseo-antd-themes/tailwind";
+import { antdLightTheme, generateTailwindCss, paseoDarkTheme } from "paseo-antd-themes";
 
 writeFileSync(
   "src/theme.css",
@@ -220,14 +246,14 @@ import { PaseoThemeProvider } from "paseo-antd-themes";
 
 ## Exports
 
+整个包只有两个入口：
+
 | 入口 | 导出 |
 | --- | --- |
-| `paseo-antd-themes` | `PaseoThemeProvider`, `resolvePaseoTheme`, `PaseoLoadingIcon`, `extendTheme`, `antdLightTheme`, `antdDarkTheme`, `claudeLightTheme`, `paseoDarkTheme`, types |
-| `paseo-antd-themes/claude` | `claudeLightTheme`, `claudeLight`, `claudeIdentityLight`, token mappings |
-| `paseo-antd-themes/paseo` | `paseoDarkTheme`, `paseoDark`, token mappings |
-| `paseo-antd-themes/antd` | `antdLightTheme`, `antdDarkTheme`, `lightFontAlgorithm`, `darkFontAlgorithm` |
-| `paseo-antd-themes/tailwind` | `generateTailwindCss`, `resolveTailwindVariables`, `TAILWIND_VARIABLES`, `DEFAULT_TAILWIND_THEMES`, types（构建期用，需要 antd） |
+| `paseo-antd-themes` | `PaseoThemeProvider`、`PaseoLoadingIcon`、`claudeLightTheme`、`paseoDarkTheme`、`antdLightTheme`、`antdDarkTheme`、`extendTheme`、`generateTailwindCss`（构建期），以及 `PaseoThemeProviderProps`、`PaseoBehaviors`、`PaseoThemeMode`、`PaseoThemeSlots`、`ThemeExtension`、`TailwindThemePair` 类型 |
 | `paseo-antd-themes/tailwind.css` | Tailwind v4 样式表（浅色 `:root` + 深色 media/`.dark`，含 `@theme inline`） |
+
+裸 token 表、token 映射、字体算法、Tailwind 变量推导等实现细节不对外导出；具体取值看 [MAPPING.md](./MAPPING.md)，每个 token 该怎么用看 [DESIGN.md](./DESIGN.md)。
 
 ## 四套内置主题
 
@@ -239,7 +265,7 @@ import { PaseoThemeProvider } from "paseo-antd-themes";
 | --- | --- | --- |
 | 定位 | 长时间运行的 agent orchestration 深色工作台 | 日间、评审/文档式的 Claude 品牌浅色界面 |
 | 表面 | 青绿调深色阶梯，层与层靠亮度区分 | 官网取色奶油底 `#F0EDE2` + 纸感卡片 `#F5F4EC`，暖黑文字 |
-| 主色 | paseo 深绿；链接用更亮的绿 | Claude 官网 clay；链接用 suggestion 蓝 |
+| 主色 | paseo 深绿；链接用更亮的绿 | Claude 官网 clay；链接同主色系（text 档） |
 | 状态色 | paseo 归一化家族，为深色表面调校 | 同一等响度规则在浅色表面重解 |
 | Diff | 降饱和深色行底，白字可读 | 低饱和浅色行底 + 深色统计文字 |
 | 阴影 | 黑色系软阴影 | 暖墨色软阴影 |
@@ -247,9 +273,9 @@ import { PaseoThemeProvider } from "paseo-antd-themes";
 
 **Paseo Dark** 保留 paseo 的青绿深色表面和绿色身份，状态色按等响度规则归一化。控件形态和软阴影与浅色主题共享同一套语言。
 
-**Claude Light** 从 claude.ai 官网截图像素取色重推：奶油页面 `#F0EDE2`、只亮 1.06 的纸感卡片 `#F5F4EC`、hover `#DDD9CE`、暖黑文字 `#3C3C2C`，主色用官网交互态 clay `#BA5B37`（白字 4.53:1）。状态色仍按 paseo 等响度规则在浅色表面重解。完整取值见 [DESIGN.md](./DESIGN.md)。
+**Claude Light** 从 claude.ai 官网截图像素取色重推：奶油页面 `#F0EDE2`、只亮 1.06 的纸感卡片 `#F5F4EC`、hover `#DDD9CE`、暖黑文字 `#3C3C2C`，主色用官网交互态 clay `#BA5B37`（白字 4.53:1）。状态色仍按 paseo 等响度规则在浅色表面重解。完整取值见 [MAPPING.md](./MAPPING.md)，配色与用法的规范见 [DESIGN.md](./DESIGN.md)。
 
-**Antd 原生** 两套（`antdLightTheme` / `antdDarkTheme`）是 antd 自带算法，只把 `fontFamily` 钉到与内置主题相同的栈上，避免混搭切换时控件宽度跳动；颜色、尺寸、圆角、组件 token 全部保持 antd 默认。需要逐像素零改动时按上面裸主题一节直接传 antd 的 algorithm。
+**Antd 原生** 两套（`antdLightTheme` / `antdDarkTheme`）用 antd 自带算法出颜色，形态与本包一致：控件 40 / 32 / 48、圆角 12 / 8 / 4、Select 行高 44、Segmented 轨道内边距 4、Alert 圆角 12，字体栈也钉成同一组。这样「antd 亮 + Paseo 暗」这类混搭在切换时只换颜色、不换骨架。要连尺寸都逐像素等于 antd，按上面裸主题一节直接传 antd 的 algorithm。
 
 ## 从 0.1.0 迁移
 
@@ -278,7 +304,7 @@ npm run pack:dry       # npm pack --dry-run（触发 prepack 构建）
 
 `npm publish` 流程：`prepublishOnly`（typecheck + test）→ `prepack`（build:lib + verify:package）→ 发布。发布前需要先 `npm login`。
 
-设计取值、状态色归一化规则和算法包装细节见 [DESIGN.md](./DESIGN.md)；完整 token 映射见 [MAPPING.md](./MAPPING.md)。
+每个 token 的用途与使用规范见 [DESIGN.md](./DESIGN.md)；完整取值与取色来源见 [MAPPING.md](./MAPPING.md)。
 
 ## License
 

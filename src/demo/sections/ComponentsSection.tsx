@@ -112,7 +112,7 @@ export function ComponentsSection({ isLight }: { isLight: boolean }) {
               </div>
             </Sider>
             <Layout>
-              <Header style={{ height: 40, fontSize: 12, padding: "0 12px" }}>Header · headerBg</Header>
+              <Header style={{ height: 40, lineHeight: "40px", fontSize: 12, padding: "0 12px" }}>Header · headerBg</Header>
               <Content style={{ margin: 12, padding: 12, fontSize: 12 }}>Content · bodyBg</Content>
             </Layout>
           </Layout>

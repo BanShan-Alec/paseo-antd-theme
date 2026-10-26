@@ -20,7 +20,11 @@ export const paseoDark = {
 
   foreground: "#fafafa",
   foregroundMuted: "#A1A5A4",
-  foregroundExtraMuted: "#717574",
+  // Raised one step from paseo's #717574 (3.72:1 on surface0): tier 3 carries
+  // timestamps and meta, so it is held to 4.5:1 on the page and card surfaces.
+  // Popovers (surface2) sit at 4.37:1, which is why the spec sends elevated
+  // meta text to tier 2 instead.
+  foregroundExtraMuted: "#8A8E8D",
 
   border: "#252B2A",
   borderAccent: "#2F3534",

@@ -4,6 +4,12 @@
  * a behavior off leaves no orphan rules behind.
  */
 
+/**
+ * Shared marker so the standalone icon and the provider agree on whether the
+ * loading CSS is already in the document.
+ */
+export const PASEO_LOADING_CSS_ATTRIBUTE = "data-paseo-loading-css";
+
 /** Only needed by the default Paseo spinner. */
 export const PASEO_LOADING_CSS = `
 @keyframes paseo-loading-rotate {

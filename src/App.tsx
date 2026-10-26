@@ -3,11 +3,13 @@ import { App as AntApp, Breadcrumb, Layout, Menu, Segmented, Typography, theme a
 import {
   AgentsSection,
   ComponentsSection,
+  DesignSection,
   DiffSection,
   HostsSection,
   MappingSection,
   OverviewSection,
   StatusSection,
+  TypographySection,
 } from "./demo/sections";
 import type { View } from "./demo/view";
 import { antdDarkTheme, antdLightTheme } from "./themes/antd/theme";
@@ -37,8 +39,10 @@ const SECTIONS = [
   { key: "diff", label: "Diff 视图" },
   { key: "status", label: "状态圆点" },
   { key: "hosts", label: "Host 身份色" },
+  { key: "typography", label: "文字阶梯" },
   { key: "components", label: "组件 Token" },
   { key: "mapping", label: "Token 映射" },
+  { key: "design", label: "DESIGN.md" },
 ] as const;
 
 type Section = (typeof SECTIONS)[number]["key"];
@@ -165,11 +169,9 @@ function Dashboard({
             alignItems: "center",
             justifyContent: "space-between",
             padding: "0 24px",
-            // antd's stock light header is dark navy #001529 while headerColor
-            // stays the normal dark text — unreadable. The Paseo/Claude themes
-            // override headerBg; the stock-light views pin it to colorBgLayout
-            // here so the header stays readable without touching the theme.
-            background: view !== "paseo" && isLight ? token.colorBgLayout : undefined,
+            // The stock themes keep the header transparent (headerBg = body),
+            // and the Paseo/Claude themes override headerBg themselves — no
+            // demo-side override is needed in any view.
           }}
         >
           <Breadcrumb
@@ -196,8 +198,10 @@ function Dashboard({
           {section === "diff" && <DiffSection />}
           {section === "status" && <StatusSection />}
           {section === "hosts" && <HostsSection />}
+          {section === "typography" && <TypographySection />}
           {section === "components" && <ComponentsSection isLight={isLight} />}
           {section === "mapping" && <MappingSection view={view} isLight={isLight} />}
+          {section === "design" && <DesignSection />}
         </Content>
       </Layout>
     </Layout>

@@ -3,10 +3,24 @@ import { Button, ConfigProvider } from "antd";
 import { describe, expect, it } from "vitest";
 import { resolveTokens } from "../src/testing/theme";
 import { antdDarkTheme, antdLightTheme } from "../src/themes/antd/theme";
+import { claudeLightTheme } from "../src/themes/claude/theme";
+import { paseoDarkTheme } from "../src/themes/paseo-dark/theme";
 import { PASEO_FONT_STACK } from "../src/shared/fonts";
 
 const light = resolveTokens(antdLightTheme);
 const dark = resolveTokens(antdDarkTheme);
+const claude = resolveTokens(claudeLightTheme);
+const paseo = resolveTokens(paseoDarkTheme);
+
+const GEOMETRY_KEYS = [
+  "controlHeight",
+  "controlHeightSM",
+  "controlHeightLG",
+  "borderRadius",
+  "borderRadiusSM",
+  "borderRadiusXS",
+  "borderRadiusLG",
+] as const;
 
 describe("antd stock themes", () => {
   it("keeps antd's own light palette", () => {
@@ -29,6 +43,33 @@ describe("antd stock themes", () => {
     expect(dark.fontFamily).toBe(PASEO_FONT_STACK);
     // The mono stack is antd's own in both algorithms, so it already matches.
     expect(light.fontFamilyCode).toBe(dark.fontFamilyCode);
+  });
+
+  it("shares the complete themes' geometry so a mixed pair cannot resize", () => {
+    for (const key of GEOMETRY_KEYS) {
+      expect(light[key], `light ${key}`).toBe(claude[key]);
+      expect(dark[key], `dark ${key}`).toBe(paseo[key]);
+    }
+  });
+
+  it("pins the component geometry that has no seed token", () => {
+    // 2px transparent borders + 9px padding keep the Select row at 44 and the
+    // text at the same 11px inset antd has by default.
+    expect(antdLightTheme.components?.Select?.optionHeight).toBe(44);
+    expect(antdLightTheme.components?.Select?.optionPadding).toBe("9px 12px");
+    expect(antdLightTheme.components?.Segmented?.trackPadding).toBe(4);
+    expect(antdDarkTheme.components).toEqual(antdLightTheme.components);
+    expect(antdLightTheme.components?.Select?.optionHeight).toBe(
+      claudeLightTheme.components?.Select?.optionHeight,
+    );
+  });
+
+  it("keeps the header on the body tone in both schemes", () => {
+    // antd hard-codes the navy #001529 header into both schemes; the stock
+    // pair overrides it to transparent so the body background shows through —
+    // same headerBg = bodyBg rule the complete themes follow.
+    expect(antdLightTheme.components?.Layout?.headerBg).toBe("rgba(0, 0, 0, 0)");
+    expect(antdDarkTheme.components?.Layout?.headerBg).toBe("rgba(0, 0, 0, 0)");
   });
 
   it("carries no paseo custom tokens", () => {

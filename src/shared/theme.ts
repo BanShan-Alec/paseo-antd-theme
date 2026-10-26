@@ -6,6 +6,29 @@ import { PASEO_FONT_STACK } from "./fonts";
 export type AntdToken = NonNullable<ThemeConfig["token"]>;
 export type AntdComponents = NonNullable<ThemeConfig["components"]>;
 
+/**
+ * Geometry every shipped theme shares: 40px controls, 12px radius, and the
+ * small/large steps around them. The complete themes pin these through their
+ * mapping tables; the stock-antd pair applies the same numbers as a final
+ * derivative step, so mixing a native slot with a complete one cannot change
+ * control size or radius.
+ */
+export const SHARED_GEOMETRY = {
+  controlHeight: 40,
+  controlHeightSM: 32,
+  controlHeightLG: 48,
+  borderRadius: 12,
+  borderRadiusSM: 8,
+  borderRadiusXS: 4,
+  borderRadiusLG: 12,
+} as const;
+
+/** The component-level geometry antd has no seed token for. */
+export const SHARED_COMPONENT_GEOMETRY = {
+  Select: { optionHeight: 44, optionPadding: "9px 12px" },
+  Segmented: { trackPadding: 4 },
+} as const;
+
 export interface TokenMapping {
   /** antd v6 token name. Typed against antd's own token union, so typos fail the build. */
   readonly antdToken: keyof AntdToken;

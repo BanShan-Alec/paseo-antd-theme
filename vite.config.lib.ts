@@ -38,10 +38,6 @@ export default defineConfig({
     lib: {
       entry: {
         index: "src/index.ts",
-        claude: "src/claude.ts",
-        paseo: "src/paseo.ts",
-        antd: "src/antd.ts",
-        tailwind: "src/tailwind.ts",
       },
       formats: ["es"],
       fileName: (format, entryName) =>

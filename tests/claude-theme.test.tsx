@@ -29,7 +29,7 @@ describe("claude → antd light token mapping", () => {
     expect(light.colorWarning).toBe("#806340");
     expect(light.colorError).toBe("#a14b43");
     expect(light.colorInfo).toBe("#436c96");
-    expect(light.colorLink).toBe("#4B5BD8");
+    expect(light.colorLink).toBe(claudeLight.accentText);
     expect(light.colorText).toBe("#3C3C2C");
     expect(light.colorBgLayout).toBe("#F0EDE2");
     expect(light.colorBgContainer).toBe("#F5F4EC");
@@ -101,10 +101,9 @@ describe("claude → antd light token mapping", () => {
     );
     expect(claudeLightTheme.components?.Table?.rowHoverBg).toBe(claudeLight.surfaceHover);
     expect(claudeLightTheme.components?.Table?.headerBg).toBe(claudeLight.surfaceHead);
-    // Segmented's track is a light neutral in the card family, so it needs
-    // no hover override — antd's default (colorFillSecondary = surface3)
-    // already reads 1.21 against it.
-    expect(claudeLightTheme.components?.Segmented?.trackBg).toBe(claudeLight.surfaceTrack);
+    // The track sits on the page tone (surface0), matching the dark theme —
+    // the selected thumb carries the contrast, no hover override needed.
+    expect(claudeLightTheme.components?.Segmented?.trackBg).toBe(claudeLight.surface0);
     expect(claudeLightTheme.components?.Segmented?.itemHoverBg).toBeUndefined();
     expect(claudeLightTheme.components?.Card?.headerBg).toBe(claudeLight.surfaceHead);
     expect(light.colorFillTertiary).toBe(claudeLight.surfaceHover);
@@ -204,10 +203,24 @@ describe("claude light contrast", () => {
     expect(contrast("#ffffff", claudeLight.statusDanger)).toBeGreaterThanOrEqual(4.5);
   });
 
-  it("links clear 4.5:1 on the layout", () => {
-    expect(contrast(claudeLight.link, claudeLight.surface0)).toBeGreaterThanOrEqual(4.5);
-    expect(contrast(claudeLight.linkHover, claudeLight.surface0)).toBeGreaterThanOrEqual(4.5);
-    expect(contrast(claudeLight.linkActive, claudeLight.surface0)).toBeGreaterThanOrEqual(4.5);
+  it("links reuse the primary text tone and clear 4.5:1", () => {
+    // No separate blue hue: colorLink is the primary family's text slot, so a
+    // link and primary-colored text are the same clay.
+    expect(light.colorLink).toBe(light.colorPrimaryText);
+    for (const key of ["colorLink", "colorLinkHover", "colorLinkActive"] as const) {
+      expect(contrast(String(light[key]), claudeLight.surface0), key).toBeGreaterThanOrEqual(4.5);
+      expect(contrast(String(light[key]), claudeLight.surface1), key).toBeGreaterThanOrEqual(4.5);
+    }
+  });
+
+  it("keeps the primary fill out of body text", () => {
+    // #BA5B37 is a fill: 3.86:1 on the page, fine for graphics and large type
+    // only. Body-size primary text must use colorPrimaryText (#A34E2D).
+    expect(light.colorPrimaryText).toBe(claudeLight.accentText);
+    expect(contrast(claudeLight.accent, claudeLight.surface0)).toBeGreaterThanOrEqual(3);
+    expect(contrast(claudeLight.accent, claudeLight.surface0)).toBeLessThan(4.5);
+    expect(contrast(claudeLight.accentText, claudeLight.surface0)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(claudeLight.accentText, claudeLight.surface1)).toBeGreaterThanOrEqual(4.5);
   });
 
   it("status colors clear 4.5:1 as text on ivory", () => {
