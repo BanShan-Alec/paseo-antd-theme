@@ -32,12 +32,20 @@ function stockGeometryComponents(): NonNullable<ThemeConfig["components"]> {
   };
 }
 
+const stockLayoutComponents = (): NonNullable<ThemeConfig["components"]> => ({
+  // antd hard-codes headerBg to the navy #001529 in both schemes (Layout's
+  // prepareComponentToken), so the stock dark header sits 1.4× brighter than
+  // its pure-black body. The complete themes all keep headerBg = bodyBg;
+  // align the stock pair so a mixed pair doesn't swap header tones.
+  Layout: { headerBg: "rgba(0, 0, 0, 0)" },
+});
+
 export const antdLightTheme: ThemeConfig = {
   algorithm: [lightFontAlgorithm, alignGeometry],
-  components: stockGeometryComponents(),
+  components: { ...stockGeometryComponents(), ...stockLayoutComponents() },
 };
 
 export const antdDarkTheme: ThemeConfig = {
   algorithm: [darkFontAlgorithm, alignGeometry],
-  components: stockGeometryComponents(),
+  components: { ...stockGeometryComponents(), ...stockLayoutComponents() },
 };

@@ -64,6 +64,14 @@ describe("antd stock themes", () => {
     );
   });
 
+  it("keeps the header on the body tone in both schemes", () => {
+    // antd hard-codes the navy #001529 header into both schemes; the stock
+    // pair overrides it to transparent so the body background shows through —
+    // same headerBg = bodyBg rule the complete themes follow.
+    expect(antdLightTheme.components?.Layout?.headerBg).toBe("rgba(0, 0, 0, 0)");
+    expect(antdDarkTheme.components?.Layout?.headerBg).toBe("rgba(0, 0, 0, 0)");
+  });
+
   it("carries no paseo custom tokens", () => {
     expect(Object.keys(light).filter((key) => key.startsWith("paseo"))).toEqual([]);
     expect(Object.keys(dark).filter((key) => key.startsWith("paseo"))).toEqual([]);

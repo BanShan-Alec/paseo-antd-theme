@@ -132,7 +132,7 @@ import { claudeLightTheme } from "paseo-antd-themes";
 import { antdDarkTheme, antdLightTheme, paseoDarkTheme } from "paseo-antd-themes";
 ```
 
-> `antdLightTheme` / `antdDarkTheme` 是 antd 原生**配色** + 本包形态：颜色、填充、边框、阴影全部由 antd 算法派生，控件高度、圆角、Select 行高与字体栈则与内置主题一致，所以混搭槽位切换不会跳尺寸。需要连尺寸也逐像素等于 antd 时，直接传 `{ algorithm: antdTheme.defaultAlgorithm }` / `{ algorithm: antdTheme.darkAlgorithm }`。
+> `antdLightTheme` / `antdDarkTheme` 是 antd 原生**配色** + 本包形态：颜色、填充、边框、阴影全部由 antd 算法派生，控件高度、圆角、Select 行高与字体栈则与内置主题一致，所以混搭槽位切换不会跳尺寸。唯一一处配色偏离：antd 把 Layout 的 `headerBg` 硬编码为深蓝 `#001529`（两种配色都是），这里改为透明让 body 背景透出，与内置主题「Header 与 body 同色」的规则一致。需要连尺寸也逐像素等于 antd 时，直接传 `{ algorithm: antdTheme.defaultAlgorithm }` / `{ algorithm: antdTheme.darkAlgorithm }`。
 >
 > 裸主题只包含 token；Segmented / Select 间隙只在 `PaseoThemeProvider` 中生效（`PaseoLoadingIcon` 本身可单独使用，见上文）。
 

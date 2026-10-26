@@ -169,11 +169,9 @@ function Dashboard({
             alignItems: "center",
             justifyContent: "space-between",
             padding: "0 24px",
-            // antd's stock light header is dark navy #001529 while headerColor
-            // stays the normal dark text — unreadable. The Paseo/Claude themes
-            // override headerBg; the stock-light views pin it to colorBgLayout
-            // here so the header stays readable without touching the theme.
-            background: view !== "paseo" && isLight ? token.colorBgLayout : undefined,
+            // The stock themes keep the header transparent (headerBg = body),
+            // and the Paseo/Claude themes override headerBg themselves — no
+            // demo-side override is needed in any view.
           }}
         >
           <Breadcrumb
