@@ -26,7 +26,7 @@ export function HostsSection() {
   return (
     <Row gutter={[16, 16]}>
       <Col xs={24} xl={12}>
-        <Card variant="borderless" title="Host 身份色" size="small">
+        <Card variant="borderless" title="Host 身份色" size="small" style={{ height: "100%" }}>
           {!custom && <Note>当前方案没有自定义身份色 token——回退 Antd 默认徽章。</Note>}
           <div style={{ display: "grid", gap: 12 }}>
             {hosts.map((host, i) => {
@@ -68,7 +68,7 @@ export function HostsSection() {
       </Col>
 
       <Col xs={24} xl={12}>
-        <Card variant="borderless" title="Selection" size="small">
+        <Card variant="borderless" title="Selection" size="small" style={{ height: "100%" }}>
           {selection && (
             <style>{`.demo-selectable::selection { background: ${selection}; }`}</style>
           )}

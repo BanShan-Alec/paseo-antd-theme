@@ -33,7 +33,7 @@
 | 容器 | `colorBgContainer` / `paseoSurface1` | `bg-container` / `bg-surface-1` | 卡片、输入框、默认按钮、面板 | `#F5F4EC` | `#1E2120` |
 | 浮层 | `colorBgElevated` / `paseoSurface2` | `bg-elevated` / `bg-surface-2` | 弹层、下拉、Modal、Message、Segmented 选中滑块 | `#FFFFFF` | `#272A29` |
 | 侧栏 | `paseoSurfaceSidebar` | `bg-surface-sidebar` | Sider、Menu 底色 | `#E2E0D6` | `#141716` |
-| 面板头 | `paseoSurfaceHead` | `bg-surface-head` | Card 头、Table 表头 | `#E0DDD0` | `#1E2120` |
+| 面板头 | `paseoSurfaceHead` | `bg-surface-head` | Card 头（表格表头与表格同底，不用它） | `#E0DDD0` | `#1E2120` |
 | 卡片 hover | `paseoSurfaceHover` | `bg-surface-hover` | 卡片 / 表格行 hover | `#DDD9CE` | `#1E2120` |
 | 强填充 | `paseoSurface3` / `paseoSurface4` | `bg-surface-3` / `bg-surface-4` | 控件内的强对比填充：菜单 hover / 选中、进度轨道 | `#D7D2C7` / `#D1CCBF` | `#434645` / `#595B5B` |
 
@@ -196,7 +196,7 @@
 | Button | 主按钮白字、hover/active 加深、三级投影 | 每个区块最多一个 `type="primary"`；次级操作用默认按钮；第三级用 `type="text"`；删除才用 `danger`。loading 图标由 Provider 统一，不要自己传 |
 | Input / Select | 边框色、hover/active 主色、12px 圆角、40px 高 | 错误态交给 `status="error"`，不要手写红边框；Select 的长列表见上文 `listItemHeight` |
 | Card | `surface-1` 底、12px 圆角、头用 `surface-head`、默认无阴影 | 卡片是页面上的「纸」，不要嵌套三层卡片；卡片头与正文之间用 `border-split`；`hoverable` 才出现悬浮投影 |
-| Table | 表头 `surface-head`、行 hover `surface-hover`、行线 `border-split`、斑马纹 `colorFillAlter`（派生自 `fill-quaternary`） | 斑马纹与行 hover 不要同时开；数字列右对齐并用 mono；空态用 Empty，不要自己画 |
+| Table | 表头与表格同底（`surface-1`，靠字重 + `border-split` 行线区分）、行 hover `surface-hover`、行线 `border-split`、斑马纹 `colorFillAlter`（派生自 `fill-quaternary`） | 斑马纹与行 hover 不要同时开；数字列右对齐并用 mono；空态用 Empty，不要自己画 |
 | Segmented / Tabs | Segmented：`Segmented.trackBg`（亮暗都用页面底 `surface0`）+ 4px 内边距 + 4px 项间距；Tabs：ink bar 主色 | 两者都表达「切视图」，同一区域只选一个；Segmented 选项不超过 5 个 |
 | Menu / Layout | 侧栏底 `surface-sidebar`，hover/选中按表面分层 | 侧栏菜单只用一级图标 + 文字，不塞按钮组；选中项由路由决定，不要手写背景 |
 | Tag / Badge | Tag 8px 圆角；Badge 用胶囊/圆点 | 状态用语义色的 text/bg 槽；分类用身份色；Tag 里不放可点击的主操作 |

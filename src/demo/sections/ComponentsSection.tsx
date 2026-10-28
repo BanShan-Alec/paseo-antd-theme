@@ -30,7 +30,7 @@ export function ComponentsSection({ isLight }: { isLight: boolean }) {
   return (
     <Row gutter={[16, 16]}>
       <Col xs={24} xl={12}>
-        <Card variant="borderless" title="Tabs" size="small">
+        <Card variant="borderless" title="Tabs" size="small" style={{ height: "100%" }}>
           <Tabs
             items={[
               { key: "1", label: "工作区", children: <p style={{ fontSize: 14 }}>3 个 agent 正在运行…</p> },
@@ -54,7 +54,12 @@ export function ComponentsSection({ isLight }: { isLight: boolean }) {
       </Col>
 
       <Col xs={24} xl={12}>
-        <Card variant="borderless" title="浮层：Modal / Message / Notification" size="small">
+        <Card
+          variant="borderless"
+          title="浮层：Modal / Message / Notification"
+          size="small"
+          style={{ height: "100%" }}
+        >
           <SpaceWrap>
             <Button type="primary" onClick={() => setModalOpen(true)}>
               打开 Modal
@@ -90,7 +95,7 @@ export function ComponentsSection({ isLight }: { isLight: boolean }) {
         </Card>
       </Col>
 
-      <Col xs={24} xl={12}>
+      <Col span={24}>
         <Card variant="borderless" title="Layout" size="small">
           <style>{`
             /* antd anchors the Sider trigger with position: fixed — it is
@@ -135,7 +140,7 @@ export function ComponentsSection({ isLight }: { isLight: boolean }) {
                   display: "flex",
                   gap: 12,
                   fontSize: 12,
-                  borderBottom: "1px solid rgba(128,128,128,0.12)",
+                  borderBottom: `1px solid ${token.colorSplit}`,
                   paddingBottom: 4,
                 }}
               >

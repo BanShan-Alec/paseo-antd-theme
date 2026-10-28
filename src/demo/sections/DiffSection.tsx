@@ -22,7 +22,7 @@ export function DiffSection() {
   return (
     <Card variant="borderless" title="Diff 视图" size="small">
       {!custom && <Note>当前方案没有自定义 diff token——行底色与统计色回退到 antd 派生值。</Note>}
-      <div style={{ fontFamily: "var(--paseo-mono, monospace)", fontSize: 14 }}>
+      <div style={{ fontFamily: t.fontFamilyCode, fontSize: 14 }}>
         <div style={{ marginBottom: 8 }}>
           统计：
           <span style={{ color: addText, fontWeight: 600 }}>+128</span>{" "}

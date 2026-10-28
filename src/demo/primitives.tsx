@@ -44,7 +44,7 @@ export function TokenSwatchRow({ row, live }: { row: TokenMapping; live: string 
         alignItems: "center",
         gap: 12,
         padding: "4px 0",
-        borderBottom: "1px solid var(--paseo-split, rgba(128,128,128,0.12))",
+        borderBottom: `1px solid ${t.colorSplit}`,
       }}
     >
       {isColorValue(row.value) ? (

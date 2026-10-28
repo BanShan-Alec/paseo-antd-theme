@@ -60,6 +60,7 @@ export function MappingSection({ view, isLight }: { view: View; isLight: boolean
               variant="borderless"
               title="antd 自行派生的 token"
               size="small"
+              style={{ height: "100%" }}
               extra={<Text type="secondary">无需手动设置</Text>}
             >
               <Paragraph type="secondary" style={{ fontSize: 12 }}>
@@ -73,7 +74,7 @@ export function MappingSection({ view, isLight }: { view: View; isLight: boolean
                     display: "flex",
                     gap: 12,
                     padding: "4px 0",
-                    borderBottom: "1px solid rgba(128,128,128,0.12)",
+                    borderBottom: `1px solid ${t.colorSplit}`,
                     fontSize: 12,
                   }}
                 >
@@ -92,6 +93,7 @@ export function MappingSection({ view, isLight }: { view: View; isLight: boolean
               variant="borderless"
               title="自定义 token"
               size="small"
+              style={{ height: "100%" }}
               extra={<Text type="secondary">{Object.keys(customTokens).length} 个</Text>}
             >
               <Paragraph type="secondary" style={{ fontSize: 12 }}>

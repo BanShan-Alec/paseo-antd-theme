@@ -363,8 +363,11 @@ const lightComponents: AntdComponents = {
     itemDisabledColor: claudeLight.foregroundFaint,
   },
   Table: {
-    // Parchment panel-head tone, shared with Card.
-    headerBg: claudeLight.surfaceHead,
+    // The table header sits on the container tone, exactly like the dark
+    // scheme: a card already carries the surfaceHead band, and repeating it
+    // one row lower turned two different heading levels into peers. Weight
+    // plus the row rule carry the header instead.
+    headerBg: claudeLight.surface1,
     rowHoverBg: claudeLight.surfaceHover,
     borderColor: claudeLight.borderAccent,
     headerSplitColor: claudeLight.borderAccent,

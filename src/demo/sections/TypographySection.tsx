@@ -39,8 +39,7 @@ export function TypographySection() {
                 alignItems: "center",
                 gap: 16,
                 padding: "12px 0",
-                borderTop:
-                  index === 0 ? undefined : "1px solid var(--paseo-split, rgba(128,128,128,0.12))",
+                borderTop: index === 0 ? undefined : `1px solid ${t.colorSplit}`,
               }}
             >
               <span style={{ color: t[level.token], fontSize: 14, flex: 1, minWidth: 0 }}>
@@ -64,7 +63,7 @@ export function TypographySection() {
         </Card>
       </Col>
 
-      <Col xs={24} xl={10}>
+      <Col xs={24}>
         <Card variant="borderless" title="实际用法" size="small">
           <div style={{ display: "flex", justifyContent: "space-between", gap: 16 }}>
             <div>
@@ -82,7 +81,7 @@ export function TypographySection() {
             style={{
               marginTop: 12,
               paddingTop: 12,
-              borderTop: "1px solid var(--paseo-split, rgba(128,128,128,0.12))",
+              borderTop: `1px solid ${t.colorSplit}`,
               display: "flex",
               alignItems: "center",
               gap: 12,

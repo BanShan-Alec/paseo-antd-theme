@@ -36,8 +36,9 @@ export function AgentsSection() {
     {
       title: "变更",
       key: "diff",
+      align: "right" as const,
       render: (_: unknown, row: (typeof agents)[number]) => (
-        <span style={{ fontFamily: "var(--paseo-mono, monospace)" }}>
+        <span style={{ fontFamily: t.fontFamilyCode, fontVariantNumeric: "tabular-nums" }}>
           <span style={addText ? { color: addText } : undefined}>+{row.added}</span>{" "}
           <span style={delText ? { color: delText } : undefined}>−{row.removed}</span>
         </span>

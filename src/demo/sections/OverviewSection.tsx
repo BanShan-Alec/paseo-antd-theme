@@ -4,8 +4,8 @@ import { SpaceWrap } from "../primitives";
 export function OverviewSection() {
   return (
     <Row gutter={[16, 16]}>
-      <Col xs={24} xl={12}>
-        <Card variant="borderless" title="按钮" size="small">
+      <Col xs={24} xl={8}>
+        <Card variant="borderless" title="按钮" size="small" style={{ height: "100%" }}>
           <SpaceWrap>
             <Button type="primary">Run agent</Button>
             <Button>Cancel</Button>
@@ -23,8 +23,8 @@ export function OverviewSection() {
         </Card>
       </Col>
 
-      <Col xs={24} xl={12}>
-        <Card variant="borderless" title="状态与反馈" size="small">
+      <Col xs={24} xl={8}>
+        <Card variant="borderless" title="状态与反馈" size="small" style={{ height: "100%" }}>
           <SpaceWrap>
             <Tag color="success">success</Tag>
             <Tag color="warning">warning</Tag>
@@ -42,8 +42,8 @@ export function OverviewSection() {
         </Card>
       </Col>
 
-      <Col xs={24} xl={12}>
-        <Card variant="borderless" title="表单控件" size="small">
+      <Col xs={24} xl={8}>
+        <Card variant="borderless" title="表单控件" size="small" style={{ height: "100%" }}>
           <div style={{ display: "grid", gap: 12, maxWidth: 420 }}>
             <Input placeholder="搜索 agent、文件、命令…" allowClear />
             <Select

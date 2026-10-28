@@ -100,7 +100,7 @@ describe("claude → antd light token mapping", () => {
       contrast(claudeLight.surface3, claudeLight.surfaceSidebar),
     );
     expect(claudeLightTheme.components?.Table?.rowHoverBg).toBe(claudeLight.surfaceHover);
-    expect(claudeLightTheme.components?.Table?.headerBg).toBe(claudeLight.surfaceHead);
+    expect(claudeLightTheme.components?.Table?.headerBg).toBe(claudeLight.surface1);
     // The track sits on the page tone (surface0), matching the dark theme —
     // the selected thumb carries the contrast, no hover override needed.
     expect(claudeLightTheme.components?.Segmented?.trackBg).toBe(claudeLight.surface0);
