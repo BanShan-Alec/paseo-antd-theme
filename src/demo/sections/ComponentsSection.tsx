@@ -81,6 +81,9 @@ export function ComponentsSection({ isLight }: { isLight: boolean }) {
             onOk={() => setModalOpen(false)}
             onCancel={() => setModalOpen(false)}
             title="删除 worktree？"
+            // 确认即删除：破坏性操作按危险态上色，不抢占页面的主操作位。
+            okText="删除"
+            okButtonProps={{ danger: true }}
           >
             <p style={{ fontSize: 13 }}>此操作会移除 agent-work-3 的 worktree，未提交的更改将丢失。</p>
           </Modal>
