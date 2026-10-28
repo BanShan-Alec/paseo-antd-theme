@@ -422,6 +422,9 @@ const lightComponents: AntdComponents = {
     // (Claude's site accepts it). Hover/active darken to #B4543A / #A64B32,
     // where white clears 4.5. Danger keeps white via colorTextLightSolid.
     primaryColor: "#FFFFFF",
+    // The dark scheme labels its solid danger button with ink because its
+    // error red is a pastel; here the fill is dark enough for white (5.3:1).
+    dangerColor: "#FFFFFF",
     primaryShadow: SHADOW.buttonPrimary,
     defaultShadow: SHADOW.buttonDefault,
     dangerShadow: SHADOW.buttonDanger,

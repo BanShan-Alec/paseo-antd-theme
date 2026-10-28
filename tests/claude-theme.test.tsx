@@ -215,6 +215,7 @@ describe("claude light contrast", () => {
   });
 
   it("danger/solid buttons keep white text above 4.5:1", () => {
+    expect(claudeLightTheme.components?.Button?.dangerColor).toBe("#FFFFFF");
     expect(contrast("#ffffff", claudeLight.statusDanger)).toBeGreaterThanOrEqual(4.5);
   });
 

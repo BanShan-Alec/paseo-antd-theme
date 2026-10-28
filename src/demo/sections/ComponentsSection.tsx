@@ -87,8 +87,10 @@ export function ComponentsSection({ isLight }: { isLight: boolean }) {
             onCancel={() => setModalOpen(false)}
             title="删除 worktree？"
             // 确认即删除：破坏性操作按危险态上色，不抢占页面的主操作位。
+            // 用描边而不是实心——深色方案的 colorError 是文字档浅红，铺成
+            // 实心按钮会变成一块粉底，描边只留红色语义。
             okText="删除"
-            okButtonProps={{ danger: true }}
+            okButtonProps={{ danger: true, type: "default" }}
           >
             <p style={{ fontSize: 14 }}>此操作会移除 agent-work-3 的 worktree，未提交的更改将丢失。</p>
           </Modal>

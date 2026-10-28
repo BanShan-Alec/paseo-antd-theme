@@ -75,5 +75,8 @@ export const paseoIdentityDark = {
   blue: "#7ba1d5",
 } as const;
 
+/** Ink for text sitting on a light fill — identity swatches and solid danger. */
+export const paseoInk = "#1F1E1D" as const;
+
 /** Letter color on top of every identity fill in this scheme. */
-export const paseoIdentityInk = "#1F1E1D" as const;
+export const paseoIdentityInk = paseoInk;

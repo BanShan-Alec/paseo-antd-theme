@@ -9,7 +9,7 @@ import {
   paseoDarkTheme,
 } from "../src/themes/paseo-dark/theme";
 import { antdLightTheme } from "../src/themes/antd/theme";
-import { paseoDark, paseoIdentityDark, paseoIdentityInk } from "../src/themes/paseo-dark/tokens";
+import { paseoDark, paseoIdentityDark, paseoIdentityInk, paseoInk } from "../src/themes/paseo-dark/tokens";
 import { PASEO_FONT_STACK } from "../src/shared/fonts";
 
 const dark = resolveTokens(paseoDarkTheme);
@@ -248,6 +248,15 @@ describe("dark contrast", () => {
 
   it("primary button label clears 4.5:1 on the primary fill", () => {
     expect(contrast("#ffffff", paseoDark.accent)).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("solid danger button labels its pastel fill with ink, not white", () => {
+    // antd paints the solid danger variant with colorError — in this scheme a
+    // text-grade pastel — and reads Button.dangerColor for the label. White
+    // there is 2.6:1 and looks bleached; ink is 6.6:1.
+    expect(paseoDarkTheme.components?.Button?.dangerColor).toBe(paseoInk);
+    expect(contrast(paseoInk, paseoDark.statusDanger)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast("#ffffff", paseoDark.statusDanger)).toBeLessThan(4.5);
   });
 
   it("primary-colored text clears 4.5:1 on the dark background", () => {

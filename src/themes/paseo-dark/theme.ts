@@ -11,7 +11,7 @@ import {
 } from "../../shared/theme";
 import { darkFamily } from "../../shared/colors";
 import { PASEO_FONT_STACK, PASEO_MONO_FONT_STACK } from "../../shared/fonts";
-import { paseoDark, paseoIdentityDark, paseoIdentityInk } from "./tokens";
+import { paseoDark, paseoIdentityDark, paseoIdentityInk, paseoInk } from "./tokens";
 
 // ---------------------------------------------------------------------------
 // Pinned color families
@@ -372,6 +372,11 @@ const darkComponents: AntdComponents = {
   Notification: { colorBgElevated: paseoDark.surface2 },
   // Soft elevation in place of paseo's original flat chrome (Q14 sync).
   Button: {
+    // antd paints the solid danger variant with colorError (the pastel
+    // text-grade red) and labels it with `dangerColor`. White on that pastel
+    // is 2.6:1 and reads as a washed-out block, so the label takes ink — the
+    // same rule the identity swatches follow.
+    dangerColor: paseoInk,
     primaryShadow: DARK_SHADOW.buttonPrimary,
     defaultShadow: DARK_SHADOW.buttonDefault,
     dangerShadow: DARK_SHADOW.buttonDanger,

@@ -82,6 +82,7 @@
 - **链接与主色同族**：`colorLink` 在 Claude 浅色取主色的 text 档（`#A34E2D`，不是 3.86:1 的填充档），Paseo 深色取更亮的绿。整套界面只有一个品牌色相，不再单独引入链接蓝；hover / active 都在同族内加深并过 4.5:1。
 - **语义色只表达状态**，不做装饰背景、不做分类标签的默认色。分类、图表请用身份色（见下）。
 - 主按钮上的白字是刻意校准过的：Claude 浅色 `#BA5B37` 上白字 4.53:1，刚好过线。**不要用更浅的品牌装饰色 `#D97757` 做按钮底色**，白字只有 3.12:1。
+- **深色的语义色是文字档，不是填充档**：`colorError` 在深色是浅红（作文字 5.8:1），antd 的实心 danger 按钮会直接拿它当底色；主题为此把标签改成墨字（`Button.dangerColor`），但视觉上仍是一块浅色。确认类操作优先用描边 danger。
 - 需要换品牌色时用 `extendTheme` 覆盖 `colorPrimary`，它会重建整个十槽色族；直接嵌套 `ConfigProvider theme={{ token: { colorPrimary } }}` 会被算法覆盖，详见 README 的「从一个内置主题扩展」。
 
 ### 扩展色：状态点、diff、身份色、选区
@@ -193,7 +194,7 @@
 
 | 组件 | 主题已配 | 使用规则 |
 | --- | --- | --- |
-| Button | 主按钮白字、hover/active 加深、三级投影 | 每个区块最多一个 `type="primary"`；次级操作用默认按钮；第三级用 `type="text"`；删除才用 `danger`。loading 图标由 Provider 统一，不要自己传 |
+| Button | 主按钮白字、hover/active 加深、三级投影；深色实心 danger 用墨字 | 每个区块最多一个 `type="primary"`；次级操作用默认按钮；第三级用 `type="text"`；删除才用 `danger`，确认类操作优先描边（`danger` + 默认类型）。loading 图标由 Provider 统一，不要自己传 |
 | Input / Select | 边框色、hover/active 主色、12px 圆角、40px 高 | 错误态交给 `status="error"`，不要手写红边框；Select 的长列表见上文 `listItemHeight` |
 | Card | `surface-1` 底、12px 圆角、头用 `surface-head`、默认无阴影 | 卡片是页面上的「纸」，不要嵌套三层卡片；卡片头与正文之间用 `border-split`；`hoverable` 才出现悬浮投影 |
 | Table | 表头与表格同底（`surface-1`，靠字重 + `border-split` 行线区分）、行 hover `surface-hover`、行线 `border-split`、斑马纹 `colorFillAlter`（派生自 `fill-quaternary`） | 斑马纹与行 hover 不要同时开；数字列右对齐并用 mono；空态用 Empty，不要自己画 |
