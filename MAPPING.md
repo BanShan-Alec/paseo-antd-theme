@@ -90,9 +90,9 @@ Claude 品牌表面 + Claude Code 信号色 + paseo 归一化状态色（OKLCH L
 | `colorBgSpotlight` | map | `#1F1E1D` | `—` | Tooltip stays dark ink with white text. |
 | `colorBgMask` | map | `rgba(20, 20, 19, 0.45)` | `—` |  |
 | `colorText` | map | `#3C3C2C` | `foreground` |  |
-| `colorTextSecondary` | map | `#55554B` | `foregroundMuted` | Deepened one step from the sampled #5C5C54 so tiers 2→3 stay clearly separated (1.31 apart). |
-| `colorTextTertiary` | map | `#65635E` | `foregroundExtraMuted` | Held at ≥4.5:1 — this tier carries timestamps and meta text. |
-| `colorTextQuaternary` | map | `#98978F` | `foregroundFaint` | Placeholder/disabled only — 2.5:1, visibly sunken; not a body-text level. |
+| `colorTextSecondary` | map | `#55554B` | `foregroundMuted` |  |
+| `colorTextTertiary` | map | `#65635E` | `foregroundExtraMuted` |  |
+| `colorTextQuaternary` | map | `#98978F` | `foregroundFaint` | Placeholder/disabled only — not a body-text level. |
 | `colorTextLightSolid` | map | `#FFFFFF` | `—` | Danger/solid labels stay white; primary buttons override with Button.primaryColor. |
 | `colorBorder` | map | `#DBD9D0` | `border` |  |
 | `colorBorderSecondary` | map | `#E8E6DF` | `borderAccent` |  |
@@ -227,6 +227,7 @@ hover/active/色阶槽位），浅色写在 `:root`，深色同时写在 `@media
 | `--paseo-identity-red` | `#ad5151` | `#d88381` | `paseoIdentityRed` |  |
 | `--paseo-identity-amber` | `#807046` | `#b29d64` | `paseoIdentityAmber` |  |
 | `--paseo-identity-blue` | `#4773ae` | `#7ba1d5` | `paseoIdentityBlue` |  |
+| `--paseo-identity-ink` | `#FFFFFF` | `#1F1E1D` | `paseoIdentityInk` |  |
 | `--paseo-font` | `system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif` | `system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif` | `fontFamily` |  |
 | `--paseo-font-mono` | `SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace` | `SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace` | `fontFamilyCode` |  |
 | `--paseo-radius-xs` | `4px` | `4px` | `borderRadiusXS` |  |

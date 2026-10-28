@@ -88,9 +88,9 @@ export const claudeLight = {
 export const claudeLightStatusFamilies = status;
 
 /**
- * Ten host identity hues, re-normalized at L*=0.55 / 55% chroma so a white
- * letter on top stays in the 4.7–5.2:1 band. Hues are paseo's identity hues;
- * only lightness/chroma are re-solved for a light surface.
+ * Ten host identity hues, re-normalized at L*=0.55 / 55% chroma so the ink
+ * below stays in the 4.7–5.2:1 band. Hues are paseo's identity hues; only
+ * lightness/chroma are re-solved for a light surface.
  */
 export const claudeIdentityLight = {
   violet: normalizedLightFamily(295.4, 0.55).base,
@@ -104,3 +104,11 @@ export const claudeIdentityLight = {
   amber: normalizedLightFamily(90.0, 0.55).base,
   blue: normalizedLightFamily(256.4, 0.55).base,
 } as const;
+
+/**
+ * The letter color that pairs with every identity fill. The light fills are
+ * dark enough for white (4.72–5.19:1); the dark scheme's pastels are not
+ * (2.6:1), which is why each scheme ships its own ink instead of one
+ * "identity always takes white" rule.
+ */
+export const claudeIdentityInk = "#FFFFFF" as const;

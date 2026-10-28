@@ -20,7 +20,7 @@ const stateTag: Record<string, { color: string; label: string }> = {
 export function AgentsSection() {
   const { t, get } = useSchemeTokens();
   const identityKeys = Object.keys(t)
-    .filter((key) => key.startsWith("paseoIdentity"))
+    .filter((key) => key.startsWith("paseoIdentity") && key !== "paseoIdentityInk")
     .sort();
   const addText = t.paseoDiffAdditionText;
   const delText = t.paseoDiffDeletionText;

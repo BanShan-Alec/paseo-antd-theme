@@ -115,6 +115,8 @@ export interface PaseoExtrasInput {
   statusMerged: string;
   selection: string;
   identity: Record<string, string>;
+  /** Letter color on top of every identity fill — white in light, ink in dark. */
+  identityInk: string;
 }
 
 /**
@@ -142,6 +144,7 @@ export function extras(values: PaseoExtrasInput): AntdToken {
     paseoStatusDotRunning: values.statusDotRunning,
     paseoStatusMerged: values.statusMerged,
     paseoSelection: values.selection,
+    paseoIdentityInk: values.identityInk,
     ...Object.fromEntries(
       Object.entries(values.identity).map(([name, value]) => [
         `paseoIdentity${capitalize(name)}`,

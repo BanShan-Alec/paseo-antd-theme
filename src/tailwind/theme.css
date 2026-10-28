@@ -126,6 +126,7 @@
   --color-identity-red: var(--paseo-identity-red);
   --color-identity-amber: var(--paseo-identity-amber);
   --color-identity-blue: var(--paseo-identity-blue);
+  --color-identity-ink: var(--paseo-identity-ink);
   /* 字体 */
   --font-sans: var(--paseo-font);
   --font-mono: var(--paseo-font-mono);
@@ -249,6 +250,7 @@
   --paseo-identity-red: #ad5151;
   --paseo-identity-amber: #807046;
   --paseo-identity-blue: #4773ae;
+  --paseo-identity-ink: #FFFFFF;
   /* 字体 */
   --paseo-font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --paseo-font-mono: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
@@ -373,6 +375,7 @@
     --paseo-identity-red: #d88381;
     --paseo-identity-amber: #b29d64;
     --paseo-identity-blue: #7ba1d5;
+    --paseo-identity-ink: #1F1E1D;
     /* 字体 */
     --paseo-font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     --paseo-font-mono: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
@@ -497,6 +500,7 @@
   --paseo-identity-red: #d88381;
   --paseo-identity-amber: #b29d64;
   --paseo-identity-blue: #7ba1d5;
+  --paseo-identity-ink: #1F1E1D;
   /* 字体 */
   --paseo-font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --paseo-font-mono: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;

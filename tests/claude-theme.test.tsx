@@ -8,7 +8,7 @@ import {
   CLAUDE_LIGHT_TOKEN_MAPPING,
   claudeLightTheme,
 } from "../src/themes/claude/theme";
-import { claudeIdentityLight, claudeLight, claudeLightStatusFamilies } from "../src/themes/claude/tokens";
+import { claudeIdentityInk, claudeIdentityLight, claudeLight, claudeLightStatusFamilies } from "../src/themes/claude/tokens";
 
 const light = resolveTokens(claudeLightTheme);
 
@@ -174,6 +174,7 @@ describe("claude custom tokens", () => {
       const key = `paseoIdentity${name[0].toUpperCase()}${name.slice(1)}`;
       expect(light[key], key).toBe(value);
     }
+    expect(light.paseoIdentityInk).toBe(claudeIdentityInk);
   });
 });
 
@@ -246,6 +247,14 @@ describe("claude light contrast", () => {
       claudeLight.statusMerged,
     ]) {
       expect(contrast(status, claudeLight.surface1)).toBeGreaterThanOrEqual(4.5);
+    }
+  });
+
+  it("identity ink clears 4.5:1 on every identity fill", () => {
+    // The fills are dark enough for white in this scheme; the dark scheme's
+    // pastels are not, which is why the ink is a per-scheme token.
+    for (const [name, value] of Object.entries(claudeIdentityLight)) {
+      expect(contrast(claudeIdentityInk, value), name).toBeGreaterThanOrEqual(4.5);
     }
   });
 

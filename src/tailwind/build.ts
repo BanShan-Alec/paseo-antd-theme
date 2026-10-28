@@ -312,6 +312,13 @@ export const TAILWIND_VARIABLES: readonly TailwindVariable[] = [
     kind: "color",
     group: "身份色",
   },
+  {
+    name: "identity-ink",
+    source: "paseoIdentityInk",
+    fallback: ["colorTextLightSolid"],
+    kind: "color",
+    group: "身份色",
+  },
   { name: "font", source: "fontFamily", themeKey: "--font-sans", kind: "other", group: "字体" },
   { name: "font-mono", source: "fontFamilyCode", themeKey: "--font-mono", kind: "other", group: "字体" },
   { name: "radius-xs", source: "borderRadiusXS", themeKey: "--radius-xs", kind: "other", group: "圆角" },

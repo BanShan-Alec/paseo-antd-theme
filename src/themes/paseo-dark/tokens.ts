@@ -58,8 +58,9 @@ export const paseoDark = {
 } as const;
 
 /**
- * Host identity colors — ten hues, all held to one contrast band against the
- * white letter on top (4.2–4.8:1) so the color identifies rather than ranks.
+ * Host identity colors — ten pastel hues. They are meant to be read *as*
+ * color on the dark surface, so the letter on top has to be ink: white only
+ * reaches 2.6:1 on them. The ink below lands at 6.1–6.4:1 on all ten.
  */
 export const paseoIdentityDark = {
   violet: "#a392d5",
@@ -73,3 +74,6 @@ export const paseoIdentityDark = {
   amber: "#b29d64",
   blue: "#7ba1d5",
 } as const;
+
+/** Letter color on top of every identity fill in this scheme. */
+export const paseoIdentityInk = "#1F1E1D" as const;

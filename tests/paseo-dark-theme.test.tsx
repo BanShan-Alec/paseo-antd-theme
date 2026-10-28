@@ -9,7 +9,7 @@ import {
   paseoDarkTheme,
 } from "../src/themes/paseo-dark/theme";
 import { antdLightTheme } from "../src/themes/antd/theme";
-import { paseoDark, paseoIdentityDark } from "../src/themes/paseo-dark/tokens";
+import { paseoDark, paseoIdentityDark, paseoIdentityInk } from "../src/themes/paseo-dark/tokens";
 import { PASEO_FONT_STACK } from "../src/shared/fonts";
 
 const dark = resolveTokens(paseoDarkTheme);
@@ -202,6 +202,7 @@ describe("paseo custom tokens", () => {
       const key = `paseoIdentity${name[0].toUpperCase()}${name.slice(1)}`;
       expect(dark[key], key).toBe(value);
     }
+    expect(dark.paseoIdentityInk).toBe(paseoIdentityInk);
   });
 });
 
@@ -222,6 +223,15 @@ describe("dark contrast", () => {
     // the design spec sends elevated meta text to tier 2.
     expect(contrast(paseoDark.foregroundExtraMuted, paseoDark.surface0)).toBeGreaterThanOrEqual(4.5);
     expect(contrast(paseoDark.foregroundExtraMuted, paseoDark.surface1)).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("identity ink clears 4.5:1 on every identity fill", () => {
+    // The ten fills are pastels: white reads 2.6:1 on them, so the letter has
+    // to be ink. This is the assertion that caught the demo's white letters.
+    for (const [name, value] of Object.entries(paseoIdentityDark)) {
+      expect(contrast(paseoIdentityInk, value), name).toBeGreaterThanOrEqual(4.5);
+      expect(contrast("#ffffff", value), name).toBeLessThan(4.5);
+    }
   });
 
   it("keeps the text ladder ordered", () => {

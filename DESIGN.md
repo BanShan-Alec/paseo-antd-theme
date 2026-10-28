@@ -92,14 +92,15 @@
 | 已合并 | `paseoStatusMerged` | `bg-status-merged` | 合并类状态，唯一允许的紫色语义 |
 | diff 行底 | `paseoDiffAddition` / `paseoDiffDeletion` | `bg-diff-addition` / `bg-diff-deletion` | 整行背景 |
 | diff 文字 | `paseoDiffAdditionText` / `paseoDiffDeletionText` | `text-diff-addition-text` 等 | 词级高亮与 `+12 −3` 统计 |
-| 身份色 | `paseoIdentity*`（10 色） | `bg-identity-violet` 等 | 主机 / agent / 项目标识；一律配白字 |
+| 身份色 | `paseoIdentity*`（10 色） | `bg-identity-violet` 等 | 主机 / agent / 项目标识 |
+| 身份色文字 | `paseoIdentityInk` | `text-identity-ink` | 身份色块上的文字：亮色白字、暗色墨字 |
 | 选区 | `paseoSelection` | `selection:bg-selection` | `::selection` 背景，不要手写半透明色 |
 
 规则：
 
 - 状态点与语义色是两套：**文字用 `text-success`，点用 `bg-status-dot-success`**。状态点是按「非文字图形」调过的亮度（深色下明显更亮），语义色是按 4.5:1 文字阈值调的，两者不要互相顶替。
 - diff 行底只负责「哪一行是增/删」，**统计数字用 `diff-*-text`**；把状态色直接铺在行底上会低于 4.5:1（浅色行底只有约 4.3）。
-- 身份色按等响度归一化，白字永远落在 4.2–5.2:1 区间；不要从中挑一个再调亮，色相只负责「是谁」，不负责「多重要」。
+- 身份色按等响度归一化，色块上的文字一律用 `paseoIdentityInk`：亮色是白字（4.7–5.2:1），暗色是墨字（6.1–6.4:1）。不要假设白字在深色下可用——那十条浅彩色配白字只有 2.6:1。不要从中挑一个再调亮，色相只负责「是谁」，不负责「多重要」。
 
 ### 边框与分隔
 

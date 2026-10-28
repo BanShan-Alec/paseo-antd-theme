@@ -14,10 +14,14 @@ const hosts = [
 export function HostsSection() {
   const { t, get, has } = useSchemeTokens();
   const identityKeys = Object.keys(t)
-    .filter((key) => key.startsWith("paseoIdentity"))
+    .filter((key) => key.startsWith("paseoIdentity") && key !== "paseoIdentityInk")
     .sort();
   const custom = identityKeys.length > 0;
   const selection = t.paseoSelection;
+  // The scheme decides the letter color: white on the light scheme's fills,
+  // ink on the dark scheme's pastels. Stock antd (no identity tokens) keeps
+  // antd's own white-on-primary pairing.
+  const ink = get("paseoIdentityInk", t.colorTextLightSolid);
 
   return (
     <Row gutter={[16, 16]}>
@@ -37,7 +41,7 @@ export function HostsSection() {
                       height: 22,
                       borderRadius: 4,
                       background: color,
-                      color: "#fff",
+                      color: ink,
                       display: "inline-flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -57,7 +61,8 @@ export function HostsSection() {
             })}
           </div>
           <Paragraph type="secondary" style={{ fontSize: 12, marginTop: 12, marginBottom: 0 }}>
-            十色全部压在同一对比度带（对白字 ≥4.2:1）——颜色起识别作用，不排名。
+            十色全部压在同一对比度带——文字用 <code>paseoIdentityInk</code>（亮色白字 / 暗色墨字），
+            对底色都不低于 4.5:1；颜色起识别作用，不排名。
           </Paragraph>
         </Card>
       </Col>

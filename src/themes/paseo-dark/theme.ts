@@ -11,7 +11,7 @@ import {
 } from "../../shared/theme";
 import { darkFamily } from "../../shared/colors";
 import { PASEO_FONT_STACK, PASEO_MONO_FONT_STACK } from "../../shared/fonts";
-import { paseoDark, paseoIdentityDark } from "./tokens";
+import { paseoDark, paseoIdentityDark, paseoIdentityInk } from "./tokens";
 
 // ---------------------------------------------------------------------------
 // Pinned color families
@@ -308,6 +308,7 @@ function darkExtras(): AntdToken {
     statusMerged: paseoDark.statusMerged,
     selection: paseoDark.selection,
     identity: paseoIdentityDark,
+    identityInk: paseoIdentityInk,
   });
 }
 

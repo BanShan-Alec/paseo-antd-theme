@@ -13,6 +13,7 @@ import {
 import { normalizedLightFamily, type LightFamily } from "../../shared/colors";
 import {
   CLAUDE_LIGHT_STATUS_HUES,
+  claudeIdentityInk,
   claudeIdentityLight,
   claudeLight,
   claudeLightStatusFamilies,
@@ -329,6 +330,7 @@ function lightExtras(): AntdToken {
     statusMerged: claudeLight.statusMerged,
     selection: claudeLight.selection,
     identity: claudeIdentityLight,
+    identityInk: claudeIdentityInk,
   });
 }
 
