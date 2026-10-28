@@ -1,5 +1,15 @@
 import { useState } from "react";
-import { App as AntApp, Breadcrumb, Layout, Menu, Segmented, Typography, theme as antdTheme } from "antd";
+import {
+  App as AntApp,
+  Breadcrumb,
+  Button,
+  Drawer,
+  Layout,
+  Menu,
+  Segmented,
+  Typography,
+  theme as antdTheme,
+} from "antd";
 import {
   AgentsSection,
   ComponentsSection,
@@ -16,7 +26,7 @@ import { antdDarkTheme, antdLightTheme } from "./themes/antd/theme";
 import { paseoDarkTheme } from "./themes/paseo-dark/theme";
 import { PaseoThemeProvider, type PaseoBehaviors, type PaseoThemeMode, type PaseoThemeSlots } from "./Provider";
 import { hexLuminance } from "./shared/colors";
-import { MoonIcon, SunIcon, SystemIcon } from "./demo/icons";
+import { MenuIcon, MoonIcon, SunIcon, SystemIcon } from "./demo/icons";
 
 const { Header, Sider, Content } = Layout;
 const { Title, Text } = Typography;
@@ -63,6 +73,45 @@ const VIEW_PRESETS: Record<View, { themes?: PaseoThemeSlots; behaviors?: PaseoBe
   mixed: { themes: { light: antdLightTheme, dark: paseoDarkTheme } },
 };
 
+/**
+ * Demo chrome only — the package itself injects nothing here. The media query
+ * is the whole responsive strategy: the 248px sider is great on a laptop and
+ * unusable on a phone, so below 992px it leaves the flow and the same nav
+ * renders inside a drawer, while the header stacks the view switcher.
+ */
+const CHROME_CSS = `
+  .paseo-demo-header.ant-layout-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0 24px;
+  }
+  .paseo-demo-header-bar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+  }
+  .paseo-demo-nav-toggle { display: none; }
+  .paseo-demo-content.ant-layout-content { padding: 24px; }
+
+  @media (max-width: 991.98px) {
+    .paseo-demo-sider { display: none !important; }
+    .paseo-demo-header.ant-layout-header {
+      flex-direction: column;
+      align-items: stretch;
+      height: auto;
+      line-height: normal;
+      gap: 8px;
+      padding: 8px 12px;
+    }
+    .paseo-demo-header-switch { align-self: flex-start; }
+    .paseo-demo-nav-toggle { display: inline-flex; }
+    .paseo-demo-content.ant-layout-content { padding: 16px; }
+  }
+`;
+
 function resolveInitialView(): View {
   try {
     const stored = localStorage.getItem(VIEW_STORAGE_KEY);
@@ -96,6 +145,65 @@ function isLightSurface(color: string): boolean {
   }
 }
 
+/** The nav column, shared by the desktop sider and the mobile drawer. */
+function SidebarBody({
+  isLight,
+  mode,
+  section,
+  changeMode,
+  setSection,
+  onNavigate,
+}: {
+  isLight: boolean;
+  mode: PaseoThemeMode;
+  section: Section;
+  changeMode: (mode: PaseoThemeMode) => void;
+  setSection: (section: Section) => void;
+  onNavigate?: () => void;
+}) {
+  const { token } = antdTheme.useToken();
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        overflow: "hidden",
+      }}
+    >
+      <div style={{ flexShrink: 0, padding: "16px 20px", color: token.colorText }}>
+        <Title level={5} style={{ color: "inherit", margin: 0 }}>
+          Paseo × antd v6
+        </Title>
+        <Text style={{ color: token.colorTextSecondary, fontSize: 12 }}>
+          agent orchestration
+        </Text>
+      </div>
+      <div style={{ flex: 1, minHeight: 0, overflowY: "auto" }}>
+        <Menu
+          theme={isLight ? "light" : "dark"}
+          mode="inline"
+          selectedKeys={[section]}
+          onClick={({ key }) => {
+            setSection(key as Section);
+            onNavigate?.();
+          }}
+          items={SECTIONS.map((s) => ({ key: s.key, label: s.label }))}
+        />
+      </div>
+      <div style={{ flexShrink: 0, padding: "12px 20px 20px" }}>
+        <Segmented
+          shape="round"
+          size="small"
+          value={mode}
+          onChange={(value) => changeMode(value as PaseoThemeMode)}
+          options={MODE_OPTIONS.map((o) => ({ ...o }))}
+        />
+      </div>
+    </div>
+  );
+}
+
 function Dashboard({
   view,
   mode,
@@ -112,87 +220,71 @@ function Dashboard({
   setSection: (section: Section) => void;
 }) {
   const { token } = antdTheme.useToken();
+  const [navOpen, setNavOpen] = useState(false);
   // The pair is fixed per view but the resolved scheme follows the OS, so the
   // chrome (Sider/Menu variant) has to follow the resolved background rather
   // than the view name.
   const isLight = isLightSurface(String(token.colorBgLayout));
+  const tokens = token as unknown as Record<string, string>;
+  const sidebarBg = tokens.paseoSurfaceSidebar ?? String(token.colorBgContainer);
+
+  const sidebar = (onNavigate?: () => void) => (
+    <SidebarBody
+      isLight={isLight}
+      mode={mode}
+      section={section}
+      changeMode={changeMode}
+      setSection={setSection}
+      onNavigate={onNavigate}
+    />
+  );
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
+      <style data-demo-chrome="">{CHROME_CSS}</style>
       <Sider
+        className="paseo-demo-sider"
         width={248}
         theme={isLight ? "light" : "dark"}
         // Sticky + viewport height: the sidebar and its footer stay put while
         // the content column scrolls, instead of growing with the page.
         style={{ position: "sticky", top: 0, height: "100vh" }}
       >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            height: "100%",
-            overflow: "hidden",
-          }}
-        >
-          <div style={{ flexShrink: 0, padding: "16px 20px", color: token.colorText }}>
-            <Title level={5} style={{ color: "inherit", margin: 0 }}>
-              Paseo × antd v6
-            </Title>
-            <Text style={{ color: token.colorTextSecondary, fontSize: 12 }}>
-              agent orchestration
-            </Text>
-          </div>
-          <div style={{ flex: 1, minHeight: 0, overflowY: "auto" }}>
-            <Menu
-              theme={isLight ? "light" : "dark"}
-              mode="inline"
-              selectedKeys={[section]}
-              onClick={({ key }) => setSection(key as Section)}
-              items={SECTIONS.map((s) => ({ key: s.key, label: s.label }))}
-            />
-          </div>
-          <div style={{ flexShrink: 0, padding: "12px 20px 20px" }}>
-            <Segmented
-              shape="round"
-              size="small"
-              value={mode}
-              onChange={(value) => changeMode(value as PaseoThemeMode)}
-              options={MODE_OPTIONS.map((o) => ({ ...o }))}
-            />
-          </div>
-        </div>
+        {sidebar()}
       </Sider>
       <Layout>
-        <Header
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "0 24px",
-            // The stock themes keep the header transparent (headerBg = body),
-            // and the Paseo/Claude themes override headerBg themselves — no
-            // demo-side override is needed in any view.
-          }}
-        >
-          <Breadcrumb
-            items={[
-              { title: "工作台" },
-              {
-                title: (
-                  <Text strong>
-                    {SECTIONS.find((s) => s.key === section)?.label}
-                  </Text>
-                ),
-              },
-            ]}
-          />
+        <Header className="paseo-demo-header">
+          <div className="paseo-demo-header-bar">
+            {/* Below 992px the sider is display:none, so this is the only way
+                into the nav. */}
+            <Button
+              className="paseo-demo-nav-toggle"
+              type="text"
+              aria-label="打开导航"
+              icon={<MenuIcon />}
+              onClick={() => setNavOpen(true)}
+            />
+            <Breadcrumb
+              items={[
+                { title: "工作台" },
+                {
+                  title: (
+                    <Text strong>
+                      {SECTIONS.find((s) => s.key === section)?.label}
+                    </Text>
+                  ),
+                },
+              ]}
+            />
+          </div>
           <Segmented
+            className="paseo-demo-header-switch"
             value={view}
             onChange={(value) => changeView(value as View)}
             options={VIEW_OPTIONS.map((o) => ({ ...o }))}
           />
         </Header>
-        <Content style={{ padding: 24 }}>
+        <Content className="paseo-demo-content">
           {section === "overview" && <OverviewSection />}
           {section === "agents" && <AgentsSection />}
           {section === "diff" && <DiffSection />}
@@ -204,6 +296,20 @@ function Dashboard({
           {section === "design" && <DesignSection />}
         </Content>
       </Layout>
+      <Drawer
+        placement="left"
+        width={288}
+        open={navOpen}
+        onClose={() => setNavOpen(false)}
+        title={null}
+        styles={{
+          header: { background: sidebarBg, borderBottom: "none" },
+          body: { padding: 0, height: "100%", background: sidebarBg },
+          content: { background: sidebarBg },
+        }}
+      >
+        {sidebar(() => setNavOpen(false))}
+      </Drawer>
     </Layout>
   );
 }
