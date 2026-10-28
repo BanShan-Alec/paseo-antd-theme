@@ -31,7 +31,7 @@ export function StatusSection() {
               }}
             />
             <code style={{ minWidth: 150, fontSize: 13 }}>{s.dot}</code>
-            <span style={{ opacity: 0.7, fontSize: 13 }}>{s.detail}</span>
+            <span style={{ color: t.colorTextSecondary, fontSize: 13 }}>{s.detail}</span>
           </div>
         ))}
       </div>

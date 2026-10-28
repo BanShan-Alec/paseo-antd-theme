@@ -36,6 +36,7 @@ export function isColorValue(value: string | number): value is string {
 }
 
 export function TokenSwatchRow({ row, live }: { row: TokenMapping; live: string | number }) {
+  const { t } = useSchemeTokens();
   return (
     <div
       style={{
@@ -59,11 +60,13 @@ export function TokenSwatchRow({ row, live }: { row: TokenMapping; live: string 
           }}
         />
       ) : (
-        <span style={{ width: 22, flex: "none", textAlign: "center", opacity: 0.5 }}>—</span>
+        <span style={{ width: 22, flex: "none", textAlign: "center", color: t.colorTextTertiary }}>
+          —
+        </span>
       )}
       <code style={{ minWidth: 190 }}>{row.antdToken}</code>
-      <span style={{ opacity: 0.65, minWidth: 150 }}>{row.paseoToken}</span>
-      <code style={{ marginLeft: "auto", opacity: 0.8 }}>{String(live)}</code>
+      <span style={{ color: t.colorTextSecondary, minWidth: 150 }}>{row.paseoToken}</span>
+      <code style={{ marginLeft: "auto", color: t.colorTextTertiary }}>{String(live)}</code>
     </div>
   );
 }

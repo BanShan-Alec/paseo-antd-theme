@@ -27,7 +27,7 @@ export function DiffSection() {
           统计：
           <span style={{ color: addText, fontWeight: 600 }}>+128</span>{" "}
           <span style={{ color: delText, fontWeight: 600 }}>−12</span>
-          <span style={{ opacity: 0.6 }}> （paseoDiffAdditionText / paseoDiffDeletionText）</span>
+          <span style={{ color: t.colorTextTertiary }}> （paseoDiffAdditionText / paseoDiffDeletionText）</span>
         </div>
         <div style={{ borderRadius: 6, overflow: "hidden" }}>
           {diffLines.map((line, i) => (

@@ -53,7 +53,7 @@ export function HostsSection() {
                     {host.name[0].toUpperCase()}
                   </span>
                   <span style={{ fontSize: 13 }}>{host.name}</span>
-                  <code style={{ fontSize: 11, opacity: 0.6, marginLeft: "auto" }}>
+                  <code style={{ fontSize: 11, color: t.colorTextTertiary, marginLeft: "auto" }}>
                     {key ?? "Antd 默认"}
                   </code>
                 </div>

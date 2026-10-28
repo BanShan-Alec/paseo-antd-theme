@@ -78,8 +78,10 @@ export function MappingSection({ view, isLight }: { view: View; isLight: boolean
                   }}
                 >
                   <code style={{ minWidth: 190 }}>{row.antdToken}</code>
-                  <span style={{ opacity: 0.65 }}>← {row.derivedFrom}</span>
-                  <code style={{ marginLeft: "auto", opacity: 0.8 }}>{t[row.antdToken] ?? ""}</code>
+                  <span style={{ color: t.colorTextTertiary }}>← {row.derivedFrom}</span>
+                  <code style={{ marginLeft: "auto", color: t.colorTextSecondary }}>
+                    {t[row.antdToken] ?? ""}
+                  </code>
                 </div>
               ))}
             </Card>

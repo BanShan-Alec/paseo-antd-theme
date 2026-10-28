@@ -137,8 +137,8 @@ export function ComponentsSection({ isLight }: { isLight: boolean }) {
                 }}
               >
                 <code style={{ minWidth: 130 }}>{row.group}</code>
-                <span style={{ opacity: 0.65, minWidth: 300 }}>{row.tokens}</span>
-                <span style={{ marginLeft: "auto", opacity: 0.8 }}>{row.where}</span>
+                <span style={{ color: token.colorTextSecondary, minWidth: 300 }}>{row.tokens}</span>
+                <span style={{ marginLeft: "auto", color: token.colorTextTertiary }}>{row.where}</span>
               </div>
             ))}
           </div>
