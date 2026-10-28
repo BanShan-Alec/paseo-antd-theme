@@ -74,7 +74,7 @@ export function MappingSection({ view, isLight }: { view: View; isLight: boolean
                     gap: 12,
                     padding: "4px 0",
                     borderBottom: "1px solid rgba(128,128,128,0.12)",
-                    fontSize: 13,
+                    fontSize: 12,
                   }}
                 >
                   <code style={{ minWidth: 190 }}>{row.antdToken}</code>

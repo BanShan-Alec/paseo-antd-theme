@@ -22,19 +22,19 @@ export function DiffSection() {
   return (
     <Card variant="borderless" title="Diff 视图" size="small">
       {!custom && <Note>当前方案没有自定义 diff token——行底色与统计色回退到 antd 派生值。</Note>}
-      <div style={{ fontFamily: "var(--paseo-mono, monospace)", fontSize: 13 }}>
+      <div style={{ fontFamily: "var(--paseo-mono, monospace)", fontSize: 14 }}>
         <div style={{ marginBottom: 8 }}>
           统计：
           <span style={{ color: addText, fontWeight: 600 }}>+128</span>{" "}
           <span style={{ color: delText, fontWeight: 600 }}>−12</span>
           <span style={{ color: t.colorTextTertiary }}> （paseoDiffAdditionText / paseoDiffDeletionText）</span>
         </div>
-        <div style={{ borderRadius: 6, overflow: "hidden" }}>
+        <div style={{ borderRadius: 8, overflow: "hidden" }}>
           {diffLines.map((line, i) => (
             <div
               key={i}
               style={{
-                padding: "2px 10px",
+                padding: "4px 12px",
                 background:
                   line.type === "add" ? addBg : line.type === "del" ? delBg : "transparent",
                 color: line.type === "context" ? t.colorTextTertiary : undefined,

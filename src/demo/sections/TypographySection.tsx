@@ -38,7 +38,7 @@ export function TypographySection() {
                 display: "flex",
                 alignItems: "center",
                 gap: 16,
-                padding: "10px 0",
+                padding: "12px 0",
                 borderTop:
                   index === 0 ? undefined : "1px solid var(--paseo-split, rgba(128,128,128,0.12))",
               }}
@@ -69,7 +69,7 @@ export function TypographySection() {
           <div style={{ display: "flex", justifyContent: "space-between", gap: 16 }}>
             <div>
               <div style={{ color: t.colorText, fontSize: 14 }}>修复 build 缓存失效</div>
-              <div style={{ color: t.colorTextSecondary, fontSize: 12, marginTop: 2 }}>
+              <div style={{ color: t.colorTextSecondary, fontSize: 12, marginTop: 4 }}>
                 claude-code · 3 个文件变更
               </div>
             </div>

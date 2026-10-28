@@ -37,21 +37,24 @@ function renderMarkdown(markdown: string): string {
 function docStyles(tokens: Record<string, string>): string {
   const border = tokens.colorBorderSecondary;
   const fill = tokens.colorFillTertiary;
+  // Same scale as the demo chrome (12 / 14 / 16 headings 16–24) rather than a
+  // private 13 / 15 / 17 / 22 ladder; antd's reset leaves headings at 500, so
+  // the weight is pinned to the project's 400/600 pair.
   return `
 .doc { color: ${tokens.colorText}; font-size: 14px; line-height: 1.7; max-width: 980px; }
-.doc h1 { font-size: 22px; margin: 0 0 10px; line-height: 1.3; }
-.doc h2 { font-size: 17px; margin: 28px 0 10px; padding-top: 14px; border-top: 1px solid ${border}; }
-.doc h3 { font-size: 15px; margin: 20px 0 8px; }
+.doc h1 { font-size: 24px; font-weight: 600; margin: 0 0 12px; line-height: 1.25; }
+.doc h2 { font-size: 20px; font-weight: 600; margin: 32px 0 12px; padding-top: 16px; line-height: 1.35; border-top: 1px solid ${border}; }
+.doc h3 { font-size: 16px; font-weight: 600; margin: 24px 0 8px; line-height: 1.4; }
 .doc p { margin: 8px 0; }
 .doc ul { margin: 8px 0; padding-left: 20px; }
 .doc li { margin: 4px 0; }
 .doc code { font-family: ${tokens.fontFamilyCode}; font-size: 12px; background: ${fill}; padding: 1px 4px; border-radius: 4px; }
-.doc pre { background: ${fill}; border-radius: 8px; padding: 12px; overflow: auto; }
+.doc pre { background: ${fill}; border-radius: 8px; padding: 16px; overflow: auto; }
 .doc pre code { background: none; padding: 0; font-size: 12px; }
-.doc table { display: block; width: 100%; overflow-x: auto; border-collapse: collapse; margin: 10px 0; font-size: 13px; }
-.doc th, .doc td { border: 1px solid ${border}; padding: 6px 10px; text-align: left; vertical-align: top; }
+.doc table { display: block; width: 100%; overflow-x: auto; border-collapse: collapse; margin: 12px 0; font-size: 12px; }
+.doc th, .doc td { border: 1px solid ${border}; padding: 8px 12px; text-align: left; vertical-align: top; }
 .doc th { background: ${fill}; font-weight: 600; }
-.doc blockquote { margin: 10px 0; padding: 8px 12px; border-left: 3px solid ${tokens.colorPrimaryBorder}; background: ${fill}; color: ${tokens.colorTextSecondary}; }
+.doc blockquote { margin: 12px 0; padding: 8px 16px; border-left: 3px solid ${tokens.colorPrimaryBorder}; background: ${fill}; color: ${tokens.colorTextSecondary}; }
 .doc a { color: ${tokens.colorLink}; }
 .doc hr { border: none; border-top: 1px solid ${border}; }
 `;

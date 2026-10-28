@@ -17,9 +17,9 @@ export function StatusSection() {
   return (
     <Card variant="borderless" title="状态圆点" size="small">
       {!custom && <Note>当前方案没有自定义状态圆点 token——回退到 antd 状态色。</Note>}
-      <div style={{ display: "grid", gap: 10, maxWidth: 520 }}>
+      <div style={{ display: "grid", gap: 12, maxWidth: 520 }}>
         {dotStates.map((s) => (
-          <div key={s.key} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div key={s.key} style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <span
               title={s.dot}
               style={{
@@ -30,8 +30,8 @@ export function StatusSection() {
                 flex: "none",
               }}
             />
-            <code style={{ minWidth: 150, fontSize: 13 }}>{s.dot}</code>
-            <span style={{ color: t.colorTextSecondary, fontSize: 13 }}>{s.detail}</span>
+            <code style={{ minWidth: 150, fontSize: 12 }}>{s.dot}</code>
+            <span style={{ color: t.colorTextSecondary, fontSize: 12 }}>{s.detail}</span>
           </div>
         ))}
       </div>
@@ -45,7 +45,7 @@ export function StatusSection() {
             height: 8,
             borderRadius: "50%",
             background: get("paseoStatusMerged", t.colorPrimary),
-            marginLeft: 6,
+            marginLeft: 8,
             verticalAlign: "middle",
           }}
         />

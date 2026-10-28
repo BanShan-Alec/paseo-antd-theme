@@ -28,12 +28,12 @@ export function HostsSection() {
       <Col xs={24} xl={12}>
         <Card variant="borderless" title="Host 身份色" size="small">
           {!custom && <Note>当前方案没有自定义身份色 token——回退 Antd 默认徽章。</Note>}
-          <div style={{ display: "grid", gap: 10 }}>
+          <div style={{ display: "grid", gap: 12 }}>
             {hosts.map((host, i) => {
               const key = identityKeys[i % identityKeys.length];
               const color = key ? get(key, t.colorPrimary) : t.colorPrimary;
               return (
-                <div key={host.name} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <div key={host.name} style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <span
                     title={key ?? ""}
                     style={{
@@ -52,8 +52,8 @@ export function HostsSection() {
                   >
                     {host.name[0].toUpperCase()}
                   </span>
-                  <span style={{ fontSize: 13 }}>{host.name}</span>
-                  <code style={{ fontSize: 11, color: t.colorTextTertiary, marginLeft: "auto" }}>
+                  <span style={{ fontSize: 14 }}>{host.name}</span>
+                  <code style={{ fontSize: 12, color: t.colorTextTertiary, marginLeft: "auto" }}>
                     {key ?? "Antd 默认"}
                   </code>
                 </div>
@@ -73,7 +73,7 @@ export function HostsSection() {
             <style>{`.demo-selectable::selection { background: ${selection}; }`}</style>
           )}
           {!selection && <Note>当前方案没有自定义 selection token——用浏览器默认选区色。</Note>}
-          <p className="demo-selectable" style={{ fontSize: 13, lineHeight: 1.8 }}>
+          <p className="demo-selectable" style={{ fontSize: 14, lineHeight: 1.8 }}>
             试着选中这段文字——选区背景色来自 <code>paseoSelection</code> token。
             Paseo 把它定义为终端选区色的 Web 对应物，深色主题下是 20% 白的叠加。
           </p>

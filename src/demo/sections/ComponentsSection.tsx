@@ -33,9 +33,9 @@ export function ComponentsSection({ isLight }: { isLight: boolean }) {
         <Card variant="borderless" title="Tabs" size="small">
           <Tabs
             items={[
-              { key: "1", label: "工作区", children: <p style={{ fontSize: 13 }}>3 个 agent 正在运行…</p> },
-              { key: "2", label: "Git", children: <p style={{ fontSize: 13 }}>main ← feat/diff-view（+128 −12）</p> },
-              { key: "3", label: "浏览器", children: <p style={{ fontSize: 13 }}>预览 localhost:3000</p> },
+              { key: "1", label: "工作区", children: <p style={{ fontSize: 14 }}>3 个 agent 正在运行…</p> },
+              { key: "2", label: "Git", children: <p style={{ fontSize: 14 }}>main ← feat/diff-view（+128 −12）</p> },
+              { key: "3", label: "浏览器", children: <p style={{ fontSize: 14 }}>预览 localhost:3000</p> },
             ]}
           />
           <Paragraph type="secondary" style={{ fontSize: 12, marginBottom: 0 }}>
@@ -85,7 +85,7 @@ export function ComponentsSection({ isLight }: { isLight: boolean }) {
             okText="删除"
             okButtonProps={{ danger: true }}
           >
-            <p style={{ fontSize: 13 }}>此操作会移除 agent-work-3 的 worktree，未提交的更改将丢失。</p>
+            <p style={{ fontSize: 14 }}>此操作会移除 agent-work-3 的 worktree，未提交的更改将丢失。</p>
           </Modal>
         </Card>
       </Col>
@@ -127,16 +127,16 @@ export function ComponentsSection({ isLight }: { isLight: boolean }) {
 
       <Col span={24}>
         <Card variant="borderless" title="组件 Token 覆盖" size="small">
-          <div style={{ display: "grid", gap: 6 }}>
+          <div style={{ display: "grid", gap: 4 }}>
             {COMPONENT_COVERAGE.map((row) => (
               <div
                 key={row.group}
                 style={{
                   display: "flex",
                   gap: 12,
-                  fontSize: 13,
+                  fontSize: 12,
                   borderBottom: "1px solid rgba(128,128,128,0.12)",
-                  paddingBottom: 6,
+                  paddingBottom: 4,
                 }}
               >
                 <code style={{ minWidth: 130 }}>{row.group}</code>
