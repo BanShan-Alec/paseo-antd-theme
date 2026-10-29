@@ -122,8 +122,10 @@ Claude 品牌表面 + Claude Code 信号色 + paseo 归一化状态色（OKLCH L
 | `boxShadowTertiary` | map | `0 1px 2px rgba(31, 30, 29, 0.04), 0 4px 12px rgba(31, 30, 29, 0.06)` | `—` |  |
 ## Tailwind 变量映射
 
-`src/tailwind/theme.css` 由 `scripts/gen-tailwind.ts` 生成：值经 antd 管线解析（含算法派生的
-hover/active/色阶槽位），浅色写在 `:root`，深色同时写在 `@media (prefers-color-scheme: dark)` 与 `.dark`。
+`src/tailwind/{theme.css,vars.css,preset.cjs}` 由 `scripts/gen-tailwind.ts` 生成：值经 antd 管线解析（含算法派生的
+hover/active/色阶槽位）。`theme.css` 是 Tailwind v4 导出（`@theme inline`）；`vars.css` 是同一批变量的 v3 版本；
+`preset.cjs` 是 v3 preset，每个 utility 的值都指向 `var(--paseo-*)`。浅色写在 `:root`，深色同时写在
+`@media (prefers-color-scheme: dark)` 与 `.dark`。
 
 | Tailwind 变量 | 浅色值（Claude Light） | 深色值（Paseo Dark） | antd token 来源 | 说明 |
 | --- | --- | --- | --- | --- |

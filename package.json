@@ -16,6 +16,7 @@
     "test": "pnpm -r test",
     "gen:tailwind": "pnpm --filter paseo-antd-themes gen:tailwind",
     "gen:mapping": "pnpm --filter paseo-antd-themes gen:mapping",
-    "verify:package": "pnpm --filter paseo-antd-themes verify:package"
+    "verify:package": "pnpm --filter paseo-antd-themes verify:package",
+    "verify:demo": "node scripts/verify-demo-consumption.mjs"
   }
 }

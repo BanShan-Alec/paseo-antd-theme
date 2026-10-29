@@ -220,7 +220,7 @@
 | `extendTheme(base, { token })` 换色 | 嵌套 `ConfigProvider` 传 seed token |
 | 用 `text-link` 做链接（主色系 text 档） | 用主色填充色当链接（浅色仅 3.86:1） |
 | 彩色文字用 `text-primary-text` | 用 `text-primary` 写正文 |
-| 换槽位配对后重新生成 `tailwind.css` | 混搭主题 + 默认 `tailwind.css`（工具类会与组件色漂移） |
+| 换槽位配对后重新生成 `tailwind.css` / `tailwind-vars.css` | 混搭主题 + 默认 Tailwind 产物（工具类会与组件色漂移） |
 
 ## 定制与覆盖
 

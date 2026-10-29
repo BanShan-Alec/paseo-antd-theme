@@ -60,8 +60,10 @@ function tailwindSection(): string {
   }
   return [
     "## Tailwind 变量映射\n",
-    "`src/tailwind/theme.css` 由 `scripts/gen-tailwind.ts` 生成：值经 antd 管线解析（含算法派生的",
-    "hover/active/色阶槽位），浅色写在 `:root`，深色同时写在 `@media (prefers-color-scheme: dark)` 与 `.dark`。\n",
+    "`src/tailwind/{theme.css,vars.css,preset.cjs}` 由 `scripts/gen-tailwind.ts` 生成：值经 antd 管线解析（含算法派生的",
+    "hover/active/色阶槽位）。`theme.css` 是 Tailwind v4 导出（`@theme inline`）；`vars.css` 是同一批变量的 v3 版本；",
+    "`preset.cjs` 是 v3 preset，每个 utility 的值都指向 `var(--paseo-*)`。浅色写在 `:root`，深色同时写在",
+    "`@media (prefers-color-scheme: dark)` 与 `.dark`。\n",
     lines.join("\n"),
   ].join("\n");
 }

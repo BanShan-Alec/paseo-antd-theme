@@ -165,6 +165,35 @@ import { antdDarkTheme, antdLightTheme, paseoDarkTheme } from "paseo-antd-themes
 </div>
 ```
 
+### Tailwind v3（preset + 变量表）
+
+v3 没有 `@theme`，同一批变量以「preset + CSS 变量」两份产物发布：
+
+```js
+// tailwind.config.js
+const preset = require("paseo-antd-themes/tailwind-preset");
+
+module.exports = {
+  content: ["./src/**/*.{ts,tsx}"],
+  presets: [preset],
+  // antd 自带 reset；preflight 二选一
+  corePlugins: { preflight: false },
+};
+```
+
+```css
+/* 入口 CSS */
+@import "paseo-antd-themes/tailwind-vars.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+preset 里每个 utility 的值都是 `var(--paseo-*)`，所以：
+
+- 单主题：`tailwind-vars.css` 提供 `:root` / `.dark` 两套值，切明暗不需要重新构建。
+- 多主题（同一页面在不同配对之间切换）：不要用 `tailwind-vars.css`，改用包根导出的 `generateTailwindVariables(theme)`，为每套主题各生成一份变量块并挂到不同选择器上（`[data-pair="…"][data-scheme="…"]`）。demo 就是这么做的，切换配对时工具类会跟着变。
+
 常用类一行速查：`bg-surface-1`（纸感卡片底）、`border-split`（分隔线）、`font-mono`（等宽）、`rounded-md`（12px 圆角）。
 
 暗色下不写 `dark:` 的类会随 `--paseo-*` 变量自动换色；需要浅深用不同 token 时用 `dark:` 变体：
