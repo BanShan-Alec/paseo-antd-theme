@@ -1,0 +1,11 @@
+packages:
+  - "packages/*"
+
+allowBuilds:
+  esbuild: set this to true or false
+
+# pnpm 10+ blocks lifecycle scripts by default; these two need theirs to place
+# native binaries (esbuild for Vite, oxide for the Tailwind v4 CSS build).
+onlyBuiltDependencies:
+  - esbuild
+  - "@tailwindcss/oxide"

@@ -70,6 +70,12 @@ try {
 
   for (const [entry, conditions] of Object.entries(pkg.exports ?? {})) {
     if (entry === "./package.json") continue;
+    // File entries (stylesheets, docs) map straight to a path.
+    if (typeof conditions === "string") {
+      const relative = conditions.replace(/^\.\//, "");
+      if (!packed.has(relative)) fail(`exports ${entry} -> missing ${relative}`);
+      continue;
+    }
     for (const [condition, target] of Object.entries(conditions)) {
       if (!["types", "import", "default"].includes(condition)) continue;
       const relative = target.replace(/^\.\//, "");
@@ -80,6 +86,10 @@ try {
   // The public surface is deliberately small; anything added here is a
   // consumer-facing promise, so keep the list exact rather than open-ended.
   const publicExports = [
+    "CLAUDE_LIGHT_DERIVED_TOKENS",
+    "CLAUDE_LIGHT_TOKEN_MAPPING",
+    "PASEO_DARK_TOKEN_MAPPING",
+    "PASEO_DERIVED_TOKENS",
     "PaseoLoadingIcon",
     "PaseoThemeProvider",
     "antdDarkTheme",
@@ -87,6 +97,7 @@ try {
     "claudeLightTheme",
     "extendTheme",
     "generateTailwindCss",
+    "hexLuminance",
     "paseoDarkTheme",
   ];
   {
@@ -147,7 +158,7 @@ try {
   });
   // tailwind.css is a stylesheet, not a JS entry — attw would report it as
   // untyped (NoResolution), so it is excluded from the analysis.
-  execFileSync(npx, ["attw", tarball, "--profile", "esm-only", "--exclude-entrypoints", "./tailwind.css"], {
+  execFileSync(npx, ["attw", tarball, "--profile", "esm-only", "--exclude-entrypoints", "./tailwind.css", "./DESIGN.md", "./MAPPING.md"], {
     cwd: root,
     stdio: "inherit",
     shell: true,

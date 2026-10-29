@@ -1,6 +1,10 @@
 import { Card, Col, Row, theme as antdTheme, Typography } from "antd";
-import * as full from "../../themes/paseo-dark/theme";
-import * as claude from "../../themes/claude/theme";
+import {
+  CLAUDE_LIGHT_DERIVED_TOKENS,
+  CLAUDE_LIGHT_TOKEN_MAPPING,
+  PASEO_DARK_TOKEN_MAPPING,
+  PASEO_DERIVED_TOKENS,
+} from "paseo-antd-themes";
 import {
   TokenGroup,
   TokenSwatchRow,
@@ -17,12 +21,8 @@ export function MappingSection({ view, isLight }: { view: View; isLight: boolean
   const isStock = view === "antd" || (view === "mixed" && isLight);
   const isPaseoDark = !isLight && view !== "antd";
   const isClaude = isLight && view === "paseo";
-  const mapping = isPaseoDark
-    ? full.PASEO_DARK_TOKEN_MAPPING
-    : claude.CLAUDE_LIGHT_TOKEN_MAPPING;
-  const derivedTokens = isPaseoDark
-    ? full.PASEO_DERIVED_TOKENS
-    : claude.CLAUDE_LIGHT_DERIVED_TOKENS;
+  const mapping = isPaseoDark ? PASEO_DARK_TOKEN_MAPPING : CLAUDE_LIGHT_TOKEN_MAPPING;
+  const derivedTokens = isPaseoDark ? PASEO_DERIVED_TOKENS : CLAUDE_LIGHT_DERIVED_TOKENS;
   const showDerived = isPaseoDark || isClaude;
 
   const customTokens = Object.fromEntries(

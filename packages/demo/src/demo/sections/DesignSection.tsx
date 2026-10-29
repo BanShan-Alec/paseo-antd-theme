@@ -1,6 +1,6 @@
 import { marked } from "marked";
 import { useMemo } from "react";
-import designMd from "../../../DESIGN.md?raw";
+import designMd from "paseo-antd-themes/DESIGN.md?raw";
 import { useSchemeTokens } from "../primitives";
 
 const REPO_BLOB = "https://github.com/BanShan-Alec/paseo-antd-theme/blob/master";

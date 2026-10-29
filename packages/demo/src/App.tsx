@@ -22,10 +22,16 @@ import {
   TypographySection,
 } from "./demo/sections";
 import type { View } from "./demo/view";
-import { antdDarkTheme, antdLightTheme } from "./themes/antd/theme";
-import { paseoDarkTheme } from "./themes/paseo-dark/theme";
-import { PaseoThemeProvider, type PaseoBehaviors, type PaseoThemeMode, type PaseoThemeSlots } from "./Provider";
-import { hexLuminance } from "./shared/colors";
+import {
+  PaseoThemeProvider,
+  antdDarkTheme,
+  antdLightTheme,
+  hexLuminance,
+  paseoDarkTheme,
+  type PaseoBehaviors,
+  type PaseoThemeMode,
+  type PaseoThemeSlots,
+} from "paseo-antd-themes";
 import { MenuIcon, MoonIcon, SunIcon, SystemIcon } from "./demo/icons";
 
 const { Header, Sider, Content } = Layout;

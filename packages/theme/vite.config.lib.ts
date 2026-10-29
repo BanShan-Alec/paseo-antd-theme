@@ -23,15 +23,7 @@ export default defineConfig({
     copyTailwindCss(),
     dts({
       include: ["src"],
-      exclude: [
-        "src/demo/**",
-        "src/testing/**",
-        "src/tailwind/theme.css",
-        "src/App.tsx",
-        "src/main.tsx",
-        "src/test-setup.ts",
-        "src/**/*.test.*",
-      ],
+      exclude: ["src/testing/**", "src/tailwind/theme.css", "src/**/*.test.*"],
     }),
   ],
   build: {
