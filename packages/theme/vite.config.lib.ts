@@ -3,16 +3,23 @@ import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import dts from "vite-plugin-dts";
 
-/** Copies the generated Tailwind stylesheet into dist as a package entry asset. */
-function copyTailwindCss(): Plugin {
+/** Copies the generated Tailwind artifacts into dist as package entry assets. */
+function copyTailwindAssets(): Plugin {
+  const copies = [
+    ["theme.css", "tailwind.css"],
+    ["vars.css", "tailwind-vars.css"],
+    ["preset.cjs", "tailwind-preset.cjs"],
+  ] as const;
   return {
-    name: "copy-tailwind-css",
+    name: "copy-tailwind-assets",
     apply: "build",
     closeBundle() {
-      cpSync(
-        new URL("./src/tailwind/theme.css", import.meta.url),
-        new URL("./dist/tailwind.css", import.meta.url),
-      );
+      for (const [from, to] of copies) {
+        cpSync(
+          new URL(`./src/tailwind/${from}`, import.meta.url),
+          new URL(`./dist/${to}`, import.meta.url),
+        );
+      }
     },
   };
 }
@@ -20,7 +27,7 @@ function copyTailwindCss(): Plugin {
 export default defineConfig({
   plugins: [
     react(),
-    copyTailwindCss(),
+    copyTailwindAssets(),
     dts({
       include: ["src"],
       exclude: ["src/testing/**", "src/tailwind/theme.css", "src/**/*.test.*"],

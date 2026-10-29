@@ -1,5 +1,17 @@
 import { writeFileSync } from "node:fs";
-import { generateTailwindCss } from "../src/tailwind/build.ts";
+import {
+  generateTailwindCss,
+  generateTailwindPreset,
+  generateTailwindVarsCss,
+} from "../src/tailwind/build.ts";
 
 writeFileSync(new URL("../src/tailwind/theme.css", import.meta.url), generateTailwindCss());
-console.log("src/tailwind/theme.css written");
+writeFileSync(
+  new URL("../src/tailwind/vars.css", import.meta.url),
+  generateTailwindVarsCss(),
+);
+writeFileSync(
+  new URL("../src/tailwind/preset.cjs", import.meta.url),
+  generateTailwindPreset(),
+);
+console.log("src/tailwind/{theme.css,vars.css,preset.cjs} written");

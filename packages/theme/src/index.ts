@@ -21,5 +21,10 @@ export {
   PASEO_DARK_TOKEN_MAPPING,
   PASEO_DERIVED_TOKENS,
 } from "./themes/paseo-dark/theme";
-export { generateTailwindCss } from "./tailwind/build";
-export type { TailwindThemePair } from "./tailwind/build";
+export {
+  generateTailwindCss,
+  generateTailwindPreset,
+  generateTailwindVariables,
+  generateTailwindVarsCss,
+} from "./tailwind/build";
+export type { TailwindThemePair, TailwindVariable } from "./tailwind/build";

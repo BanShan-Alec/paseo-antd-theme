@@ -35,6 +35,8 @@
       "default": "./dist/index.js"
     },
     "./tailwind.css": "./dist/tailwind.css",
+    "./tailwind-vars.css": "./dist/tailwind-vars.css",
+    "./tailwind-preset": "./dist/tailwind-preset.cjs",
     "./DESIGN.md": "./DESIGN.md",
     "./MAPPING.md": "./MAPPING.md",
     "./package.json": "./package.json"

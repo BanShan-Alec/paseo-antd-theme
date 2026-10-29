@@ -6,6 +6,9 @@ import { pathToFileURL } from "node:url";
 import { describe, expect, it } from "vitest";
 import {
   generateTailwindCss,
+  generateTailwindPreset,
+  generateTailwindVariables,
+  generateTailwindVarsCss,
   resolveTailwindVariables,
   TAILWIND_VARIABLES,
 } from "../src/tailwind/build";
@@ -16,48 +19,61 @@ import { paseoDarkTheme } from "../src/themes/paseo-dark/theme";
 const ROOT = join(import.meta.dirname, "..");
 
 /**
- * theme.css is a committed build artifact: regenerating it must produce a
- * byte-identical file (the same discipline as MAPPING.md). The generation
+ * The tailwind artifacts are committed build outputs: regenerating them must
+ * produce byte-identical files (the same discipline as MAPPING.md). Generation
  * runs through vite-node because the theme sources are TypeScript.
  */
-const generated = () => {
-  const out = join(tmpdir(), `tailwind-theme-${process.pid}.css`);
-  const entry = join(tmpdir(), `tailwind-theme-gen-${process.pid}.ts`);
+const generated = (generator: "Css" | "VarsCss" | "Preset" = "Css") => {
+  const out = join(tmpdir(), `tailwind-${generator}-${process.pid}`);
+  const entry = join(tmpdir(), `tailwind-${generator}-gen-${process.pid}.ts`);
   const script = `
     import { writeFileSync } from "node:fs";
-    import { generateTailwindCss } from ${JSON.stringify(pathToFileURL(join(ROOT, "src/tailwind/build.ts")).href)};
-    writeFileSync(${JSON.stringify(out)}, generateTailwindCss());
+    import { generateTailwind${generator} } from ${JSON.stringify(pathToFileURL(join(ROOT, "src/tailwind/build.ts")).href)};
+    writeFileSync(${JSON.stringify(out)}, generateTailwind${generator}());
   `;
   writeFileSync(entry, script);
   execFileSync("npx", ["vite-node", entry], { cwd: ROOT });
   return readFileSync(out, "utf8");
 };
 
+/** Reads a committed artifact, normalizing git's CRLF checkout on Windows. */
+const artifact = (path: string) =>
+  readFileSync(join(ROOT, path), "utf8").replace(/\r\n/g, "\n");
+
+/** Asserts a vars stylesheet repeats every variable in its dark blocks. */
+function expectCompleteBlocks(css: string) {
+  const rootStart = css.indexOf(":root, :host {");
+  const mediaStart = css.indexOf("@media (prefers-color-scheme: dark) {");
+  const classStart = css.indexOf(".dark {");
+  expect(rootStart).toBeGreaterThan(0);
+  expect(mediaStart).toBeGreaterThan(rootStart);
+  expect(classStart).toBeGreaterThan(mediaStart);
+
+  const mediaBlock = css.slice(mediaStart, classStart);
+  const classBlock = css.slice(classStart);
+  for (const spec of TAILWIND_VARIABLES) {
+    const name = `--paseo-${spec.name}`;
+    expect(mediaBlock).toContain(`${name}:`);
+    expect(classBlock).toContain(`${name}:`);
+  }
+}
+
 describe("tailwind css artifact", () => {
   // The generator emits LF; git may check the committed file out as CRLF on
   // Windows, so compare content, not checkout line endings.
-  const css = readFileSync(join(ROOT, "src/tailwind/theme.css"), "utf8").replace(/\r\n/g, "\n");
+  const css = artifact("src/tailwind/theme.css");
 
   it("is fresh — regeneration reproduces the committed file byte for byte", () => {
     expect(generated()).toBe(css);
   });
 
   it("declares every exported variable in the light, dark-media and dark-class blocks", () => {
+    expectCompleteBlocks(css);
     const rootStart = css.indexOf(":root, :host {");
     const mediaStart = css.indexOf("@media (prefers-color-scheme: dark) {");
-    const classStart = css.indexOf(".dark {");
-    expect(rootStart).toBeGreaterThan(0);
-    expect(mediaStart).toBeGreaterThan(rootStart);
-    expect(classStart).toBeGreaterThan(mediaStart);
-
     const lightBlock = css.slice(rootStart, mediaStart);
-    const mediaBlock = css.slice(mediaStart, classStart);
-    const classBlock = css.slice(classStart);
     for (const spec of TAILWIND_VARIABLES) {
-      const name = `--paseo-${spec.name}`;
-      expect(lightBlock).toContain(`${name}:`);
-      expect(mediaBlock).toContain(`${name}:`);
-      expect(classBlock).toContain(`${name}:`);
+      expect(lightBlock).toContain(`--paseo-${spec.name}:`);
     }
   });
 
@@ -112,5 +128,53 @@ describe("tailwind css artifact", () => {
     expect(generateTailwindCss({ light: claudeLightTheme, dark: paseoDarkTheme })).toBe(
       generateTailwindCss(),
     );
+  });
+});
+
+describe("tailwind v3 artifacts", () => {
+  const varsCss = artifact("src/tailwind/vars.css");
+  const preset = artifact("src/tailwind/preset.cjs");
+
+  it("vars.css is fresh — regeneration reproduces the committed file", () => {
+    expect(generated("VarsCss")).toBe(varsCss);
+  });
+
+  it("preset.cjs is fresh — regeneration reproduces the committed file", () => {
+    expect(generated("Preset")).toBe(preset);
+  });
+
+  it("vars.css repeats every variable in both dark blocks", () => {
+    expectCompleteBlocks(varsCss);
+  });
+
+  it("preset maps every color and the font/radius scales to --paseo-*", () => {
+    const mod: { exports: { theme: { extend: Record<string, Record<string, string>> } } } = {
+      exports: { theme: { extend: {} } },
+    };
+    new Function("module", "exports", preset)(mod, mod.exports);
+    const extend = mod.exports.theme.extend;
+    for (const spec of TAILWIND_VARIABLES) {
+      if (spec.kind === "color") {
+        expect(extend.colors[spec.name], spec.name).toBe(`var(--paseo-${spec.name})`);
+      }
+    }
+    expect(extend.fontFamily).toEqual({
+      sans: "var(--paseo-font)",
+      mono: "var(--paseo-font-mono)",
+    });
+    expect(extend.borderRadius).toEqual({
+      xs: "var(--paseo-radius-xs)",
+      sm: "var(--paseo-radius-sm)",
+      md: "var(--paseo-radius-md)",
+      lg: "var(--paseo-radius-lg)",
+    });
+  });
+
+  it("generateTailwindVariables resolves one theme exactly like the pair does", () => {
+    const { light, dark } = resolveTailwindVariables();
+    expect(generateTailwindVariables(claudeLightTheme)).toEqual(light);
+    expect(generateTailwindVariables(paseoDarkTheme)).toEqual(dark);
+    // Stock antd has no paseo custom tokens; the fallbacks must still resolve.
+    expect(generateTailwindVariables(antdLightTheme).primary).toBe("#1677ff");
   });
 });

@@ -17,6 +17,7 @@
  * both apply) for the class strategy.
  */
 import { theme as antdTheme, type ThemeConfig } from "antd";
+import { hexLuminance } from "../shared/colors";
 import { claudeLightTheme } from "../themes/claude/theme";
 import { paseoDarkTheme } from "../themes/paseo-dark/theme";
 
@@ -365,6 +366,38 @@ export function resolveTailwindVariables(
   return { light, dark };
 }
 
+/** Scheme detection mirrors `extendTheme`: the base background decides. */
+function isDarkTokenSet(tokens: DesignToken): boolean {
+  try {
+    return hexLuminance(String(tokens.colorBgBase)) < 0.5;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Resolves ONE theme into the `name → value` map used for `--paseo-*`.
+ *
+ * This is the multi-theme escape hatch: a page that switches between several
+ * theme configs at runtime (a demo, a preview tool) can generate one scoped
+ * block per theme instead of shipping a single `:root` pair. `darkSource`
+ * substitutions (the dark scheme's `surface-head → surface-1`) are applied when
+ * the theme itself resolves as dark.
+ */
+export function generateTailwindVariables(theme: ThemeConfig): Record<string, string> {
+  const tokens = antdTheme.getDesignToken(theme);
+  const dark = isDarkTokenSet(tokens);
+  const values: Record<string, string> = {};
+  for (const spec of TAILWIND_VARIABLES) {
+    const fallback = spec.fallback ?? [];
+    const sources = dark
+      ? [spec.darkSource ?? spec.source, spec.source, ...fallback]
+      : [spec.source, ...fallback];
+    values[spec.name] = formatValue(pickValue(tokens, sources));
+  }
+  return values;
+}
+
 function declarations(
   values: Record<string, string>,
   indent: string,
@@ -438,4 +471,71 @@ export function generateTailwindCss(
     "",
   ];
   return css.join("\n");
+}
+
+const V3_HEADER = `/*
+ * 由 scripts/gen-tailwind.ts 生成（pnpm gen:tailwind），请勿手改。
+ *
+ * Tailwind v3 变量表，与 paseo-antd-themes/tailwind-preset 配套：
+ *   @import "paseo-antd-themes/tailwind-vars.css";
+ *   presets: [require("paseo-antd-themes/tailwind-preset")]
+ *
+ * 默认配对与 v4 导出一致（Claude Light :root / Paseo Dark + .dark）。
+ * 同一页面要在多套配对之间切换时不要用这份文件——改用包根导出的
+ * generateTailwindVariables(theme) 为每个配对生成独立作用域块。
+ */`;
+
+/** The v3 counterpart of `tailwind.css`: variables only, no `@theme`. */
+export function generateTailwindVarsCss(
+  themes: TailwindThemePair = DEFAULT_TAILWIND_THEMES,
+): string {
+  const { light, dark } = resolveTailwindVariables(themes);
+  return [
+    V3_HEADER,
+    "",
+    ":root, :host {",
+    ...declarations(light, "  "),
+    "}",
+    "",
+    "@media (prefers-color-scheme: dark) {",
+    "  :root, :host {",
+    ...declarations(dark, "    "),
+    "  }",
+    "}",
+    "",
+    ".dark {",
+    ...declarations(dark, "  "),
+    "}",
+    "",
+  ].join("\n");
+}
+
+/**
+ * The Tailwind v3 preset: `theme.extend` entries whose every value is a
+ * `var(--paseo-*)` reference, so utilities follow whichever variable scope is
+ * active instead of baking one theme in at build time.
+ */
+export function generateTailwindPreset(): string {
+  const colors: Record<string, string> = {};
+  const fontFamily: Record<string, string> = {};
+  const borderRadius: Record<string, string> = {};
+  for (const spec of TAILWIND_VARIABLES) {
+    const value = `var(--paseo-${spec.name})`;
+    if (spec.kind === "color") colors[spec.name] = value;
+    else if (spec.name === "font") fontFamily.sans = value;
+    else if (spec.name === "font-mono") fontFamily.mono = value;
+    else if (spec.name.startsWith("radius-")) borderRadius[spec.name.slice("radius-".length)] = value;
+  }
+  const preset = { theme: { extend: { colors, fontFamily, borderRadius } } };
+  return [
+    "/**",
+    " * 由 scripts/gen-tailwind.ts 生成（pnpm gen:tailwind），请勿手改。",
+    " * Tailwind v3 preset：utilities 的值全部指向 --paseo-* 变量；",
+    " * 变量默认值见 tailwind-vars.css，多主题场景用 generateTailwindVariables。",
+    " */",
+    '"use strict";',
+    "",
+    `module.exports = ${JSON.stringify(preset, null, 2)};`,
+    "",
+  ].join("\n");
 }

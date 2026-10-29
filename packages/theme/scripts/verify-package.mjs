@@ -59,13 +59,20 @@ try {
     "dist/index.js",
     "dist/index.d.ts",
     "dist/tailwind.css",
+    "dist/tailwind-vars.css",
+    "dist/tailwind-preset.cjs",
   ];
   for (const file of required) {
     if (!packed.has(file)) fail(`missing from tarball: ${file}`);
   }
 
+  // The package is ESM-only apart from the one deliberate CJS file: the
+  // Tailwind v3 preset is loaded by config files, which are CJS-first.
+  const allowedCjs = new Set(["dist/tailwind-preset.cjs"]);
   for (const file of packed) {
-    if (/\.cjs(?:\.map)?$/.test(file)) fail(`unexpected CJS artifact: ${file}`);
+    if (/\.cjs(?:\.map)?$/.test(file) && !allowedCjs.has(file)) {
+      fail(`unexpected CJS artifact: ${file}`);
+    }
   }
 
   for (const [entry, conditions] of Object.entries(pkg.exports ?? {})) {
@@ -97,6 +104,9 @@ try {
     "claudeLightTheme",
     "extendTheme",
     "generateTailwindCss",
+    "generateTailwindPreset",
+    "generateTailwindVariables",
+    "generateTailwindVarsCss",
     "hexLuminance",
     "paseoDarkTheme",
   ];
@@ -109,16 +119,16 @@ try {
     if (extra.length > 0) fail(`index.js has undocumented exports: ${extra.join(", ")}`);
   }
 
-  // The Tailwind stylesheet must ship both schemes completely: every variable
-  // present in the light :root block must also appear in the dark media block
+  // Both Tailwind stylesheets must ship both schemes completely: every
+  // variable in the light :root block must also appear in the dark media block
   // and in the .dark class block.
-  {
-    const css = await readFile(join(dist, "tailwind.css"), "utf8");
+  for (const file of ["tailwind.css", "tailwind-vars.css"]) {
+    const css = await readFile(join(dist, file), "utf8");
     const rootStart = css.indexOf(":root, :host {");
     const mediaStart = css.indexOf("@media (prefers-color-scheme: dark) {");
     const classStart = css.indexOf(".dark {");
     if (rootStart < 0 || mediaStart < 0 || classStart < 0) {
-      fail("tailwind.css is missing one of the :root / @media dark / .dark blocks");
+      fail(`${file} is missing one of the :root / @media dark / .dark blocks`);
     }
     const lightBlock = css.slice(rootStart, mediaStart);
     const darkBlock = css.slice(css.indexOf("{", mediaStart) + 1, classStart);
@@ -126,11 +136,11 @@ try {
     const vars = (text) =>
       new Set([...text.matchAll(/--paseo-[a-z0-9-]+(?=:)/g)].map((m) => m[0]));
     const lightVars = vars(lightBlock);
-    if (lightVars.size === 0) fail("tailwind.css light block has no --paseo-* variables");
+    if (lightVars.size === 0) fail(`${file} light block has no --paseo-* variables`);
     for (const [label, block] of [["dark media", darkBlock], [".dark class", classBlock]]) {
       const missing = [...lightVars].filter((name) => !vars(block).has(name));
       if (missing.length > 0) {
-        fail(`tailwind.css ${label} block is missing variables: ${missing.join(", ")}`);
+        fail(`${file} ${label} block is missing variables: ${missing.join(", ")}`);
       }
     }
   }
@@ -158,7 +168,7 @@ try {
   });
   // tailwind.css is a stylesheet, not a JS entry — attw would report it as
   // untyped (NoResolution), so it is excluded from the analysis.
-  execFileSync(npx, ["attw", tarball, "--profile", "esm-only", "--exclude-entrypoints", "./tailwind.css", "./DESIGN.md", "./MAPPING.md"], {
+  execFileSync(npx, ["attw", tarball, "--profile", "esm-only", "--exclude-entrypoints", "./tailwind.css", "./tailwind-vars.css", "./tailwind-preset", "./DESIGN.md", "./MAPPING.md"], {
     cwd: root,
     stdio: "inherit",
     shell: true,
