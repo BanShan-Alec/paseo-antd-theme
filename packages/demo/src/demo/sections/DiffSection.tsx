@@ -11,40 +11,37 @@ const diffLines = [
   { type: "context" as const, text: "  }" },
 ];
 
+const LINE_CLASS = {
+  add: "bg-diff-addition",
+  del: "bg-diff-deletion",
+  context: "text-text-tertiary",
+} as const;
+
 export function DiffSection() {
-  const { t, get, has } = useSchemeTokens();
+  const { has } = useSchemeTokens();
   const custom = has("paseoDiffAddition");
-  const addBg = get("paseoDiffAddition", t.colorSuccessBg);
-  const delBg = get("paseoDiffDeletion", t.colorErrorBg);
-  const addText = get("paseoDiffAdditionText", t.colorSuccess);
-  const delText = get("paseoDiffDeletionText", t.colorError);
 
   return (
     <Card variant="borderless" title="Diff 视图" size="small">
       {!custom && <Note>当前方案没有自定义 diff token——行底色与统计色回退到 antd 派生值。</Note>}
-      <div style={{ fontFamily: t.fontFamilyCode, fontSize: 14 }}>
-        <div style={{ marginBottom: 8 }}>
+      <div className="font-mono text-sm">
+        <div className="mb-2">
           统计：
-          <span style={{ color: addText, fontWeight: 600 }}>+128</span>{" "}
-          <span style={{ color: delText, fontWeight: 600 }}>−12</span>
-          <span style={{ color: t.colorTextTertiary }}> （paseoDiffAdditionText / paseoDiffDeletionText）</span>
+          <span className="font-semibold text-diff-addition-text">+128</span>{" "}
+          <span className="font-semibold text-diff-deletion-text">−12</span>
+          <span className="text-text-tertiary">
+            {" "}
+            （paseoDiffAdditionText / paseoDiffDeletionText）
+          </span>
         </div>
-        <div style={{ borderRadius: 8, overflow: "hidden" }}>
+        <div className="overflow-hidden rounded-md">
           {diffLines.map((line, i) => (
-            <div
-              key={i}
-              style={{
-                padding: "4px 12px",
-                background:
-                  line.type === "add" ? addBg : line.type === "del" ? delBg : "transparent",
-                color: line.type === "context" ? t.colorTextTertiary : undefined,
-              }}
-            >
+            <div key={i} className={`px-3 py-1 ${LINE_CLASS[line.type]}`}>
               {line.text}
             </div>
           ))}
         </div>
-        <Paragraph type="secondary" style={{ fontSize: 12, marginTop: 8, marginBottom: 0 }}>
+        <Paragraph type="secondary" className="mt-2 text-xs" style={{ marginBottom: 0 }}>
           行底色用 <code>paseoDiffAddition</code>/<code>paseoDiffDeletion</code>（从归一化状态色相派生的
           低饱和行底）——逐行扫描时颜色本身就是信号。
         </Paragraph>

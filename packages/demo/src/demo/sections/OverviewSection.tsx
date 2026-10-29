@@ -5,7 +5,7 @@ export function OverviewSection() {
   return (
     <Row gutter={[16, 16]}>
       <Col xs={24} xl={8}>
-        <Card variant="borderless" title="按钮" size="small" style={{ height: "100%" }}>
+        <Card variant="borderless" title="按钮" size="small" className="h-full">
           <SpaceWrap>
             <Button type="primary">Run agent</Button>
             <Button>Cancel</Button>
@@ -24,27 +24,27 @@ export function OverviewSection() {
       </Col>
 
       <Col xs={24} xl={8}>
-        <Card variant="borderless" title="状态与反馈" size="small" style={{ height: "100%" }}>
+        <Card variant="borderless" title="状态与反馈" size="small" className="h-full">
           <SpaceWrap>
             <Tag color="success">success</Tag>
             <Tag color="warning">warning</Tag>
             <Tag color="error">error</Tag>
             <Tag color="processing">running</Tag>
             <Tag color="purple">merged</Tag>
-            <Progress percent={72} size="small" style={{ width: 160, marginInline: 4 }} />
+            <Progress percent={72} size="small" className="mx-1 w-40" />
           </SpaceWrap>
-          <div style={{ marginTop: 12 }}>
+          <div className="mt-3">
             <Alert type="success" showIcon message="CI 通过 — 3 个检查全部完成" />
           </div>
-          <div style={{ marginTop: 8 }}>
+          <div className="mt-2">
             <Alert type="warning" showIcon message="1 个 flaky 测试需要复查" />
           </div>
         </Card>
       </Col>
 
       <Col xs={24} xl={8}>
-        <Card variant="borderless" title="表单控件" size="small" style={{ height: "100%" }}>
-          <div style={{ display: "grid", gap: 12, maxWidth: 420 }}>
+        <Card variant="borderless" title="表单控件" size="small" className="h-full">
+          <div className="grid max-w-sm gap-3">
             <Input placeholder="搜索 agent、文件、命令…" allowClear />
             <Select
               defaultValue="claude"
@@ -55,9 +55,9 @@ export function OverviewSection() {
                 { value: "copilot", label: "GitHub Copilot" },
               ]}
             />
-            <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <div className="flex items-center gap-4">
               <Switch defaultChecked />
-              <Slider defaultValue={40} style={{ flex: 1, margin: 0 }} />
+              <Slider defaultValue={40} className="flex-1" style={{ margin: 0 }} />
             </div>
             <Segmented
               block

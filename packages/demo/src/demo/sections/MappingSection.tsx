@@ -54,35 +54,27 @@ export function MappingSection({ view, isLight }: { view: View; isLight: boolean
       </Card>
 
       {showDerived && (
-        <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
+        <Row gutter={[16, 16]} className="mt-4">
           <Col xs={24} xl={12}>
             <Card
               variant="borderless"
               title="antd 自行派生的 token"
               size="small"
-              style={{ height: "100%" }}
+              className="h-full"
               extra={<Text type="secondary">无需手动设置</Text>}
             >
-              <Paragraph type="secondary" style={{ fontSize: 12 }}>
+              <Paragraph type="secondary" className="text-xs">
                 这些别名 token 由 antd 在最后一步从受控 token 计算得出——手动覆盖会被静默丢弃，
                 完整方案里只登记派生来源。
               </Paragraph>
               {derivedTokens.map((row) => (
                 <div
                   key={row.antdToken}
-                  style={{
-                    display: "flex",
-                    gap: 12,
-                    padding: "4px 0",
-                    borderBottom: `1px solid ${t.colorSplit}`,
-                    fontSize: 12,
-                  }}
+                  className="flex gap-3 border-b border-split py-1 text-xs"
                 >
-                  <code style={{ minWidth: 190 }}>{row.antdToken}</code>
-                  <span style={{ color: t.colorTextTertiary }}>← {row.derivedFrom}</span>
-                  <code style={{ marginLeft: "auto", color: t.colorTextSecondary }}>
-                    {t[row.antdToken] ?? ""}
-                  </code>
+                  <code className="min-w-48">{row.antdToken}</code>
+                  <span className="text-text-tertiary">← {row.derivedFrom}</span>
+                  <code className="ml-auto text-text-secondary">{t[row.antdToken] ?? ""}</code>
                 </div>
               ))}
             </Card>
@@ -93,10 +85,10 @@ export function MappingSection({ view, isLight }: { view: View; isLight: boolean
               variant="borderless"
               title="自定义 token"
               size="small"
-              style={{ height: "100%" }}
+              className="h-full"
               extra={<Text type="secondary">{Object.keys(customTokens).length} 个</Text>}
             >
-              <Paragraph type="secondary" style={{ fontSize: 12 }}>
+              <Paragraph type="secondary" className="text-xs">
                 antd 没有对应概念的部分，以自定义 token 注入，经 <code>useToken()</code>{" "}
                 或 CSS 变量读取。左侧各演示页展示了它们对应的组件。
               </Paragraph>

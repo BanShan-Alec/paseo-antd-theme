@@ -1,3 +1,158 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*
+ * Demo-only CSS. Every value comes from the package's --paseo-* variables, so
+ * these rules follow whichever pair/scheme scope is active on <html>.
+ */
+
+/*
+ * Demo chrome. The media query is the whole responsive strategy: the 248px
+ * sider is great on a laptop and unusable on a phone, so below 992px it leaves
+ * the flow and the same nav renders inside a drawer, while the header stacks
+ * the view switcher.
+ */
+.paseo-demo-header.ant-layout-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 24px;
+}
+.paseo-demo-header-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+.paseo-demo-nav-toggle {
+  display: none;
+}
+.paseo-demo-content.ant-layout-content {
+  padding: 24px;
+}
+
+@media (max-width: 991.98px) {
+  .paseo-demo-sider {
+    display: none !important;
+  }
+  .paseo-demo-header.ant-layout-header {
+    flex-direction: column;
+    align-items: stretch;
+    height: auto;
+    line-height: normal;
+    gap: 8px;
+    padding: 8px 12px;
+  }
+  .paseo-demo-header-switch {
+    align-self: flex-start;
+  }
+  .paseo-demo-nav-toggle {
+    display: inline-flex;
+  }
+  .paseo-demo-content.ant-layout-content {
+    padding: 16px;
+  }
+}
+
+/* antd anchors the Sider trigger with position: fixed — it is built for a
+   full-page sider, so inside this 220px demo card it would ride the page
+   scrollbar. The Sider is already position: relative, so absolute keeps it. */
+.paseo-demo-layout .ant-layout-sider-trigger {
+  position: absolute;
+}
+
+.demo-selectable::selection {
+  background: var(--paseo-selection);
+}
+
+/* DESIGN.md renderer. Colors are package variables; the size scale is the
+   document's own 12/14/16/20/24 ladder. */
+.doc {
+  color: var(--paseo-text);
+  max-width: 980px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.doc h1 {
+  margin: 0 0 12px;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.doc h2 {
+  margin: 32px 0 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--paseo-border-secondary);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.doc h3 {
+  margin: 24px 0 8px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.doc p {
+  margin: 8px 0;
+}
+.doc ul {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+.doc li {
+  margin: 4px 0;
+}
+.doc code {
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: var(--paseo-fill-tertiary);
+  font-family: var(--paseo-font-mono);
+  font-size: 12px;
+}
+.doc pre {
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--paseo-fill-tertiary);
+  overflow: auto;
+}
+.doc pre code {
+  padding: 0;
+  background: none;
+  font-size: 12px;
+}
+.doc table {
+  display: block;
+  width: 100%;
+  margin: 12px 0;
+  border-collapse: collapse;
+  overflow-x: auto;
+  font-size: 12px;
+}
+.doc th,
+.doc td {
+  padding: 8px 12px;
+  border: 1px solid var(--paseo-border-secondary);
+  text-align: left;
+  vertical-align: top;
+}
+.doc th {
+  background: var(--paseo-fill-tertiary);
+  font-weight: 600;
+}
+.doc blockquote {
+  margin: 12px 0;
+  padding: 8px 16px;
+  border-left: 3px solid var(--paseo-primary-border);
+  background: var(--paseo-fill-tertiary);
+  color: var(--paseo-text-secondary);
+}
+.doc a {
+  color: var(--paseo-link);
+}
+.doc hr {
+  border: none;
+  border-top: 1px solid var(--paseo-border-secondary);
+}

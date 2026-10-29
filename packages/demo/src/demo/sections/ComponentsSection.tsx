@@ -1,4 +1,4 @@
-import { App as AntApp, Button, Card, Col, Layout, Modal, Row, Tabs, theme as antdTheme, Typography } from "antd";
+import { App as AntApp, Button, Card, Col, Layout, Modal, Row, Tabs, Typography } from "antd";
 import { useState } from "react";
 import { SpaceWrap } from "../primitives";
 
@@ -23,22 +23,21 @@ const COMPONENT_COVERAGE: { group: string; tokens: string; where: string }[] = [
 
 export function ComponentsSection({ isLight }: { isLight: boolean }) {
   const { message, notification } = AntApp.useApp();
-  const { token } = antdTheme.useToken();
   const [modalOpen, setModalOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
 
   return (
     <Row gutter={[16, 16]}>
       <Col xs={24} xl={12}>
-        <Card variant="borderless" title="Tabs" size="small" style={{ height: "100%" }}>
+        <Card variant="borderless" title="Tabs" size="small" className="h-full">
           <Tabs
             items={[
-              { key: "1", label: "工作区", children: <p style={{ fontSize: 14 }}>3 个 agent 正在运行…</p> },
-              { key: "2", label: "Git", children: <p style={{ fontSize: 14 }}>main ← feat/diff-view（+128 −12）</p> },
-              { key: "3", label: "浏览器", children: <p style={{ fontSize: 14 }}>预览 localhost:3000</p> },
+              { key: "1", label: "工作区", children: <p className="text-sm">3 个 agent 正在运行…</p> },
+              { key: "2", label: "Git", children: <p className="text-sm">main ← feat/diff-view（+128 −12）</p> },
+              { key: "3", label: "浏览器", children: <p className="text-sm">预览 localhost:3000</p> },
             ]}
           />
-          <Paragraph type="secondary" style={{ fontSize: 12, marginBottom: 0 }}>
+          <Paragraph type="secondary" className="text-xs" style={{ marginBottom: 0 }}>
             {isLight ? (
               <>
                 选中项文字用 <code>accentText</code>、ink bar 用 clay——clay 本身在浅色上作为文字只有
@@ -58,7 +57,7 @@ export function ComponentsSection({ isLight }: { isLight: boolean }) {
           variant="borderless"
           title="浮层：Modal / Message / Notification"
           size="small"
-          style={{ height: "100%" }}
+          className="h-full"
         >
           <SpaceWrap>
             <Button type="primary" onClick={() => setModalOpen(true)}>
@@ -77,7 +76,7 @@ export function ComponentsSection({ isLight }: { isLight: boolean }) {
               Notification
             </Button>
           </SpaceWrap>
-          <Paragraph type="secondary" style={{ fontSize: 12, marginTop: 12, marginBottom: 0 }}>
+          <Paragraph type="secondary" className="mt-3 text-xs" style={{ marginBottom: 0 }}>
             Modal 用 surface2 作内容底；Message/Notification 经 <code>App.useApp()</code>{" "}
             挂载以继承主题（静态方法不继承 ConfigProvider）。
           </Paragraph>
@@ -92,41 +91,32 @@ export function ComponentsSection({ isLight }: { isLight: boolean }) {
             okText="删除"
             okButtonProps={{ danger: true, type: "default" }}
           >
-            <p style={{ fontSize: 14 }}>此操作会移除 agent-work-3 的 worktree，未提交的更改将丢失。</p>
+            <p className="text-sm">此操作会移除 agent-work-3 的 worktree，未提交的更改将丢失。</p>
           </Modal>
         </Card>
       </Col>
 
       <Col span={24}>
         <Card variant="borderless" title="Layout" size="small">
-          <style>{`
-            /* antd anchors the Sider trigger with position: fixed — it is
-               built for a full-page sider, so inside this 220px demo card it
-               would ride the page scrollbar. The Sider is already
-               position: relative, so absolute keeps it in the card. */
-            .paseo-demo-layout .ant-layout-sider-trigger {
-              position: absolute;
-            }
-          `}</style>
-          <Layout className="paseo-demo-layout" style={{ height: 220, borderRadius: 8, overflow: "hidden" }}>
+          <Layout className="paseo-demo-layout h-56 overflow-hidden rounded-md">
             <Sider
               theme={isLight ? "light" : "dark"}
               width={150}
               collapsible
               collapsed={collapsed}
               onCollapse={setCollapsed}
-              trigger={<span style={{ fontSize: 12 }}>{collapsed ? "展开" : "收起"}</span>}
+              trigger={<span className="text-xs">{collapsed ? "展开" : "收起"}</span>}
             >
-              <div style={{ padding: 12, color: token.colorText, fontSize: 12 }}>
-                Sider · siderBg
-              </div>
+              <div className="p-3 text-xs">Sider · siderBg</div>
             </Sider>
             <Layout>
-              <Header style={{ height: 40, lineHeight: "40px", fontSize: 12, padding: "0 12px" }}>Header · headerBg</Header>
-              <Content style={{ margin: 12, padding: 12, fontSize: 12 }}>Content · bodyBg</Content>
+              <Header className="px-3 text-xs" style={{ height: 40, lineHeight: "40px" }}>
+                Header · headerBg
+              </Header>
+              <Content className="m-3 p-3 text-xs">Content · bodyBg</Content>
             </Layout>
           </Layout>
-          <Paragraph type="secondary" style={{ fontSize: 12, marginTop: 12, marginBottom: 0 }}>
+          <Paragraph type="secondary" className="mt-3 text-xs" style={{ marginBottom: 0 }}>
             底部触发器用 <code>triggerBg</code>；收起可对比 siderBg 与 headerBg。
           </Paragraph>
         </Card>
@@ -134,21 +124,12 @@ export function ComponentsSection({ isLight }: { isLight: boolean }) {
 
       <Col span={24}>
         <Card variant="borderless" title="组件 Token 覆盖" size="small">
-          <div style={{ display: "grid", gap: 4 }}>
+          <div className="grid gap-1">
             {COMPONENT_COVERAGE.map((row) => (
-              <div
-                key={row.group}
-                style={{
-                  display: "flex",
-                  gap: 12,
-                  fontSize: 12,
-                  borderBottom: `1px solid ${token.colorSplit}`,
-                  paddingBottom: 4,
-                }}
-              >
-                <code style={{ minWidth: 130 }}>{row.group}</code>
-                <span style={{ color: token.colorTextSecondary, minWidth: 300 }}>{row.tokens}</span>
-                <span style={{ marginLeft: "auto", color: token.colorTextTertiary }}>{row.where}</span>
+              <div key={row.group} className="flex gap-3 border-b border-split pb-1 text-xs">
+                <code className="min-w-32">{row.group}</code>
+                <span className="min-w-80 text-text-secondary">{row.tokens}</span>
+                <span className="ml-auto text-text-tertiary">{row.where}</span>
               </div>
             ))}
           </div>

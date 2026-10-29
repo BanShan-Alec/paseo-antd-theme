@@ -3,7 +3,7 @@ import type { TokenMapping } from "paseo-antd-themes";
 
 const { Text } = Typography;
 
-/** Live token accessor with graceful degradation when a token is absent. */
+/** Live token accessor for behavior checks (is a custom token present?). */
 export function useSchemeTokens() {
   const { token } = antdTheme.useToken();
   const t = token as unknown as Record<string, string>;
@@ -19,16 +19,14 @@ export function Note({ children }: { children: React.ReactNode }) {
     <Alert
       type="info"
       showIcon
-      style={{ marginBottom: 16 }}
-      message={<span style={{ fontSize: 14 }}>{children}</span>}
+      className="mb-4"
+      message={<span className="text-sm">{children}</span>}
     />
   );
 }
 
 export function SpaceWrap({ children }: { children: React.ReactNode }) {
-  return (
-    <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>{children}</div>
-  );
+  return <div className="flex flex-wrap items-center gap-2">{children}</div>;
 }
 
 export function isColorValue(value: string | number): value is string {
@@ -36,58 +34,32 @@ export function isColorValue(value: string | number): value is string {
 }
 
 export function TokenSwatchRow({ row, live }: { row: TokenMapping; live: string | number }) {
-  const { t } = useSchemeTokens();
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 12,
-        padding: "4px 0",
-        borderBottom: `1px solid ${t.colorSplit}`,
-      }}
-    >
+    <div className="flex items-center gap-3 border-b border-split py-1">
       {isColorValue(row.value) ? (
         <span
           title={row.value}
-          style={{
-            width: 22,
-            height: 22,
-            borderRadius: 4,
-            background: row.value,
-            border: "1px solid rgba(128,128,128,0.35)",
-            flex: "none",
-          }}
+          className="h-5 w-5 shrink-0 rounded-xs border border-black/20"
+          style={{ background: row.value }}
         />
       ) : (
-        <span style={{ width: 22, flex: "none", textAlign: "center", color: t.colorTextTertiary }}>
-          —
-        </span>
+        <span className="w-5 shrink-0 text-center text-text-tertiary">—</span>
       )}
-      <code style={{ minWidth: 190 }}>{row.antdToken}</code>
-      <span style={{ color: t.colorTextSecondary, minWidth: 150 }}>{row.paseoToken}</span>
-      <code style={{ marginLeft: "auto", color: t.colorTextTertiary }}>{String(live)}</code>
+      <code className="min-w-48">{row.antdToken}</code>
+      <span className="min-w-36 text-text-secondary">{row.paseoToken}</span>
+      <code className="ml-auto text-text-tertiary">{String(live)}</code>
     </div>
   );
 }
 
 export function TokenChip({ tokenKey, value }: { tokenKey: string; value: string }) {
   return (
-    <span
-      title={`${tokenKey} = ${value}`}
-      style={{ display: "inline-flex", alignItems: "center", gap: 6 }}
-    >
+    <span title={`${tokenKey} = ${value}`} className="inline-flex items-center gap-2">
       <span
-        style={{
-          width: 14,
-          height: 14,
-          borderRadius: 4,
-          background: value,
-          border: "1px solid rgba(128,128,128,0.35)",
-          flex: "none",
-        }}
+        className="h-3.5 w-3.5 shrink-0 rounded-xs border border-black/20"
+        style={{ background: value }}
       />
-      <code style={{ fontSize: 12 }}>{tokenKey.replace(/^paseo/, "")}</code>
+      <code className="text-xs">{tokenKey.replace(/^paseo/, "")}</code>
     </span>
   );
 }
@@ -96,11 +68,11 @@ export function TokenGroup({ title, tokens }: { title: string; tokens: Record<st
   const entries = Object.entries(tokens);
   if (entries.length === 0) return null;
   return (
-    <div style={{ marginTop: 8 }}>
-      <Text type="secondary" style={{ fontSize: 12 }}>
+    <div className="mt-2">
+      <Text type="secondary" className="text-xs">
         {title}（{entries.length}）
       </Text>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "8px 16px", marginTop: 4 }}>
+      <div className="mt-1 flex flex-wrap gap-x-4 gap-y-2">
         {entries.map(([key, value]) => (
           <TokenChip key={key} tokenKey={key} value={value} />
         ))}

@@ -1,5 +1,4 @@
 import { Badge, Card, Table, Tag, Typography } from "antd";
-import { useSchemeTokens } from "../primitives";
 
 const { Paragraph } = Typography;
 
@@ -17,14 +16,21 @@ const stateTag: Record<string, { color: string; label: string }> = {
   danger: { color: "error", label: "failed" },
 };
 
-export function AgentsSection() {
-  const { t, get } = useSchemeTokens();
-  const identityKeys = Object.keys(t)
-    .filter((key) => key.startsWith("paseoIdentity") && key !== "paseoIdentityInk")
-    .sort();
-  const addText = t.paseoDiffAdditionText;
-  const delText = t.paseoDiffDeletionText;
+/** Alphabetical, matching the sorted order the token table uses. */
+const IDENTITY_NAMES = [
+  "amber",
+  "blue",
+  "emerald",
+  "indigo",
+  "orange",
+  "pink",
+  "red",
+  "sky",
+  "teal",
+  "violet",
+] as const;
 
+export function AgentsSection() {
   const columns = [
     { title: "Agent", dataIndex: "name", key: "name" },
     {
@@ -38,9 +44,9 @@ export function AgentsSection() {
       key: "diff",
       align: "right" as const,
       render: (_: unknown, row: (typeof agents)[number]) => (
-        <span style={{ fontFamily: t.fontFamilyCode, fontVariantNumeric: "tabular-nums" }}>
-          <span style={addText ? { color: addText } : undefined}>+{row.added}</span>{" "}
-          <span style={delText ? { color: delText } : undefined}>−{row.removed}</span>
+        <span className="font-mono tabular-nums">
+          <span className="text-diff-addition-text">+{row.added}</span>{" "}
+          <span className="text-diff-deletion-text">−{row.removed}</span>
         </span>
       ),
     },
@@ -51,8 +57,8 @@ export function AgentsSection() {
         // A color makes Badge render its status dot; without one it falls
         // back to the count variant, which is ~19px wider and shifts the
         // table's auto layout.
-        const key = identityKeys[index % identityKeys.length];
-        return <Badge color={key ? get(key, "blue") : "blue"} text={`host-${index + 1}`} />;
+        const name = IDENTITY_NAMES[index % IDENTITY_NAMES.length];
+        return <Badge color={`var(--paseo-identity-${name})`} text={`host-${index + 1}`} />;
       },
     },
   ];
@@ -60,7 +66,7 @@ export function AgentsSection() {
   return (
     <Card variant="borderless" title="Agent 列表" size="small">
       <Table size="small" columns={columns} dataSource={agents} pagination={false} />
-      <Paragraph style={{ marginTop: 12, marginBottom: 0 }} type="secondary">
+      <Paragraph className="mt-3" style={{ marginBottom: 0 }} type="secondary">
         变更列用 <code>paseoDiffAdditionText</code>/<code>paseoDiffDeletionText</code>（paseo
         规定统计是状态信号，不用 diff 色阶）；Host 列色点取自 <code>paseoIdentity*</code>{" "}
         十色身份盘。切换到其他方案可见回退效果。

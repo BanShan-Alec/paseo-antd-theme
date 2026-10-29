@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   App as AntApp,
   Breadcrumb,
@@ -79,45 +79,6 @@ const VIEW_PRESETS: Record<View, { themes?: PaseoThemeSlots; behaviors?: PaseoBe
   mixed: { themes: { light: antdLightTheme, dark: paseoDarkTheme } },
 };
 
-/**
- * Demo chrome only — the package itself injects nothing here. The media query
- * is the whole responsive strategy: the 248px sider is great on a laptop and
- * unusable on a phone, so below 992px it leaves the flow and the same nav
- * renders inside a drawer, while the header stacks the view switcher.
- */
-const CHROME_CSS = `
-  .paseo-demo-header.ant-layout-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 0 24px;
-  }
-  .paseo-demo-header-bar {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    min-width: 0;
-  }
-  .paseo-demo-nav-toggle { display: none; }
-  .paseo-demo-content.ant-layout-content { padding: 24px; }
-
-  @media (max-width: 991.98px) {
-    .paseo-demo-sider { display: none !important; }
-    .paseo-demo-header.ant-layout-header {
-      flex-direction: column;
-      align-items: stretch;
-      height: auto;
-      line-height: normal;
-      gap: 8px;
-      padding: 8px 12px;
-    }
-    .paseo-demo-header-switch { align-self: flex-start; }
-    .paseo-demo-nav-toggle { display: inline-flex; }
-    .paseo-demo-content.ant-layout-content { padding: 16px; }
-  }
-`;
-
 function resolveInitialView(): View {
   try {
     const stored = localStorage.getItem(VIEW_STORAGE_KEY);
@@ -167,25 +128,17 @@ function SidebarBody({
   setSection: (section: Section) => void;
   onNavigate?: () => void;
 }) {
-  const { token } = antdTheme.useToken();
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        overflow: "hidden",
-      }}
-    >
-      <div style={{ flexShrink: 0, padding: "16px 20px", color: token.colorText }}>
-        <Title level={5} style={{ color: "inherit", margin: 0 }}>
+    <div className="flex h-full flex-col overflow-hidden">
+      <div className="shrink-0 px-5 py-4">
+        <Title level={5} className="!m-0">
           Paseo × antd v6
         </Title>
-        <Text style={{ color: token.colorTextSecondary, fontSize: 12 }}>
+        <Text type="secondary" className="text-xs">
           agent orchestration
         </Text>
       </div>
-      <div style={{ flex: 1, minHeight: 0, overflowY: "auto" }}>
+      <div className="min-h-0 flex-1 overflow-y-auto">
         <Menu
           theme={isLight ? "light" : "dark"}
           mode="inline"
@@ -197,7 +150,7 @@ function SidebarBody({
           items={SECTIONS.map((s) => ({ key: s.key, label: s.label }))}
         />
       </div>
-      <div style={{ flexShrink: 0, padding: "12px 20px 20px" }}>
+      <div className="shrink-0 px-5 pt-3 pb-5">
         <Segmented
           shape="round"
           size="small"
@@ -231,8 +184,15 @@ function Dashboard({
   // chrome (Sider/Menu variant) has to follow the resolved background rather
   // than the view name.
   const isLight = isLightSurface(String(token.colorBgLayout));
-  const tokens = token as unknown as Record<string, string>;
-  const sidebarBg = tokens.paseoSurfaceSidebar ?? String(token.colorBgContainer);
+
+  // The Tailwind variable scopes live on <html>, not on a wrapper: antd's
+  // portals (Modal, Message, Drawer) mount under <body>, and a wrapper would
+  // leave them without --paseo-* variables.
+  useEffect(() => {
+    const root = document.documentElement;
+    root.dataset.pair = view;
+    root.dataset.scheme = isLight ? "light" : "dark";
+  }, [view, isLight]);
 
   const sidebar = (onNavigate?: () => void) => (
     <SidebarBody
@@ -246,15 +206,11 @@ function Dashboard({
   );
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
-      <style data-demo-chrome="">{CHROME_CSS}</style>
+    <Layout className="min-h-screen">
       <Sider
-        className="paseo-demo-sider"
+        className="paseo-demo-sider sticky top-0 h-screen"
         width={248}
         theme={isLight ? "light" : "dark"}
-        // Sticky + viewport height: the sidebar and its footer stay put while
-        // the content column scrolls, instead of growing with the page.
-        style={{ position: "sticky", top: 0, height: "100vh" }}
       >
         {sidebar()}
       </Sider>
@@ -309,9 +265,13 @@ function Dashboard({
         onClose={() => setNavOpen(false)}
         title={null}
         styles={{
-          header: { background: sidebarBg, borderBottom: "none" },
-          body: { padding: 0, height: "100%", background: sidebarBg },
-          content: { background: sidebarBg },
+          header: { background: "var(--paseo-surface-sidebar)", borderBottom: "none" },
+          body: {
+            padding: 0,
+            height: "100%",
+            background: "var(--paseo-surface-sidebar)",
+          },
+          content: { background: "var(--paseo-surface-sidebar)" },
         }}
       >
         {sidebar(() => setNavOpen(false))}
