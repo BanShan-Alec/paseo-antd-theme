@@ -1,0 +1,97 @@
+{
+  "name": "paseo-antd-themes",
+  "version": "0.1.1",
+  "description": "Paseo Dark and Claude Light themes for Ant Design v6.",
+  "type": "module",
+  "license": "MIT",
+  "author": "BanShan-Alec",
+  "homepage": "https://github.com/BanShan-Alec/paseo-antd-theme#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BanShan-Alec/paseo-antd-theme.git",
+    "directory": "packages/theme"
+  },
+  "bugs": {
+    "url": "https://github.com/BanShan-Alec/paseo-antd-theme/issues"
+  },
+  "keywords": [
+    "antd",
+    "ant-design",
+    "theme",
+    "dark",
+    "light",
+    "paseo",
+    "claude",
+    "react",
+    "tailwind",
+    "tailwindcss"
+  ],
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./tailwind.css": "./dist/tailwind.css",
+    "./tailwind-vars.css": "./dist/tailwind-vars.css",
+    "./tailwind-preset": "./dist/tailwind-preset.cjs",
+    "./DESIGN.md": "./DESIGN.md",
+    "./MAPPING.md": "./MAPPING.md",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "DESIGN.md",
+    "MAPPING.md",
+    "LICENSE",
+    "docs"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "npm run build:lib",
+    "build:lib": "vite build --config vite.config.lib.ts && node scripts/fix-dts-extensions.mjs",
+    "gen:tailwind": "vite-node scripts/gen-tailwind.ts",
+    "gen:mapping": "vite-node scripts/dump-mapping.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "verify:package": "node scripts/verify-package.mjs",
+    "prepublishOnly": "npm run typecheck && npm test",
+    "prepack": "npm run build:lib && npm run verify:package",
+    "pack:dry": "npm pack --dry-run"
+  },
+  "peerDependencies": {
+    "antd": ">=6.6.0 <7",
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "dependencies": {
+    "@ant-design/colors": "^8.0.1"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@tailwindcss/node": "^4.3.3",
+    "@testing-library/react": "^16.3.0",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "antd": "^6.6.6",
+    "jsdom": "^26.0.0",
+    "publint": "^0.3.25",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~5.9.2",
+    "vite": "^8.3.5",
+    "vite-node": "^5.0.5",
+    "vite-plugin-dts": "^5.1.2",
+    "vitest": "^5.0.5"
+  }
+}

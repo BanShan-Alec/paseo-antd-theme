@@ -1,0 +1,385 @@
+/*
+ * 由 scripts/gen-tailwind.ts 生成（pnpm gen:tailwind），请勿手改。
+ *
+ * Tailwind v3 变量表，与 paseo-antd-themes/tailwind-preset 配套：
+ *   @import "paseo-antd-themes/tailwind-vars.css";
+ *   presets: [require("paseo-antd-themes/tailwind-preset")]
+ *
+ * 默认配对与 v4 导出一致（Claude Light :root / Paseo Dark + .dark）。
+ * 同一页面要在多套配对之间切换时不要用这份文件——改用包根导出的
+ * generateTailwindVariables(theme) 为每个配对生成独立作用域块。
+ */
+
+:root, :host {
+  /* 主色 */
+  --paseo-primary: #BA5B37;
+  --paseo-primary-hover: #943F25;
+  --paseo-primary-active: #6E2716;
+  --paseo-primary-bg: #FAF1EB;
+  --paseo-primary-bg-hover: #EDE5DF;
+  --paseo-primary-border: #E0C1AF;
+  --paseo-primary-border-hover: #D49E83;
+  --paseo-primary-text: #A34E2D;
+  --paseo-primary-text-hover: #7D351D;
+  --paseo-primary-text-active: #571F10;
+  /* 状态色 */
+  --paseo-success: #467650;
+  --paseo-success-hover: #50865c;
+  --paseo-success-active: #3a6343;
+  --paseo-success-bg: #d2f6d8;
+  --paseo-success-bg-hover: #b8f3c2;
+  --paseo-success-border: #92eda5;
+  --paseo-success-border-hover: #88de9b;
+  --paseo-success-text: #467650;
+  --paseo-success-text-hover: #3e6947;
+  --paseo-success-text-active: #365d3e;
+  --paseo-warning: #806340;
+  --paseo-warning-hover: #91714a;
+  --paseo-warning-active: #6c5335;
+  --paseo-warning-bg: #f6e9da;
+  --paseo-warning-bg-hover: #f2dec7;
+  --paseo-warning-border: #eccfad;
+  --paseo-warning-border-hover: #e7c092;
+  --paseo-warning-text: #806340;
+  --paseo-warning-text-hover: #725839;
+  --paseo-warning-text-active: #654e31;
+  --paseo-error: #a14b43;
+  --paseo-error-hover: #b7554d;
+  --paseo-error-active: #883e38;
+  --paseo-error-bg: #f6e7e5;
+  --paseo-error-bg-hover: #f2dbd8;
+  --paseo-error-border: #edcbc7;
+  --paseo-error-border-hover: #e7bbb6;
+  --paseo-error-text: #a14b43;
+  --paseo-error-text-hover: #91423c;
+  --paseo-error-text-active: #803a34;
+  --paseo-info: #436c96;
+  --paseo-info-hover: #4d7baa;
+  --paseo-info-active: #375b7e;
+  --paseo-info-bg: #e3ecf6;
+  --paseo-info-bg-hover: #d5e3f2;
+  --paseo-info-border: #c3d7ec;
+  --paseo-info-border-hover: #b0cbe6;
+  --paseo-info-text: #436c96;
+  --paseo-info-text-hover: #3b6186;
+  --paseo-info-text-active: #345577;
+  /* 表面 */
+  --paseo-bg-layout: #F0EDE2;
+  --paseo-bg-container: #F5F4EC;
+  --paseo-bg-elevated: #FFFFFF;
+  --paseo-bg-spotlight: #1F1E1D;
+  --paseo-bg-mask: rgba(20, 20, 19, 0.45);
+  --paseo-surface-0: #F0EDE2;
+  --paseo-surface-1: #F5F4EC;
+  --paseo-surface-2: #FFFFFF;
+  --paseo-surface-3: #D7D2C7;
+  --paseo-surface-4: #D1CCBF;
+  --paseo-surface-sidebar: #E2E0D6;
+  --paseo-surface-head: #E0DDD0;
+  --paseo-surface-hover: #DDD9CE;
+  /* 文字 */
+  --paseo-text: #3C3C2C;
+  --paseo-text-secondary: #55554B;
+  --paseo-text-tertiary: #65635E;
+  --paseo-text-quaternary: #98978F;
+  --paseo-text-light-solid: #FFFFFF;
+  /* 边框与分隔 */
+  --paseo-border: #DBD9D0;
+  --paseo-border-secondary: #E8E6DF;
+  --paseo-split: rgba(28,11,19,0.06);
+  /* 填充 */
+  --paseo-fill: #D1CCBF;
+  --paseo-fill-secondary: #D7D2C7;
+  --paseo-fill-tertiary: #DDD9CE;
+  --paseo-fill-quaternary: #EDEBE0;
+  /* 控件底色 */
+  --paseo-control-item-bg-hover: #DDD9CE;
+  --paseo-control-item-bg-active: #FAF1EB;
+  /* 链接 */
+  --paseo-link: #A34E2D;
+  --paseo-link-hover: #7D351D;
+  --paseo-link-active: #571F10;
+  /* Diff */
+  --paseo-diff-addition: #c1f4ca;
+  --paseo-diff-addition-text: #3e6947;
+  --paseo-diff-deletion: #f3dfdd;
+  --paseo-diff-deletion-text: #91423c;
+  /* 状态点 */
+  --paseo-status-dot-success: #467650;
+  --paseo-status-dot-danger: #a14b43;
+  --paseo-status-dot-warning: #806340;
+  --paseo-status-dot-running: #436c96;
+  --paseo-status-merged: #774fb3;
+  /* 选区 */
+  --paseo-selection: rgba(186, 91, 55, 0.32);
+  /* 身份色 */
+  --paseo-identity-violet: #7a5ac1;
+  --paseo-identity-sky: #4a7795;
+  --paseo-identity-emerald: #4c7d6b;
+  --paseo-identity-orange: #936646;
+  --paseo-identity-pink: #a84f76;
+  --paseo-identity-indigo: #6166c1;
+  --paseo-identity-teal: #4c7b7b;
+  --paseo-identity-red: #ad5151;
+  --paseo-identity-amber: #807046;
+  --paseo-identity-blue: #4773ae;
+  --paseo-identity-ink: #FFFFFF;
+  /* 字体 */
+  --paseo-font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --paseo-font-mono: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  /* 圆角 */
+  --paseo-radius-xs: 4px;
+  --paseo-radius-sm: 8px;
+  --paseo-radius-md: 12px;
+  --paseo-radius-lg: 12px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root, :host {
+    /* 主色 */
+    --paseo-primary: #20744A;
+    --paseo-primary-hover: #347552;
+    --paseo-primary-active: #1c5237;
+    --paseo-primary-bg: #183124;
+    --paseo-primary-bg-hover: #193f2c;
+    --paseo-primary-border: #183124;
+    --paseo-primary-border-hover: #193f2c;
+    --paseo-primary-text: #7ccba0;
+    --paseo-primary-text-hover: #ecfaf1;
+    --paseo-primary-text-active: #cbdcd2;
+    /* 状态色 */
+    --paseo-success: #6cb17b;
+    --paseo-success-hover: #85ac8c;
+    --paseo-success-active: #4d7a57;
+    --paseo-success-bg: #19201b;
+    --paseo-success-bg-hover: #223226;
+    --paseo-success-border: #2e4333;
+    --paseo-success-border-hover: #3c5b42;
+    --paseo-success-text: #c4d0c6;
+    --paseo-success-text-hover: #d1dfd2;
+    --paseo-success-text-active: #b3c0b5;
+    --paseo-warning: #c09664;
+    --paseo-warning-hover: #baa17f;
+    --paseo-warning-active: #846948;
+    --paseo-warning-bg: #221d18;
+    --paseo-warning-bg-hover: #352c21;
+    --paseo-warning-border: #483b2c;
+    --paseo-warning-border-hover: #614f38;
+    --paseo-warning-text: #e0dbd2;
+    --paseo-warning-text-hover: #eeeae0;
+    --paseo-warning-text-active: #cfc2ae;
+    --paseo-error: #d8847b;
+    --paseo-error-hover: #d1a099;
+    --paseo-error-active: #935d57;
+    --paseo-error-bg: #261b1b;
+    --paseo-error-bg-hover: #3c2826;
+    --paseo-error-border: #4f3633;
+    --paseo-error-border-hover: #6c4642;
+    --paseo-error-text: #f8ece9;
+    --paseo-error-text-hover: #faefec;
+    --paseo-error-text-active: #e7d2ce;
+    --paseo-info: #5caaf6;
+    --paseo-info-hover: #7cb5e8;
+    --paseo-info-active: #4376a7;
+    --paseo-info-bg: #18202a;
+    --paseo-info-bg-hover: #203043;
+    --paseo-info-border: #2a4158;
+    --paseo-info-border-hover: #34587a;
+    --paseo-info-text: #d3e9f8;
+    --paseo-info-text-hover: #ecf4fa;
+    --paseo-info-text-active: #a8d3f3;
+    /* 表面 */
+    --paseo-bg-layout: #181B1A;
+    --paseo-bg-container: #1E2120;
+    --paseo-bg-elevated: #272A29;
+    --paseo-bg-spotlight: #272A29;
+    --paseo-bg-mask: rgba(0, 0, 0, 0.65);
+    --paseo-surface-0: #181B1A;
+    --paseo-surface-1: #1E2120;
+    --paseo-surface-2: #272A29;
+    --paseo-surface-3: #434645;
+    --paseo-surface-4: #595B5B;
+    --paseo-surface-sidebar: #141716;
+    --paseo-surface-head: #1E2120;
+    --paseo-surface-hover: #1E2120;
+    /* 文字 */
+    --paseo-text: #fafafa;
+    --paseo-text-secondary: #A1A5A4;
+    --paseo-text-tertiary: #8A8E8D;
+    --paseo-text-quaternary: #595B5B;
+    --paseo-text-light-solid: #fff;
+    /* 边框与分隔 */
+    --paseo-border: #252B2A;
+    --paseo-border-secondary: #2F3534;
+    --paseo-split: rgba(219,255,254,0.09);
+    /* 填充 */
+    --paseo-fill: #434645;
+    --paseo-fill-secondary: #272A29;
+    --paseo-fill-tertiary: #1E2120;
+    --paseo-fill-quaternary: #252B2A;
+    /* 控件底色 */
+    --paseo-control-item-bg-hover: #1E2120;
+    --paseo-control-item-bg-active: #183124;
+    /* 链接 */
+    --paseo-link: #7ccba0;
+    --paseo-link-hover: #deebe3;
+    --paseo-link-active: #cbdcd2;
+    /* Diff */
+    --paseo-diff-addition: #32573a;
+    --paseo-diff-addition-text: #6cb17b;
+    --paseo-diff-deletion: #783630;
+    --paseo-diff-deletion-text: #d8847b;
+    /* 状态点 */
+    --paseo-status-dot-success: #35c264;
+    --paseo-status-dot-danger: #f7796d;
+    --paseo-status-dot-warning: #db932e;
+    --paseo-status-dot-running: #5caaf6;
+    --paseo-status-merged: #a890d5;
+    /* 选区 */
+    --paseo-selection: rgba(255, 255, 255, 0.2);
+    /* 身份色 */
+    --paseo-identity-violet: #a392d5;
+    --paseo-identity-sky: #6aa6ce;
+    --paseo-identity-emerald: #6cae96;
+    --paseo-identity-orange: #cc8f64;
+    --paseo-identity-pink: #d87da3;
+    --paseo-identity-indigo: #9299d5;
+    --paseo-identity-teal: #6cacab;
+    --paseo-identity-red: #d88381;
+    --paseo-identity-amber: #b29d64;
+    --paseo-identity-blue: #7ba1d5;
+    --paseo-identity-ink: #1F1E1D;
+    /* 字体 */
+    --paseo-font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --paseo-font-mono: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    /* 圆角 */
+    --paseo-radius-xs: 4px;
+    --paseo-radius-sm: 8px;
+    --paseo-radius-md: 12px;
+    --paseo-radius-lg: 12px;
+  }
+}
+
+.dark {
+  /* 主色 */
+  --paseo-primary: #20744A;
+  --paseo-primary-hover: #347552;
+  --paseo-primary-active: #1c5237;
+  --paseo-primary-bg: #183124;
+  --paseo-primary-bg-hover: #193f2c;
+  --paseo-primary-border: #183124;
+  --paseo-primary-border-hover: #193f2c;
+  --paseo-primary-text: #7ccba0;
+  --paseo-primary-text-hover: #ecfaf1;
+  --paseo-primary-text-active: #cbdcd2;
+  /* 状态色 */
+  --paseo-success: #6cb17b;
+  --paseo-success-hover: #85ac8c;
+  --paseo-success-active: #4d7a57;
+  --paseo-success-bg: #19201b;
+  --paseo-success-bg-hover: #223226;
+  --paseo-success-border: #2e4333;
+  --paseo-success-border-hover: #3c5b42;
+  --paseo-success-text: #c4d0c6;
+  --paseo-success-text-hover: #d1dfd2;
+  --paseo-success-text-active: #b3c0b5;
+  --paseo-warning: #c09664;
+  --paseo-warning-hover: #baa17f;
+  --paseo-warning-active: #846948;
+  --paseo-warning-bg: #221d18;
+  --paseo-warning-bg-hover: #352c21;
+  --paseo-warning-border: #483b2c;
+  --paseo-warning-border-hover: #614f38;
+  --paseo-warning-text: #e0dbd2;
+  --paseo-warning-text-hover: #eeeae0;
+  --paseo-warning-text-active: #cfc2ae;
+  --paseo-error: #d8847b;
+  --paseo-error-hover: #d1a099;
+  --paseo-error-active: #935d57;
+  --paseo-error-bg: #261b1b;
+  --paseo-error-bg-hover: #3c2826;
+  --paseo-error-border: #4f3633;
+  --paseo-error-border-hover: #6c4642;
+  --paseo-error-text: #f8ece9;
+  --paseo-error-text-hover: #faefec;
+  --paseo-error-text-active: #e7d2ce;
+  --paseo-info: #5caaf6;
+  --paseo-info-hover: #7cb5e8;
+  --paseo-info-active: #4376a7;
+  --paseo-info-bg: #18202a;
+  --paseo-info-bg-hover: #203043;
+  --paseo-info-border: #2a4158;
+  --paseo-info-border-hover: #34587a;
+  --paseo-info-text: #d3e9f8;
+  --paseo-info-text-hover: #ecf4fa;
+  --paseo-info-text-active: #a8d3f3;
+  /* 表面 */
+  --paseo-bg-layout: #181B1A;
+  --paseo-bg-container: #1E2120;
+  --paseo-bg-elevated: #272A29;
+  --paseo-bg-spotlight: #272A29;
+  --paseo-bg-mask: rgba(0, 0, 0, 0.65);
+  --paseo-surface-0: #181B1A;
+  --paseo-surface-1: #1E2120;
+  --paseo-surface-2: #272A29;
+  --paseo-surface-3: #434645;
+  --paseo-surface-4: #595B5B;
+  --paseo-surface-sidebar: #141716;
+  --paseo-surface-head: #1E2120;
+  --paseo-surface-hover: #1E2120;
+  /* 文字 */
+  --paseo-text: #fafafa;
+  --paseo-text-secondary: #A1A5A4;
+  --paseo-text-tertiary: #8A8E8D;
+  --paseo-text-quaternary: #595B5B;
+  --paseo-text-light-solid: #fff;
+  /* 边框与分隔 */
+  --paseo-border: #252B2A;
+  --paseo-border-secondary: #2F3534;
+  --paseo-split: rgba(219,255,254,0.09);
+  /* 填充 */
+  --paseo-fill: #434645;
+  --paseo-fill-secondary: #272A29;
+  --paseo-fill-tertiary: #1E2120;
+  --paseo-fill-quaternary: #252B2A;
+  /* 控件底色 */
+  --paseo-control-item-bg-hover: #1E2120;
+  --paseo-control-item-bg-active: #183124;
+  /* 链接 */
+  --paseo-link: #7ccba0;
+  --paseo-link-hover: #deebe3;
+  --paseo-link-active: #cbdcd2;
+  /* Diff */
+  --paseo-diff-addition: #32573a;
+  --paseo-diff-addition-text: #6cb17b;
+  --paseo-diff-deletion: #783630;
+  --paseo-diff-deletion-text: #d8847b;
+  /* 状态点 */
+  --paseo-status-dot-success: #35c264;
+  --paseo-status-dot-danger: #f7796d;
+  --paseo-status-dot-warning: #db932e;
+  --paseo-status-dot-running: #5caaf6;
+  --paseo-status-merged: #a890d5;
+  /* 选区 */
+  --paseo-selection: rgba(255, 255, 255, 0.2);
+  /* 身份色 */
+  --paseo-identity-violet: #a392d5;
+  --paseo-identity-sky: #6aa6ce;
+  --paseo-identity-emerald: #6cae96;
+  --paseo-identity-orange: #cc8f64;
+  --paseo-identity-pink: #d87da3;
+  --paseo-identity-indigo: #9299d5;
+  --paseo-identity-teal: #6cacab;
+  --paseo-identity-red: #d88381;
+  --paseo-identity-amber: #b29d64;
+  --paseo-identity-blue: #7ba1d5;
+  --paseo-identity-ink: #1F1E1D;
+  /* 字体 */
+  --paseo-font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --paseo-font-mono: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  /* 圆角 */
+  --paseo-radius-xs: 4px;
+  --paseo-radius-sm: 8px;
+  --paseo-radius-md: 12px;
+  --paseo-radius-lg: 12px;
+}
