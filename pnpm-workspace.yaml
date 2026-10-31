@@ -1,11 +1,10 @@
 packages:
   - "packages/*"
 
+# pnpm 11 renamed `onlyBuiltDependencies` to this map and made
+# `strictDepBuilds` default to true: an unreviewed postinstall script now fails
+# the install instead of printing a warning. These two place native binaries
+# (esbuild for Vite/Vitest, oxide for the Tailwind v4 CSS build).
 allowBuilds:
-  esbuild: set this to true or false
-
-# pnpm 10+ blocks lifecycle scripts by default; these two need theirs to place
-# native binaries (esbuild for Vite, oxide for the Tailwind v4 CSS build).
-onlyBuiltDependencies:
-  - esbuild
-  - "@tailwindcss/oxide"
+  esbuild: true
+  "@tailwindcss/oxide": true
