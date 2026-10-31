@@ -23,3 +23,13 @@ if (typeof globalThis.ResizeObserver !== "function") {
   }
   globalThis.ResizeObserver = ResizeObserverStub as unknown as typeof ResizeObserver;
 }
+
+// jsdom does not implement getComputedStyle(el, pseudoElt): it logs a virtual
+// console error on every call, and antd's Table passes a pseudo-element while
+// measuring the scrollbar. Dropping the argument returns the base element's
+// style — all that measurement needs — and keeps real failures visible.
+if (typeof window !== "undefined") {
+  const originalGetComputedStyle = window.getComputedStyle.bind(window);
+  window.getComputedStyle = ((element: Element) =>
+    originalGetComputedStyle(element)) as typeof window.getComputedStyle;
+}
