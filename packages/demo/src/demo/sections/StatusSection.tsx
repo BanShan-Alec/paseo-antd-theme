@@ -50,7 +50,7 @@ export function StatusSection() {
         ))}
       </div>
       <Paragraph type="secondary" className="mt-3 text-xs" style={{ marginBottom: 0 }}>
-        六个色相、同一色度家族（paseo 的归一化状态色）；merged 色 <code>paseoStatusMerged</code>{" "}
+        五个色相、同一色度家族（paseo 的归一化状态色）；merged 色 <code>paseoStatusMerged</code>{" "}
         用于 PR 合并态：
         <span className="ml-2 inline-block h-2 w-2 rounded-full bg-status-merged align-middle" />
       </Paragraph>
