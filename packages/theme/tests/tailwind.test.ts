@@ -1,8 +1,5 @@
-import { execFileSync } from "node:child_process";
-import { readFileSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { pathToFileURL } from "node:url";
 import { describe, expect, it } from "vitest";
 import {
   generateTailwindCss,
@@ -20,20 +17,14 @@ const ROOT = join(import.meta.dirname, "..");
 
 /**
  * The tailwind artifacts are committed build outputs: regenerating them must
- * produce byte-identical files (the same discipline as MAPPING.md). Generation
- * runs through vite-node because the theme sources are TypeScript.
+ * produce byte-identical files (the same discipline as MAPPING.md). The
+ * generators are pure functions of the theme configs, so call them directly —
+ * spawning `vite-node` per artifact made this test take ~5s and time out on CI.
  */
 const generated = (generator: "Css" | "VarsCss" | "Preset" = "Css") => {
-  const out = join(tmpdir(), `tailwind-${generator}-${process.pid}`);
-  const entry = join(tmpdir(), `tailwind-${generator}-gen-${process.pid}.ts`);
-  const script = `
-    import { writeFileSync } from "node:fs";
-    import { generateTailwind${generator} } from ${JSON.stringify(pathToFileURL(join(ROOT, "src/tailwind/build.ts")).href)};
-    writeFileSync(${JSON.stringify(out)}, generateTailwind${generator}());
-  `;
-  writeFileSync(entry, script);
-  execFileSync("npx", ["vite-node", entry], { cwd: ROOT });
-  return readFileSync(out, "utf8");
+  if (generator === "VarsCss") return generateTailwindVarsCss();
+  if (generator === "Preset") return generateTailwindPreset();
+  return generateTailwindCss();
 };
 
 /** Reads a committed artifact, normalizing git's CRLF checkout on Windows. */
