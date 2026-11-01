@@ -57,13 +57,19 @@ function tailwindSection(): string {
     lines.push(
       `| \`--paseo-${spec.name}\` | \`${light[spec.name]}\` | \`${dark[spec.name]}\` | ${source} | ${note} |`,
     );
+    if (spec.lineHeight !== undefined) {
+      const pair = spec.lineHeight;
+      lines.push(
+        `| \`--paseo-${pair.name}\` | \`${light[pair.name]}\` | \`${dark[pair.name]}\` | \`${pair.source}\` | 与 \`${spec.name}\` 配对的行高（antd 比例 × 字号，取整到 px）。 |`,
+      );
+    }
   }
   return [
     "## Tailwind 变量映射\n",
     "`src/tailwind/{theme.css,vars.css,preset.cjs}` 由 `scripts/gen-tailwind.ts` 生成：值经 antd 管线解析（含算法派生的",
-    "hover/active/色阶槽位）。`theme.css` 是 Tailwind v4 导出（`@theme inline`）；`vars.css` 是同一批变量的 v3 版本；",
-    "`preset.cjs` 是 v3 preset，每个 utility 的值都指向 `var(--paseo-*)`。浅色写在 `:root`，深色同时写在",
-    "`@media (prefers-color-scheme: dark)` 与 `.dark`。\n",
+    "hover/active/色阶槽位）。`theme.css` 是 Tailwind v4 导出（`@theme inline`）；`vars.css` 是同一批变量的框架中立写法",
+    "（纯 CSS 自定义属性，Tailwind v3 preset 与任何手写 CSS 都能用）；`preset.cjs` 是 v3 preset，每个 utility 的值都指向",
+    "`var(--paseo-*)`。浅色写在 `:root`，深色同时写在 `@media (prefers-color-scheme: dark)` 与 `.dark`。\n",
     lines.join("\n"),
   ].join("\n");
 }

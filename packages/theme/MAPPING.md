@@ -123,9 +123,9 @@ Claude 品牌表面 + Claude Code 信号色 + paseo 归一化状态色（OKLCH L
 ## Tailwind 变量映射
 
 `src/tailwind/{theme.css,vars.css,preset.cjs}` 由 `scripts/gen-tailwind.ts` 生成：值经 antd 管线解析（含算法派生的
-hover/active/色阶槽位）。`theme.css` 是 Tailwind v4 导出（`@theme inline`）；`vars.css` 是同一批变量的 v3 版本；
-`preset.cjs` 是 v3 preset，每个 utility 的值都指向 `var(--paseo-*)`。浅色写在 `:root`，深色同时写在
-`@media (prefers-color-scheme: dark)` 与 `.dark`。
+hover/active/色阶槽位）。`theme.css` 是 Tailwind v4 导出（`@theme inline`）；`vars.css` 是同一批变量的框架中立写法
+（纯 CSS 自定义属性，Tailwind v3 preset 与任何手写 CSS 都能用）；`preset.cjs` 是 v3 preset，每个 utility 的值都指向
+`var(--paseo-*)`。浅色写在 `:root`，深色同时写在 `@media (prefers-color-scheme: dark)` 与 `.dark`。
 
 | Tailwind 变量 | 浅色值（Claude Light） | 深色值（Paseo Dark） | antd token 来源 | 说明 |
 | --- | --- | --- | --- | --- |
@@ -190,8 +190,8 @@ hover/active/色阶槽位）。`theme.css` 是 Tailwind v4 导出（`@theme inli
 | `--paseo-surface-3` | `#D7D2C7` | `#434645` | `paseoSurface3` |  |
 | `--paseo-surface-4` | `#D1CCBF` | `#595B5B` | `paseoSurface4` |  |
 | `--paseo-surface-sidebar` | `#E2E0D6` | `#141716` | `paseoSurfaceSidebar` |  |
-| `--paseo-surface-head` | `#E0DDD0` | `#1E2120` | `paseoSurfaceHead` / `paseoSurface1` | 深色主题没有 paper-on-paper 表头概念，用面板色 surface1 补位（与 Table.headerBg 一致）。 |
-| `--paseo-surface-hover` | `#DDD9CE` | `#1E2120` | `paseoSurfaceHover` / `paseoSurface1` | 深色主题的卡片 hover 就是面板色 surface1（与 Table.rowHoverBg 一致）。 |
+| `--paseo-surface-head` | `#E0DDD0` | `#1E2120` | `paseoSurfaceHead` | 深色主题没有 paper-on-paper 表头概念，token 本身就等于面板色 surface1（与 Table.headerBg 一致）。 |
+| `--paseo-surface-hover` | `#DDD9CE` | `#1E2120` | `paseoSurfaceHover` | 深色主题的卡片 hover 就是面板色 surface1（与 Table.rowHoverBg 一致）。 |
 | `--paseo-text` | `#3C3C2C` | `#fafafa` | `colorText` |  |
 | `--paseo-text-secondary` | `#55554B` | `#A1A5A4` | `colorTextSecondary` |  |
 | `--paseo-text-tertiary` | `#65635E` | `#8A8E8D` | `colorTextTertiary` |  |
@@ -232,6 +232,22 @@ hover/active/色阶槽位）。`theme.css` 是 Tailwind v4 导出（`@theme inli
 | `--paseo-identity-ink` | `#FFFFFF` | `#1F1E1D` | `paseoIdentityInk` |  |
 | `--paseo-font` | `system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif` | `system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif` | `fontFamily` |  |
 | `--paseo-font-mono` | `SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace` | `SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace` | `fontFamilyCode` |  |
+| `--paseo-text-caption` | `12px` | `12px` | `fontSizeSM` |  |
+| `--paseo-text-caption-lh` | `20px` | `20px` | `lineHeightSM` | 与 `text-caption` 配对的行高（antd 比例 × 字号，取整到 px）。 |
+| `--paseo-text-body` | `14px` | `14px` | `fontSize` |  |
+| `--paseo-text-body-lh` | `22px` | `22px` | `lineHeight` | 与 `text-body` 配对的行高（antd 比例 × 字号，取整到 px）。 |
+| `--paseo-text-subtitle` | `16px` | `16px` | `fontSizeLG` |  |
+| `--paseo-text-subtitle-lh` | `24px` | `24px` | `lineHeightLG` | 与 `text-subtitle` 配对的行高（antd 比例 × 字号，取整到 px）。 |
+| `--paseo-text-heading-sm` | `20px` | `20px` | `fontSizeHeading4` |  |
+| `--paseo-text-heading-sm-lh` | `28px` | `28px` | `lineHeightHeading4` | 与 `text-heading-sm` 配对的行高（antd 比例 × 字号，取整到 px）。 |
+| `--paseo-text-heading` | `24px` | `24px` | `fontSizeHeading3` |  |
+| `--paseo-text-heading-lh` | `32px` | `32px` | `lineHeightHeading3` | 与 `text-heading` 配对的行高（antd 比例 × 字号，取整到 px）。 |
+| `--paseo-text-heading-lg` | `30px` | `30px` | `fontSizeHeading2` |  |
+| `--paseo-text-heading-lg-lh` | `38px` | `38px` | `lineHeightHeading2` | 与 `text-heading-lg` 配对的行高（antd 比例 × 字号，取整到 px）。 |
+| `--paseo-text-display` | `38px` | `38px` | `fontSizeHeading1` |  |
+| `--paseo-text-display-lh` | `46px` | `46px` | `lineHeightHeading1` | 与 `text-display` 配对的行高（antd 比例 × 字号，取整到 px）。 |
+| `--paseo-shadow-raised` | `0 1px 2px rgba(31, 30, 29, 0.04), 0 4px 12px rgba(31, 30, 29, 0.06)` | `0 1px 2px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.10)` | `boxShadowTertiary` | hoverable 卡片与默认按钮的悬浮态。 |
+| `--paseo-shadow-overlay` | `0 6px 16px rgba(31, 30, 29, 0.10), 0 2px 6px rgba(31, 30, 29, 0.05)` | `0 4px 10px rgba(0, 0, 0, 0.18), 0 1px 3px rgba(0, 0, 0, 0.10)` | `boxShadowSecondary` | Dropdown / Modal / Popover / Notification。 |
 | `--paseo-radius-xs` | `4px` | `4px` | `borderRadiusXS` |  |
 | `--paseo-radius-sm` | `8px` | `8px` | `borderRadiusSM` |  |
 | `--paseo-radius-md` | `12px` | `12px` | `borderRadius` |  |

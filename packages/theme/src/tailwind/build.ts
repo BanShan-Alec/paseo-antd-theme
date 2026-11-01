@@ -47,7 +47,17 @@ export interface TailwindVariable {
   readonly fallback?: readonly string[];
   /** `kind: "other"` variables carry an explicit `@theme` namespace key (`--font-*`, `--radius-*`). */
   readonly themeKey?: string;
-  readonly kind: "color" | "other";
+  readonly kind: "color" | "other" | "fontSize";
+  /**
+   * `kind: "fontSize"` only. Tailwind pairs a size with a line-height through
+   * the `--text-<name>--line-height` key; the emitted value is the antd
+   * ratio resolved to px against the size above, never a unitless ratio.
+   */
+  readonly lineHeight?: {
+    readonly name: string;
+    readonly source: string;
+    readonly themeKey: string;
+  };
   /** Group heading used as a CSS comment inside the generated blocks. */
   readonly group: string;
   readonly note?: string;
@@ -141,16 +151,14 @@ export const TAILWIND_VARIABLES: readonly TailwindVariable[] = [
   {
     name: "surface-head",
     source: "paseoSurfaceHead",
-    darkSource: "paseoSurface1",
     fallback: ["colorFillSecondary"],
     kind: "color",
     group: "表面",
-    note: "深色主题没有 paper-on-paper 表头概念，用面板色 surface1 补位（与 Table.headerBg 一致）。",
+    note: "深色主题没有 paper-on-paper 表头概念，token 本身就等于面板色 surface1（与 Table.headerBg 一致）。",
   },
   {
     name: "surface-hover",
     source: "paseoSurfaceHover",
-    darkSource: "paseoSurface1",
     fallback: ["colorFillTertiary"],
     kind: "color",
     group: "表面",
@@ -322,6 +330,98 @@ export const TAILWIND_VARIABLES: readonly TailwindVariable[] = [
   },
   { name: "font", source: "fontFamily", themeKey: "--font-sans", kind: "other", group: "字体" },
   { name: "font-mono", source: "fontFamilyCode", themeKey: "--font-mono", kind: "other", group: "字体" },
+  // Type scale. Names are additive on purpose: overriding Tailwind's own
+  // `--text-4xl` (36px) with antd's 38px would silently resize existing pages.
+  {
+    name: "text-caption",
+    source: "fontSizeSM",
+    themeKey: "--text-caption",
+    kind: "fontSize",
+    lineHeight: { name: "text-caption-lh", source: "lineHeightSM", themeKey: "--text-caption--line-height" },
+    group: "字号",
+  },
+  {
+    name: "text-body",
+    source: "fontSize",
+    themeKey: "--text-body",
+    kind: "fontSize",
+    lineHeight: { name: "text-body-lh", source: "lineHeight", themeKey: "--text-body--line-height" },
+    group: "字号",
+  },
+  {
+    name: "text-subtitle",
+    source: "fontSizeLG",
+    themeKey: "--text-subtitle",
+    kind: "fontSize",
+    lineHeight: { name: "text-subtitle-lh", source: "lineHeightLG", themeKey: "--text-subtitle--line-height" },
+    group: "字号",
+  },
+  {
+    name: "text-heading-sm",
+    source: "fontSizeHeading4",
+    themeKey: "--text-heading-sm",
+    kind: "fontSize",
+    lineHeight: {
+      name: "text-heading-sm-lh",
+      source: "lineHeightHeading4",
+      themeKey: "--text-heading-sm--line-height",
+    },
+    group: "字号",
+  },
+  {
+    name: "text-heading",
+    source: "fontSizeHeading3",
+    themeKey: "--text-heading",
+    kind: "fontSize",
+    lineHeight: {
+      name: "text-heading-lh",
+      source: "lineHeightHeading3",
+      themeKey: "--text-heading--line-height",
+    },
+    group: "字号",
+  },
+  {
+    name: "text-heading-lg",
+    source: "fontSizeHeading2",
+    themeKey: "--text-heading-lg",
+    kind: "fontSize",
+    lineHeight: {
+      name: "text-heading-lg-lh",
+      source: "lineHeightHeading2",
+      themeKey: "--text-heading-lg--line-height",
+    },
+    group: "字号",
+  },
+  {
+    name: "text-display",
+    source: "fontSizeHeading1",
+    themeKey: "--text-display",
+    kind: "fontSize",
+    lineHeight: {
+      name: "text-display-lh",
+      source: "lineHeightHeading1",
+      themeKey: "--text-display--line-height",
+    },
+    group: "字号",
+  },
+  // Elevation. Only the two levels a page author may apply; `boxShadow` stays
+  // antd-internal, so it is deliberately not exported as a utility.
+  {
+    name: "shadow-raised",
+    source: "boxShadowTertiary",
+    themeKey: "--shadow-raised",
+    kind: "other",
+    group: "阴影",
+    note: "hoverable 卡片与默认按钮的悬浮态。",
+  },
+  {
+    name: "shadow-overlay",
+    source: "boxShadowSecondary",
+    themeKey: "--shadow-overlay",
+    kind: "other",
+    group: "阴影",
+    note: "Dropdown / Modal / Popover / Notification。",
+  },
   { name: "radius-xs", source: "borderRadiusXS", themeKey: "--radius-xs", kind: "other", group: "圆角" },
   { name: "radius-sm", source: "borderRadiusSM", themeKey: "--radius-sm", kind: "other", group: "圆角" },
   { name: "radius-md", source: "borderRadius", themeKey: "--radius-md", kind: "other", group: "圆角" },
@@ -344,6 +444,35 @@ function formatValue(value: string | number): string {
   return typeof value === "number" ? `${value}px` : value;
 }
 
+/**
+ * One spec → its `--paseo-*` value(s). Font sizes carry a second value: the
+ * antd line-height ratio resolved to px against the size, because Tailwind's
+ * `--text-<name>--line-height` key is what makes `text-body` carry its rhythm.
+ */
+function resolveSpec(
+  tokens: DesignToken,
+  spec: TailwindVariable,
+  dark: boolean,
+): Record<string, string> {
+  const fallback = spec.fallback ?? [];
+  const sources = dark
+    ? [spec.darkSource ?? spec.source, spec.source, ...fallback]
+    : [spec.source, ...fallback];
+  const raw = pickValue(tokens, sources);
+  const values: Record<string, string> = { [spec.name]: formatValue(raw) };
+  if (spec.lineHeight !== undefined) {
+    const ratio = pickValue(tokens, [spec.lineHeight.source]);
+    const size = typeof raw === "number" ? raw : Number.parseFloat(String(raw));
+    if (typeof ratio !== "number" || !Number.isFinite(size)) {
+      throw new Error(
+        `tailwind export: cannot pair "${spec.name}" with a line-height (size=${String(raw)}, ratio=${String(ratio)})`,
+      );
+    }
+    values[spec.lineHeight.name] = `${Math.round(size * ratio)}px`;
+  }
+  return values;
+}
+
 export interface ResolvedTailwindVariables {
   light: Record<string, string>;
   dark: Record<string, string>;
@@ -357,11 +486,8 @@ export function resolveTailwindVariables(
   const light: Record<string, string> = {};
   const dark: Record<string, string> = {};
   for (const spec of TAILWIND_VARIABLES) {
-    const fallback = spec.fallback ?? [];
-    light[spec.name] = formatValue(pickValue(lightTokens, [spec.source, ...fallback]));
-    dark[spec.name] = formatValue(
-      pickValue(darkTokens, [spec.darkSource ?? spec.source, spec.source, ...fallback]),
-    );
+    Object.assign(light, resolveSpec(lightTokens, spec, false));
+    Object.assign(dark, resolveSpec(darkTokens, spec, true));
   }
   return { light, dark };
 }
@@ -380,20 +506,15 @@ function isDarkTokenSet(tokens: DesignToken): boolean {
  *
  * This is the multi-theme escape hatch: a page that switches between several
  * theme configs at runtime (a demo, a preview tool) can generate one scoped
- * block per theme instead of shipping a single `:root` pair. `darkSource`
- * substitutions (the dark scheme's `surface-head → surface-1`) are applied when
- * the theme itself resolves as dark.
+ * block per theme instead of shipping a single `:root` pair. A spec's
+ * `darkSource` substitution applies when the theme itself resolves as dark.
  */
 export function generateTailwindVariables(theme: ThemeConfig): Record<string, string> {
   const tokens = antdTheme.getDesignToken(theme);
   const dark = isDarkTokenSet(tokens);
   const values: Record<string, string> = {};
   for (const spec of TAILWIND_VARIABLES) {
-    const fallback = spec.fallback ?? [];
-    const sources = dark
-      ? [spec.darkSource ?? spec.source, spec.source, ...fallback]
-      : [spec.source, ...fallback];
-    values[spec.name] = formatValue(pickValue(tokens, sources));
+    Object.assign(values, resolveSpec(tokens, spec, dark));
   }
   return values;
 }
@@ -410,6 +531,9 @@ function declarations(
       lines.push(`${indent}/* ${group} */`);
     }
     lines.push(`${indent}--paseo-${spec.name}: ${values[spec.name]};`);
+    if (spec.lineHeight !== undefined) {
+      lines.push(`${indent}--paseo-${spec.lineHeight.name}: ${values[spec.lineHeight.name]};`);
+    }
   }
   return lines;
 }
@@ -426,6 +550,8 @@ const HEADER = `/*
  *   @import "tailwindcss";
  *   @import "paseo-antd-themes/tailwind.css";
  * 之后 bg-primary、text-secondary、border-split、bg-surface-1 等工具类直接可用。
+ * 字号与阴影用增量命名（text-body / text-heading / shadow-raised / shadow-overlay），
+ * 不覆盖 Tailwind 自带的 text-sm / shadow-md 刻度。
  * 注意 --font-sans 与 --radius-* 覆盖了 Tailwind 的默认刻度（字体用 paseo 的系统栈，圆角对齐 12px 形态）。
  */`;
 
@@ -446,6 +572,9 @@ export function generateTailwindCss(
         ? `  --color-${spec.name}: var(--paseo-${spec.name});`
         : `  ${spec.themeKey}: var(--paseo-${spec.name});`,
     );
+    if (spec.lineHeight !== undefined) {
+      themeLines.push(`  ${spec.lineHeight.themeKey}: var(--paseo-${spec.lineHeight.name});`);
+    }
   }
   themeLines.push("}");
 
@@ -518,15 +647,23 @@ export function generateTailwindVarsCss(
 export function generateTailwindPreset(): string {
   const colors: Record<string, string> = {};
   const fontFamily: Record<string, string> = {};
+  const fontSize: Record<string, [string, { lineHeight: string }]> = {};
+  const boxShadow: Record<string, string> = {};
   const borderRadius: Record<string, string> = {};
   for (const spec of TAILWIND_VARIABLES) {
     const value = `var(--paseo-${spec.name})`;
     if (spec.kind === "color") colors[spec.name] = value;
-    else if (spec.name === "font") fontFamily.sans = value;
+    else if (spec.kind === "fontSize" && spec.lineHeight !== undefined) {
+      fontSize[spec.name.replace(/^text-/, "")] = [
+        value,
+        { lineHeight: `var(--paseo-${spec.lineHeight.name})` },
+      ];
+    } else if (spec.name === "font") fontFamily.sans = value;
     else if (spec.name === "font-mono") fontFamily.mono = value;
+    else if (spec.name.startsWith("shadow-")) boxShadow[spec.name.slice("shadow-".length)] = value;
     else if (spec.name.startsWith("radius-")) borderRadius[spec.name.slice("radius-".length)] = value;
   }
-  const preset = { theme: { extend: { colors, fontFamily, borderRadius } } };
+  const preset = { theme: { extend: { colors, fontFamily, fontSize, boxShadow, borderRadius } } };
   return [
     "/**",
     " * 由 scripts/gen-tailwind.ts 生成（pnpm gen:tailwind），请勿手改。",

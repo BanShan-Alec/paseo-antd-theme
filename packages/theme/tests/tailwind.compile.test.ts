@@ -34,9 +34,14 @@ beforeAll(async () => {
   });
   const candidates: string[] = ["font-sans", "font-mono", "rounded-xs", "rounded-sm", "rounded-md", "rounded-lg"];
   for (const spec of TAILWIND_VARIABLES) {
-    if (spec.kind !== "color") continue;
-    candidates.push(`bg-${spec.name}`);
-    candidates.push(colorUtilityClass("text", spec.name));
+    if (spec.kind === "color") {
+      candidates.push(`bg-${spec.name}`);
+      candidates.push(colorUtilityClass("text", spec.name));
+    } else if (spec.kind === "fontSize") {
+      candidates.push(`text-${spec.name.slice("text-".length)}`);
+    } else if (spec.name.startsWith("shadow-")) {
+      candidates.push(`shadow-${spec.name.slice("shadow-".length)}`);
+    }
   }
   // Class-strategy dark variant: the stylesheet supports both, but Tailwind's
   // default is the media strategy, so the class variant needs the same
@@ -82,6 +87,22 @@ describe("tailwind v4 compiles the stylesheet into working utilities", () => {
   it("generates the font and radius scale utilities", () => {
     for (const cls of ["font-sans", "font-mono", "rounded-xs", "rounded-sm", "rounded-md", "rounded-lg"]) {
       expect(css).toContain(`.${cls} {`);
+    }
+  });
+
+  it("compiles the type scale with its paired line-height, and the two shadows", () => {
+    for (const size of ["caption", "body", "subtitle", "heading-sm", "heading", "heading-lg", "display"]) {
+      expect(css, `.text-${size} was not generated`).toContain(`.text-${size} {`);
+    }
+    // `@theme inline` passes the pair through as variable references, so the
+    // utility carries the rhythm without duplicating the value. Tailwind wraps
+    // the line-height in `var(--tw-leading, …)` so `leading-*` can still win.
+    const bodyBlock = css.slice(css.indexOf(".text-body {"), css.indexOf(".text-body {") + 240);
+    expect(bodyBlock).toContain("font-size: var(--paseo-text-body);");
+    expect(bodyBlock).toContain("line-height:");
+    expect(bodyBlock).toContain("var(--paseo-text-body-lh)");
+    for (const shadow of ["raised", "overlay"]) {
+      expect(css, `.shadow-${shadow} was not generated`).toContain(`.shadow-${shadow} {`);
     }
   });
 });

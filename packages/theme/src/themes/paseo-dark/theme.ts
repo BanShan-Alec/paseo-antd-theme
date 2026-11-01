@@ -291,6 +291,11 @@ const darkDerivedTokens: readonly DerivedToken[] = [
 
 function darkExtras(): AntdToken {
   return extras({
+    // The dark scheme has no paper-on-paper header or card-hover band: both
+    // resolve to the panel tone. They are real tokens (not a Tailwind-only
+    // substitution) so `useToken()` and the utilities agree.
+    surfaceHead: paseoDark.surface1,
+    surfaceHover: paseoDark.surface1,
     surface0: paseoDark.surface0,
     surface1: paseoDark.surface1,
     surface2: paseoDark.surface2,

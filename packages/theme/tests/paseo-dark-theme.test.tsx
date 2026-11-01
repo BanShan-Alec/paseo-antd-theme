@@ -197,6 +197,13 @@ describe("paseo custom tokens", () => {
     expect(dark.paseoSelection).toBe(paseoDark.selection);
   });
 
+  it("defines the paper-on-paper slots as real tokens, not a Tailwind-only substitution", () => {
+    // The dark scheme has no header band or card-hover fill of its own; both
+    // resolve to the panel tone. useToken() and the utilities must agree.
+    expect(dark.paseoSurfaceHead).toBe(paseoDark.surface1);
+    expect(dark.paseoSurfaceHover).toBe(paseoDark.surface1);
+  });
+
   it("passes all ten host identity colors through", () => {
     for (const [name, value] of Object.entries(paseoIdentityDark)) {
       const key = `paseoIdentity${name[0].toUpperCase()}${name.slice(1)}`;
@@ -217,12 +224,13 @@ describe("dark contrast", () => {
     expect(contrast(paseoDark.foreground, paseoDark.surface1)).toBeGreaterThanOrEqual(4.5);
   });
 
-  it("tertiary text clears 4.5:1 on the page and card surfaces", () => {
+  it("tertiary text clears 4.5:1 on the page and card, and the 4.0 floor on popovers", () => {
     // Raised from paseo's #717574 (3.72:1) because tier 3 is where timestamps
-    // and meta text live. Popovers (surface2) are intentionally not covered —
-    // the design spec sends elevated meta text to tier 2.
+    // and meta text live. The popover slot sits at 4.37:1, allowed under the
+    // tier-3 floor of 4.0 — a deliberate, documented deviation from WCAG AA.
     expect(contrast(paseoDark.foregroundExtraMuted, paseoDark.surface0)).toBeGreaterThanOrEqual(4.5);
     expect(contrast(paseoDark.foregroundExtraMuted, paseoDark.surface1)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(paseoDark.foregroundExtraMuted, paseoDark.surface2)).toBeGreaterThanOrEqual(4);
   });
 
   it("identity ink clears 4.5:1 on every identity fill", () => {

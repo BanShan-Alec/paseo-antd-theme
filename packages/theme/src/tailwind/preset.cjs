@@ -115,6 +115,54 @@ module.exports = {
         "sans": "var(--paseo-font)",
         "mono": "var(--paseo-font-mono)"
       },
+      "fontSize": {
+        "caption": [
+          "var(--paseo-text-caption)",
+          {
+            "lineHeight": "var(--paseo-text-caption-lh)"
+          }
+        ],
+        "body": [
+          "var(--paseo-text-body)",
+          {
+            "lineHeight": "var(--paseo-text-body-lh)"
+          }
+        ],
+        "subtitle": [
+          "var(--paseo-text-subtitle)",
+          {
+            "lineHeight": "var(--paseo-text-subtitle-lh)"
+          }
+        ],
+        "heading-sm": [
+          "var(--paseo-text-heading-sm)",
+          {
+            "lineHeight": "var(--paseo-text-heading-sm-lh)"
+          }
+        ],
+        "heading": [
+          "var(--paseo-text-heading)",
+          {
+            "lineHeight": "var(--paseo-text-heading-lh)"
+          }
+        ],
+        "heading-lg": [
+          "var(--paseo-text-heading-lg)",
+          {
+            "lineHeight": "var(--paseo-text-heading-lg-lh)"
+          }
+        ],
+        "display": [
+          "var(--paseo-text-display)",
+          {
+            "lineHeight": "var(--paseo-text-display-lh)"
+          }
+        ]
+      },
+      "boxShadow": {
+        "raised": "var(--paseo-shadow-raised)",
+        "overlay": "var(--paseo-shadow-overlay)"
+      },
       "borderRadius": {
         "xs": "var(--paseo-radius-xs)",
         "sm": "var(--paseo-radius-sm)",

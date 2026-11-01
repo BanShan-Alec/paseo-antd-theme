@@ -43,9 +43,11 @@ function expectCompleteBlocks(css: string) {
   const mediaBlock = css.slice(mediaStart, classStart);
   const classBlock = css.slice(classStart);
   for (const spec of TAILWIND_VARIABLES) {
-    const name = `--paseo-${spec.name}`;
-    expect(mediaBlock).toContain(`${name}:`);
-    expect(classBlock).toContain(`${name}:`);
+    const names = [spec.name, ...(spec.lineHeight ? [spec.lineHeight.name] : [])];
+    for (const name of names) {
+      expect(mediaBlock).toContain(`--paseo-${name}:`);
+      expect(classBlock).toContain(`--paseo-${name}:`);
+    }
   }
 }
 
@@ -65,6 +67,9 @@ describe("tailwind css artifact", () => {
     const lightBlock = css.slice(rootStart, mediaStart);
     for (const spec of TAILWIND_VARIABLES) {
       expect(lightBlock).toContain(`--paseo-${spec.name}:`);
+      if (spec.lineHeight !== undefined) {
+        expect(lightBlock).toContain(`--paseo-${spec.lineHeight.name}:`);
+      }
     }
   });
 
@@ -76,7 +81,41 @@ describe("tailwind css artifact", () => {
       } else {
         expect(themeBlock).toContain(`${spec.themeKey}: var(--paseo-${spec.name});`);
       }
+      if (spec.lineHeight !== undefined) {
+        expect(themeBlock).toContain(
+          `${spec.lineHeight.themeKey}: var(--paseo-${spec.lineHeight.name});`,
+        );
+      }
     }
+  });
+
+  it("carries the type scale with paired line-heights, in px", () => {
+    const { light, dark } = resolveTailwindVariables();
+    expect(light["text-caption"]).toBe("12px");
+    expect(light["text-caption-lh"]).toBe("20px");
+    expect(light["text-body"]).toBe("14px");
+    expect(light["text-body-lh"]).toBe("22px");
+    expect(light["text-subtitle"]).toBe("16px");
+    expect(light["text-subtitle-lh"]).toBe("24px");
+    expect(light["text-heading-sm"]).toBe("20px");
+    expect(light["text-heading-sm-lh"]).toBe("28px");
+    expect(light["text-heading"]).toBe("24px");
+    expect(light["text-heading-lh"]).toBe("32px");
+    expect(light["text-heading-lg"]).toBe("30px");
+    expect(light["text-heading-lg-lh"]).toBe("38px");
+    expect(light["text-display"]).toBe("38px");
+    expect(light["text-display-lh"]).toBe("46px");
+    // The type scale is scheme-independent; only colors move between slots.
+    expect(dark["text-body"]).toBe(light["text-body"]);
+  });
+
+  it("exports the two shadows a page author may apply, and not the internal one", () => {
+    const { light, dark } = resolveTailwindVariables();
+    expect(light["shadow-raised"]).toContain("rgba(31, 30, 29");
+    expect(light["shadow-overlay"]).toContain("rgba(31, 30, 29");
+    expect(dark["shadow-raised"]).toContain("rgba(0, 0, 0");
+    // `boxShadow` stays antd-internal — it must not become a utility.
+    expect(TAILWIND_VARIABLES.some((spec) => spec.source === "boxShadow")).toBe(false);
   });
 
   it("maps light to Claude Light and dark to Paseo Dark", () => {
@@ -138,8 +177,8 @@ describe("tailwind v3 artifacts", () => {
     expectCompleteBlocks(varsCss);
   });
 
-  it("preset maps every color and the font/radius scales to --paseo-*", () => {
-    const mod: { exports: { theme: { extend: Record<string, Record<string, string>> } } } = {
+  it("preset maps every color, the type/shadow/font/radius scales to --paseo-*", () => {
+    const mod: { exports: { theme: { extend: Record<string, Record<string, unknown>> } } } = {
       exports: { theme: { extend: {} } },
     };
     new Function("module", "exports", preset)(mod, mod.exports);
@@ -152,6 +191,25 @@ describe("tailwind v3 artifacts", () => {
     expect(extend.fontFamily).toEqual({
       sans: "var(--paseo-font)",
       mono: "var(--paseo-font-mono)",
+    });
+    expect(extend.fontSize).toEqual({
+      caption: ["var(--paseo-text-caption)", { lineHeight: "var(--paseo-text-caption-lh)" }],
+      body: ["var(--paseo-text-body)", { lineHeight: "var(--paseo-text-body-lh)" }],
+      subtitle: ["var(--paseo-text-subtitle)", { lineHeight: "var(--paseo-text-subtitle-lh)" }],
+      "heading-sm": [
+        "var(--paseo-text-heading-sm)",
+        { lineHeight: "var(--paseo-text-heading-sm-lh)" },
+      ],
+      heading: ["var(--paseo-text-heading)", { lineHeight: "var(--paseo-text-heading-lh)" }],
+      "heading-lg": [
+        "var(--paseo-text-heading-lg)",
+        { lineHeight: "var(--paseo-text-heading-lg-lh)" },
+      ],
+      display: ["var(--paseo-text-display)", { lineHeight: "var(--paseo-text-display-lh)" }],
+    });
+    expect(extend.boxShadow).toEqual({
+      raised: "var(--paseo-shadow-raised)",
+      overlay: "var(--paseo-shadow-overlay)",
     });
     expect(extend.borderRadius).toEqual({
       xs: "var(--paseo-radius-xs)",

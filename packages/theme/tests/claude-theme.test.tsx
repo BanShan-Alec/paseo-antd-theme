@@ -191,6 +191,15 @@ describe("claude light contrast", () => {
     }
   });
 
+  it("keeps tier 3's 4.0 floor on the header band and the row-hover fill", () => {
+    // Tier 3 promises 4.5 on the page and container, 4.0 everywhere else it
+    // may appear. A row hover is a state change, not a tier change, so the
+    // text keeps its tier while the fill moves under it.
+    expect(contrast(claudeLight.foregroundExtraMuted, claudeLight.surfaceHead)).toBeGreaterThanOrEqual(4);
+    expect(contrast(claudeLight.foregroundExtraMuted, claudeLight.surfaceHover)).toBeGreaterThanOrEqual(4);
+    expect(contrast(claudeLight.foregroundExtraMuted, claudeLight.surface2)).toBeGreaterThanOrEqual(4);
+  });
+
   it("keeps the text ladder separated: tier 2 a clear step above tier 3, tier 4 sunken", () => {
     // The sampled #5C5C54 sat only 0.63 apart from tier 3 and read as the
     // same level; the deepened secondary restores a visible step.

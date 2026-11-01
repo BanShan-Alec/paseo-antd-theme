@@ -10,6 +10,8 @@
  *   @import "tailwindcss";
  *   @import "paseo-antd-themes/tailwind.css";
  * 之后 bg-primary、text-secondary、border-split、bg-surface-1 等工具类直接可用。
+ * 字号与阴影用增量命名（text-body / text-heading / shadow-raised / shadow-overlay），
+ * 不覆盖 Tailwind 自带的 text-sm / shadow-md 刻度。
  * 注意 --font-sans 与 --radius-* 覆盖了 Tailwind 的默认刻度（字体用 paseo 的系统栈，圆角对齐 12px 形态）。
  */
 
@@ -130,6 +132,24 @@
   /* 字体 */
   --font-sans: var(--paseo-font);
   --font-mono: var(--paseo-font-mono);
+  /* 字号 */
+  --text-caption: var(--paseo-text-caption);
+  --text-caption--line-height: var(--paseo-text-caption-lh);
+  --text-body: var(--paseo-text-body);
+  --text-body--line-height: var(--paseo-text-body-lh);
+  --text-subtitle: var(--paseo-text-subtitle);
+  --text-subtitle--line-height: var(--paseo-text-subtitle-lh);
+  --text-heading-sm: var(--paseo-text-heading-sm);
+  --text-heading-sm--line-height: var(--paseo-text-heading-sm-lh);
+  --text-heading: var(--paseo-text-heading);
+  --text-heading--line-height: var(--paseo-text-heading-lh);
+  --text-heading-lg: var(--paseo-text-heading-lg);
+  --text-heading-lg--line-height: var(--paseo-text-heading-lg-lh);
+  --text-display: var(--paseo-text-display);
+  --text-display--line-height: var(--paseo-text-display-lh);
+  /* 阴影 */
+  --shadow-raised: var(--paseo-shadow-raised);
+  --shadow-overlay: var(--paseo-shadow-overlay);
   /* 圆角 */
   --radius-xs: var(--paseo-radius-xs);
   --radius-sm: var(--paseo-radius-sm);
@@ -254,6 +274,24 @@
   /* 字体 */
   --paseo-font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --paseo-font-mono: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  /* 字号 */
+  --paseo-text-caption: 12px;
+  --paseo-text-caption-lh: 20px;
+  --paseo-text-body: 14px;
+  --paseo-text-body-lh: 22px;
+  --paseo-text-subtitle: 16px;
+  --paseo-text-subtitle-lh: 24px;
+  --paseo-text-heading-sm: 20px;
+  --paseo-text-heading-sm-lh: 28px;
+  --paseo-text-heading: 24px;
+  --paseo-text-heading-lh: 32px;
+  --paseo-text-heading-lg: 30px;
+  --paseo-text-heading-lg-lh: 38px;
+  --paseo-text-display: 38px;
+  --paseo-text-display-lh: 46px;
+  /* 阴影 */
+  --paseo-shadow-raised: 0 1px 2px rgba(31, 30, 29, 0.04), 0 4px 12px rgba(31, 30, 29, 0.06);
+  --paseo-shadow-overlay: 0 6px 16px rgba(31, 30, 29, 0.10), 0 2px 6px rgba(31, 30, 29, 0.05);
   /* 圆角 */
   --paseo-radius-xs: 4px;
   --paseo-radius-sm: 8px;
@@ -379,6 +417,24 @@
     /* 字体 */
     --paseo-font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     --paseo-font-mono: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    /* 字号 */
+    --paseo-text-caption: 12px;
+    --paseo-text-caption-lh: 20px;
+    --paseo-text-body: 14px;
+    --paseo-text-body-lh: 22px;
+    --paseo-text-subtitle: 16px;
+    --paseo-text-subtitle-lh: 24px;
+    --paseo-text-heading-sm: 20px;
+    --paseo-text-heading-sm-lh: 28px;
+    --paseo-text-heading: 24px;
+    --paseo-text-heading-lh: 32px;
+    --paseo-text-heading-lg: 30px;
+    --paseo-text-heading-lg-lh: 38px;
+    --paseo-text-display: 38px;
+    --paseo-text-display-lh: 46px;
+    /* 阴影 */
+    --paseo-shadow-raised: 0 1px 2px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.10);
+    --paseo-shadow-overlay: 0 4px 10px rgba(0, 0, 0, 0.18), 0 1px 3px rgba(0, 0, 0, 0.10);
     /* 圆角 */
     --paseo-radius-xs: 4px;
     --paseo-radius-sm: 8px;
@@ -504,6 +560,24 @@
   /* 字体 */
   --paseo-font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --paseo-font-mono: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  /* 字号 */
+  --paseo-text-caption: 12px;
+  --paseo-text-caption-lh: 20px;
+  --paseo-text-body: 14px;
+  --paseo-text-body-lh: 22px;
+  --paseo-text-subtitle: 16px;
+  --paseo-text-subtitle-lh: 24px;
+  --paseo-text-heading-sm: 20px;
+  --paseo-text-heading-sm-lh: 28px;
+  --paseo-text-heading: 24px;
+  --paseo-text-heading-lh: 32px;
+  --paseo-text-heading-lg: 30px;
+  --paseo-text-heading-lg-lh: 38px;
+  --paseo-text-display: 38px;
+  --paseo-text-display-lh: 46px;
+  /* 阴影 */
+  --paseo-shadow-raised: 0 1px 2px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.10);
+  --paseo-shadow-overlay: 0 4px 10px rgba(0, 0, 0, 0.18), 0 1px 3px rgba(0, 0, 0, 0.10);
   /* 圆角 */
   --paseo-radius-xs: 4px;
   --paseo-radius-sm: 8px;
