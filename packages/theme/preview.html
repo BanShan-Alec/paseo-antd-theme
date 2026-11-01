@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>paseo-antd-themes · 设计规范一页版</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 32px 24px 64px;
+    background: #F0EDE2;
+    color: #3C3C2C;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5714;
+  }
+  .page { max-width: 1180px; margin: 0 auto; }
+  .page > header { margin-bottom: 24px; }
+  h1 { margin: 0 0 4px; font-size: 24px; line-height: 32px; font-weight: 600; }
+  .meta { margin: 0; color: #55554B; font-size: 12px; line-height: 20px; }
+  .scheme {
+    margin: 0 0 24px;
+    padding: 24px;
+    border: 1px solid;
+    border-radius: 12px;
+  }
+  .scheme-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+  .scheme-head h2 { margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; }
+  .tag { padding: 2px 8px; border-radius: 8px; font-size: 12px; line-height: 20px; }
+  .group { margin-top: 24px; }
+  .group h3 { margin: 0 0 8px; font-size: 16px; line-height: 24px; font-weight: 600; }
+  .hint { margin: 0 0 12px; font-size: 12px; line-height: 20px; opacity: .8; }
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 12px; }
+  .swatch { margin: 0; }
+  .chip {
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, .08);
+    font-size: 12px;
+  }
+  .chip.radius { background: currentColor; opacity: .18; }
+  figcaption { display: flex; flex-direction: column; margin-top: 4px; font-size: 12px; line-height: 16px; }
+  figcaption code { font-family: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; }
+  figcaption span { opacity: .7; }
+  .contrast { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .contrast th, .contrast td { padding: 6px 8px; border: 1px solid currentColor; text-align: left; }
+  .contrast th { font-weight: 600; }
+  .contrast td { font-family: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; }
+  .contrast td.ok::after { content: " ✓"; }
+  .contrast td.bad { font-weight: 700; }
+  .contrast td.bad::after { content: " ✕"; }
+  .contrast td.na { opacity: .55; }
+  .type-row { display: flex; gap: 16px; align-items: baseline; padding: 6px 0; border-top: 1px solid rgba(128, 128, 128, .25); }
+  .type-meta { display: flex; flex-direction: column; width: 160px; flex: none; font-size: 12px; line-height: 16px; }
+  .type-meta code { font-family: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; }
+  .type-meta span { opacity: .7; }
+  .type-sample { min-width: 0; }
+  .space-row { display: flex; align-items: center; gap: 12px; padding: 3px 0; font-size: 12px; }
+  .space-row code { width: 48px; flex: none; font-family: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; }
+  .space-row span:last-child { opacity: .7; }
+  .bar { display: block; height: 12px; border-radius: 4px; background: #FAF1EB; border: 1px solid #E0C1AF; }
+  @media (max-width: 720px) {
+    body { padding: 16px 12px 32px; }
+    .scheme { padding: 16px; }
+    .type-row { flex-direction: column; gap: 2px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>paseo-antd-themes · 设计规范一页版</h1>
+    <p class="meta">由 <code>scripts/gen-preview.ts</code> 从主题配置生成，请勿手改 · 取值与 MAPPING.md / tailwind.css 同源 · 用法规则见 DESIGN.md</p>
+  </header>
+  <section class="scheme scheme-light" style="background:#F0EDE2;color:#3C3C2C;border-color:#DBD9D0">
+    <header class="scheme-head">
+      <h2>Claude Light</h2><span class="tag" style="background:#FFFFFF;color:#55554B">浅色槽 · :root</span>
+    </header>
+    <section class="group"><h3>表面</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:#F0EDE2"></div>
+        <figcaption><code>bg-layout</code><span>#F0EDE2</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#F5F4EC"></div>
+        <figcaption><code>bg-container</code><span>#F5F4EC</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#FFFFFF"></div>
+        <figcaption><code>bg-elevated</code><span>#FFFFFF</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#1F1E1D"></div>
+        <figcaption><code>bg-spotlight</code><span>#1F1E1D</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:rgba(20, 20, 19, 0.45)"></div>
+        <figcaption><code>bg-mask</code><span>rgba(20, 20, 19, 0.45)</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#F0EDE2"></div>
+        <figcaption><code>surface-0</code><span>#F0EDE2</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#F5F4EC"></div>
+        <figcaption><code>surface-1</code><span>#F5F4EC</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#FFFFFF"></div>
+        <figcaption><code>surface-2</code><span>#FFFFFF</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#D7D2C7"></div>
+        <figcaption><code>surface-3</code><span>#D7D2C7</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#D1CCBF"></div>
+        <figcaption><code>surface-4</code><span>#D1CCBF</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#E2E0D6"></div>
+        <figcaption><code>surface-sidebar</code><span>#E2E0D6</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#E0DDD0"></div>
+        <figcaption><code>surface-head</code><span>#E0DDD0</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#DDD9CE"></div>
+        <figcaption><code>surface-hover</code><span>#DDD9CE</span></figcaption>
+      </figure></div></section><section class="group"><h3>文字</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:#F5F4EC;color:#3C3C2C">Aa 正文</div>
+        <figcaption><code>text</code><span>#3C3C2C</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#F5F4EC;color:#55554B">Aa 正文</div>
+        <figcaption><code>text-secondary</code><span>#55554B</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#F5F4EC;color:#65635E">Aa 正文</div>
+        <figcaption><code>text-tertiary</code><span>#65635E</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#F5F4EC;color:#98978F">Aa 正文</div>
+        <figcaption><code>text-quaternary</code><span>#98978F</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#F5F4EC;color:#FFFFFF">Aa 正文</div>
+        <figcaption><code>text-light-solid</code><span>#FFFFFF</span></figcaption>
+      </figure></div></section><section class="group"><h3>主色</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:#BA5B37"></div>
+        <figcaption><code>primary</code><span>#BA5B37</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#943F25"></div>
+        <figcaption><code>primary-hover</code><span>#943F25</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#6E2716"></div>
+        <figcaption><code>primary-active</code><span>#6E2716</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#FAF1EB"></div>
+        <figcaption><code>primary-bg</code><span>#FAF1EB</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#EDE5DF"></div>
+        <figcaption><code>primary-bg-hover</code><span>#EDE5DF</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#E0C1AF"></div>
+        <figcaption><code>primary-border</code><span>#E0C1AF</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#D49E83"></div>
+        <figcaption><code>primary-border-hover</code><span>#D49E83</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#A34E2D"></div>
+        <figcaption><code>primary-text</code><span>#A34E2D</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#7D351D"></div>
+        <figcaption><code>primary-text-hover</code><span>#7D351D</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#571F10"></div>
+        <figcaption><code>primary-text-active</code><span>#571F10</span></figcaption>
+      </figure></div></section><section class="group"><h3>状态色</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:#467650"></div>
+        <figcaption><code>success</code><span>#467650</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#50865c"></div>
+        <figcaption><code>success-hover</code><span>#50865c</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#3a6343"></div>
+        <figcaption><code>success-active</code><span>#3a6343</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#d2f6d8"></div>
+        <figcaption><code>success-bg</code><span>#d2f6d8</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#b8f3c2"></div>
+        <figcaption><code>success-bg-hover</code><span>#b8f3c2</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#92eda5"></div>
+        <figcaption><code>success-border</code><span>#92eda5</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#88de9b"></div>
+        <figcaption><code>success-border-hover</code><span>#88de9b</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#467650"></div>
+        <figcaption><code>success-text</code><span>#467650</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#3e6947"></div>
+        <figcaption><code>success-text-hover</code><span>#3e6947</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#365d3e"></div>
+        <figcaption><code>success-text-active</code><span>#365d3e</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#806340"></div>
+        <figcaption><code>warning</code><span>#806340</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#91714a"></div>
+        <figcaption><code>warning-hover</code><span>#91714a</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#6c5335"></div>
+        <figcaption><code>warning-active</code><span>#6c5335</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#f6e9da"></div>
+        <figcaption><code>warning-bg</code><span>#f6e9da</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#f2dec7"></div>
+        <figcaption><code>warning-bg-hover</code><span>#f2dec7</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#eccfad"></div>
+        <figcaption><code>warning-border</code><span>#eccfad</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#e7c092"></div>
+        <figcaption><code>warning-border-hover</code><span>#e7c092</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#806340"></div>
+        <figcaption><code>warning-text</code><span>#806340</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#725839"></div>
+        <figcaption><code>warning-text-hover</code><span>#725839</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#654e31"></div>
+        <figcaption><code>warning-text-active</code><span>#654e31</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#a14b43"></div>
+        <figcaption><code>error</code><span>#a14b43</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#b7554d"></div>
+        <figcaption><code>error-hover</code><span>#b7554d</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#883e38"></div>
+        <figcaption><code>error-active</code><span>#883e38</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#f6e7e5"></div>
+        <figcaption><code>error-bg</code><span>#f6e7e5</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#f2dbd8"></div>
+        <figcaption><code>error-bg-hover</code><span>#f2dbd8</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#edcbc7"></div>
+        <figcaption><code>error-border</code><span>#edcbc7</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#e7bbb6"></div>
+        <figcaption><code>error-border-hover</code><span>#e7bbb6</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#a14b43"></div>
+        <figcaption><code>error-text</code><span>#a14b43</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#91423c"></div>
+        <figcaption><code>error-text-hover</code><span>#91423c</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#803a34"></div>
+        <figcaption><code>error-text-active</code><span>#803a34</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#436c96"></div>
+        <figcaption><code>info</code><span>#436c96</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#4d7baa"></div>
+        <figcaption><code>info-hover</code><span>#4d7baa</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#375b7e"></div>
+        <figcaption><code>info-active</code><span>#375b7e</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#e3ecf6"></div>
+        <figcaption><code>info-bg</code><span>#e3ecf6</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#d5e3f2"></div>
+        <figcaption><code>info-bg-hover</code><span>#d5e3f2</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#c3d7ec"></div>
+        <figcaption><code>info-border</code><span>#c3d7ec</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#b0cbe6"></div>
+        <figcaption><code>info-border-hover</code><span>#b0cbe6</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#436c96"></div>
+        <figcaption><code>info-text</code><span>#436c96</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#3b6186"></div>
+        <figcaption><code>info-text-hover</code><span>#3b6186</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#345577"></div>
+        <figcaption><code>info-text-active</code><span>#345577</span></figcaption>
+      </figure></div></section><section class="group"><h3>链接</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:#A34E2D"></div>
+        <figcaption><code>link</code><span>#A34E2D</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#7D351D"></div>
+        <figcaption><code>link-hover</code><span>#7D351D</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#571F10"></div>
+        <figcaption><code>link-active</code><span>#571F10</span></figcaption>
+      </figure></div></section><section class="group"><h3>边框与分隔</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:#DBD9D0"></div>
+        <figcaption><code>border</code><span>#DBD9D0</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#E8E6DF"></div>
+        <figcaption><code>border-secondary</code><span>#E8E6DF</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:rgba(28,11,19,0.06)"></div>
+        <figcaption><code>split</code><span>rgba(28,11,19,0.06)</span></figcaption>
+      </figure></div></section><section class="group"><h3>填充</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:#D1CCBF"></div>
+        <figcaption><code>fill</code><span>#D1CCBF</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#D7D2C7"></div>
+        <figcaption><code>fill-secondary</code><span>#D7D2C7</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#DDD9CE"></div>
+        <figcaption><code>fill-tertiary</code><span>#DDD9CE</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#EDEBE0"></div>
+        <figcaption><code>fill-quaternary</code><span>#EDEBE0</span></figcaption>
+      </figure></div></section><section class="group"><h3>控件底色</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:#DDD9CE"></div>
+        <figcaption><code>control-item-bg-hover</code><span>#DDD9CE</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#FAF1EB"></div>
+        <figcaption><code>control-item-bg-active</code><span>#FAF1EB</span></figcaption>
+      </figure></div></section><section class="group"><h3>Diff</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:#c1f4ca"></div>
+        <figcaption><code>diff-addition</code><span>#c1f4ca</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#3e6947"></div>
+        <figcaption><code>diff-addition-text</code><span>#3e6947</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#f3dfdd"></div>
+        <figcaption><code>diff-deletion</code><span>#f3dfdd</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#91423c"></div>
+        <figcaption><code>diff-deletion-text</code><span>#91423c</span></figcaption>
+      </figure></div></section><section class="group"><h3>状态点</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:#467650"></div>
+        <figcaption><code>status-dot-success</code><span>#467650</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#a14b43"></div>
+        <figcaption><code>status-dot-danger</code><span>#a14b43</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#806340"></div>
+        <figcaption><code>status-dot-warning</code><span>#806340</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#436c96"></div>
+        <figcaption><code>status-dot-running</code><span>#436c96</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#774fb3"></div>
+        <figcaption><code>status-merged</code><span>#774fb3</span></figcaption>
+      </figure></div></section><section class="group"><h3>身份色</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:#7a5ac1"></div>
+        <figcaption><code>identity-violet</code><span>#7a5ac1</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#4a7795"></div>
+        <figcaption><code>identity-sky</code><span>#4a7795</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#4c7d6b"></div>
+        <figcaption><code>identity-emerald</code><span>#4c7d6b</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#936646"></div>
+        <figcaption><code>identity-orange</code><span>#936646</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#a84f76"></div>
+        <figcaption><code>identity-pink</code><span>#a84f76</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#6166c1"></div>
+        <figcaption><code>identity-indigo</code><span>#6166c1</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#4c7b7b"></div>
+        <figcaption><code>identity-teal</code><span>#4c7b7b</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#ad5151"></div>
+        <figcaption><code>identity-red</code><span>#ad5151</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#807046"></div>
+        <figcaption><code>identity-amber</code><span>#807046</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#4773ae"></div>
+        <figcaption><code>identity-blue</code><span>#4773ae</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#FFFFFF"></div>
+        <figcaption><code>identity-ink</code><span>#FFFFFF</span></figcaption>
+      </figure></div></section><section class="group"><h3>选区</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:rgba(186, 91, 55, 0.32)"></div>
+        <figcaption><code>selection</code><span>rgba(186, 91, 55, 0.32)</span></figcaption>
+      </figure></div></section>
+    <section class="group"><h3>文字对比度（实测）</h3>
+    <p class="hint">一、二级对所有承载文字的表面 ≥ 4.5；三级对页面底与容器 ≥ 4.5，对其余表面 ≥ 4.0；四级只用于禁用态与占位符。</p>
+    <table class="contrast"><tr><th>文字档位</th><th>页面底</th><th>容器</th><th>浮层</th><th>面板头</th><th>卡片 hover</th></tr><tr><th>一 · 正文</th><td class="ok">9.56</td><td class="ok">10.15</td><td class="ok">11.20</td><td class="ok">8.23</td><td class="ok">7.94</td></tr><tr><th>二 · 次要</th><td class="ok">6.43</td><td class="ok">6.83</td><td class="ok">7.53</td><td class="ok">5.53</td><td class="ok">5.34</td></tr><tr><th>三 · 三级</th><td class="ok">5.12</td><td class="ok">5.44</td><td class="ok">6.00</td><td class="ok">4.41</td><td class="ok">4.25</td></tr><tr><th>四 · 四级</th><td class="na">2.50</td><td class="na">2.66</td><td class="na">2.93</td><td class="na">2.15</td><td class="na">2.08</td></tr></table></section>
+    <section class="group"><h3>圆角与阴影</h3>
+    <p class="hint">圆角只有 12 / 8 / 4 三档；阴影只有「抬起」和「浮层」两级，静止区块不加阴影。</p>
+    <div class="swatches"><figure class="swatch"><div class="chip radius" style="border-radius:4px"></div>
+        <figcaption><code>xs</code><span>4px</span></figcaption></figure><figure class="swatch"><div class="chip radius" style="border-radius:8px"></div>
+        <figcaption><code>sm</code><span>8px</span></figcaption></figure><figure class="swatch"><div class="chip radius" style="border-radius:12px"></div>
+        <figcaption><code>md</code><span>12px</span></figcaption></figure><figure class="swatch"><div class="chip radius" style="border-radius:12px"></div>
+        <figcaption><code>lg</code><span>12px</span></figcaption></figure><figure class="swatch"><div class="chip" style="background:#F5F4EC;box-shadow:0 1px 2px rgba(31, 30, 29, 0.04), 0 4px 12px rgba(31, 30, 29, 0.06)"></div>
+        <figcaption><code>raised</code><span>0 1px 2px rgba(31, 30, 29, 0.04), 0 4px 12px rgba(31, 30, 29, 0.06)</span></figcaption></figure><figure class="swatch"><div class="chip" style="background:#F5F4EC;box-shadow:0 6px 16px rgba(31, 30, 29, 0.10), 0 2px 6px rgba(31, 30, 29, 0.05)"></div>
+        <figcaption><code>overlay</code><span>0 6px 16px rgba(31, 30, 29, 0.10), 0 2px 6px rgba(31, 30, 29, 0.05)</span></figcaption></figure></div></section>
+  </section>
+  <section class="scheme scheme-dark" style="background:#181B1A;color:#fafafa;border-color:#252B2A">
+    <header class="scheme-head">
+      <h2>Paseo Dark</h2><span class="tag" style="background:#272A29;color:#A1A5A4">深色槽 · media / .dark</span>
+    </header>
+    <section class="group"><h3>表面</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:#181B1A"></div>
+        <figcaption><code>bg-layout</code><span>#181B1A</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#1E2120"></div>
+        <figcaption><code>bg-container</code><span>#1E2120</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#272A29"></div>
+        <figcaption><code>bg-elevated</code><span>#272A29</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#272A29"></div>
+        <figcaption><code>bg-spotlight</code><span>#272A29</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:rgba(0, 0, 0, 0.65)"></div>
+        <figcaption><code>bg-mask</code><span>rgba(0, 0, 0, 0.65)</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#181B1A"></div>
+        <figcaption><code>surface-0</code><span>#181B1A</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#1E2120"></div>
+        <figcaption><code>surface-1</code><span>#1E2120</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#272A29"></div>
+        <figcaption><code>surface-2</code><span>#272A29</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#434645"></div>
+        <figcaption><code>surface-3</code><span>#434645</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#595B5B"></div>
+        <figcaption><code>surface-4</code><span>#595B5B</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#141716"></div>
+        <figcaption><code>surface-sidebar</code><span>#141716</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#1E2120"></div>
+        <figcaption><code>surface-head</code><span>#1E2120</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#1E2120"></div>
+        <figcaption><code>surface-hover</code><span>#1E2120</span></figcaption>
+      </figure></div></section><section class="group"><h3>文字</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:#1E2120;color:#fafafa">Aa 正文</div>
+        <figcaption><code>text</code><span>#fafafa</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#1E2120;color:#A1A5A4">Aa 正文</div>
+        <figcaption><code>text-secondary</code><span>#A1A5A4</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#1E2120;color:#8A8E8D">Aa 正文</div>
+        <figcaption><code>text-tertiary</code><span>#8A8E8D</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#1E2120;color:#595B5B">Aa 正文</div>
+        <figcaption><code>text-quaternary</code><span>#595B5B</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#1E2120;color:#fff">Aa 正文</div>
+        <figcaption><code>text-light-solid</code><span>#fff</span></figcaption>
+      </figure></div></section><section class="group"><h3>主色</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:#20744A"></div>
+        <figcaption><code>primary</code><span>#20744A</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#347552"></div>
+        <figcaption><code>primary-hover</code><span>#347552</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#1c5237"></div>
+        <figcaption><code>primary-active</code><span>#1c5237</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#183124"></div>
+        <figcaption><code>primary-bg</code><span>#183124</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#193f2c"></div>
+        <figcaption><code>primary-bg-hover</code><span>#193f2c</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#183124"></div>
+        <figcaption><code>primary-border</code><span>#183124</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#193f2c"></div>
+        <figcaption><code>primary-border-hover</code><span>#193f2c</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#7ccba0"></div>
+        <figcaption><code>primary-text</code><span>#7ccba0</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#ecfaf1"></div>
+        <figcaption><code>primary-text-hover</code><span>#ecfaf1</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#cbdcd2"></div>
+        <figcaption><code>primary-text-active</code><span>#cbdcd2</span></figcaption>
+      </figure></div></section><section class="group"><h3>状态色</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:#6cb17b"></div>
+        <figcaption><code>success</code><span>#6cb17b</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#85ac8c"></div>
+        <figcaption><code>success-hover</code><span>#85ac8c</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#4d7a57"></div>
+        <figcaption><code>success-active</code><span>#4d7a57</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#19201b"></div>
+        <figcaption><code>success-bg</code><span>#19201b</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#223226"></div>
+        <figcaption><code>success-bg-hover</code><span>#223226</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#2e4333"></div>
+        <figcaption><code>success-border</code><span>#2e4333</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#3c5b42"></div>
+        <figcaption><code>success-border-hover</code><span>#3c5b42</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#c4d0c6"></div>
+        <figcaption><code>success-text</code><span>#c4d0c6</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#d1dfd2"></div>
+        <figcaption><code>success-text-hover</code><span>#d1dfd2</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#b3c0b5"></div>
+        <figcaption><code>success-text-active</code><span>#b3c0b5</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#c09664"></div>
+        <figcaption><code>warning</code><span>#c09664</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#baa17f"></div>
+        <figcaption><code>warning-hover</code><span>#baa17f</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#846948"></div>
+        <figcaption><code>warning-active</code><span>#846948</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#221d18"></div>
+        <figcaption><code>warning-bg</code><span>#221d18</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#352c21"></div>
+        <figcaption><code>warning-bg-hover</code><span>#352c21</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#483b2c"></div>
+        <figcaption><code>warning-border</code><span>#483b2c</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#614f38"></div>
+        <figcaption><code>warning-border-hover</code><span>#614f38</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#e0dbd2"></div>
+        <figcaption><code>warning-text</code><span>#e0dbd2</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#eeeae0"></div>
+        <figcaption><code>warning-text-hover</code><span>#eeeae0</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#cfc2ae"></div>
+        <figcaption><code>warning-text-active</code><span>#cfc2ae</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#d8847b"></div>
+        <figcaption><code>error</code><span>#d8847b</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#d1a099"></div>
+        <figcaption><code>error-hover</code><span>#d1a099</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#935d57"></div>
+        <figcaption><code>error-active</code><span>#935d57</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#261b1b"></div>
+        <figcaption><code>error-bg</code><span>#261b1b</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#3c2826"></div>
+        <figcaption><code>error-bg-hover</code><span>#3c2826</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#4f3633"></div>
+        <figcaption><code>error-border</code><span>#4f3633</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#6c4642"></div>
+        <figcaption><code>error-border-hover</code><span>#6c4642</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#f8ece9"></div>
+        <figcaption><code>error-text</code><span>#f8ece9</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#faefec"></div>
+        <figcaption><code>error-text-hover</code><span>#faefec</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#e7d2ce"></div>
+        <figcaption><code>error-text-active</code><span>#e7d2ce</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#5caaf6"></div>
+        <figcaption><code>info</code><span>#5caaf6</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#7cb5e8"></div>
+        <figcaption><code>info-hover</code><span>#7cb5e8</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#4376a7"></div>
+        <figcaption><code>info-active</code><span>#4376a7</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#18202a"></div>
+        <figcaption><code>info-bg</code><span>#18202a</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#203043"></div>
+        <figcaption><code>info-bg-hover</code><span>#203043</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#2a4158"></div>
+        <figcaption><code>info-border</code><span>#2a4158</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#34587a"></div>
+        <figcaption><code>info-border-hover</code><span>#34587a</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#d3e9f8"></div>
+        <figcaption><code>info-text</code><span>#d3e9f8</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#ecf4fa"></div>
+        <figcaption><code>info-text-hover</code><span>#ecf4fa</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#a8d3f3"></div>
+        <figcaption><code>info-text-active</code><span>#a8d3f3</span></figcaption>
+      </figure></div></section><section class="group"><h3>链接</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:#7ccba0"></div>
+        <figcaption><code>link</code><span>#7ccba0</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#deebe3"></div>
+        <figcaption><code>link-hover</code><span>#deebe3</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#cbdcd2"></div>
+        <figcaption><code>link-active</code><span>#cbdcd2</span></figcaption>
+      </figure></div></section><section class="group"><h3>边框与分隔</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:#252B2A"></div>
+        <figcaption><code>border</code><span>#252B2A</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#2F3534"></div>
+        <figcaption><code>border-secondary</code><span>#2F3534</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:rgba(219,255,254,0.09)"></div>
+        <figcaption><code>split</code><span>rgba(219,255,254,0.09)</span></figcaption>
+      </figure></div></section><section class="group"><h3>填充</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:#434645"></div>
+        <figcaption><code>fill</code><span>#434645</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#272A29"></div>
+        <figcaption><code>fill-secondary</code><span>#272A29</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#1E2120"></div>
+        <figcaption><code>fill-tertiary</code><span>#1E2120</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#252B2A"></div>
+        <figcaption><code>fill-quaternary</code><span>#252B2A</span></figcaption>
+      </figure></div></section><section class="group"><h3>控件底色</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:#1E2120"></div>
+        <figcaption><code>control-item-bg-hover</code><span>#1E2120</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#183124"></div>
+        <figcaption><code>control-item-bg-active</code><span>#183124</span></figcaption>
+      </figure></div></section><section class="group"><h3>Diff</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:#32573a"></div>
+        <figcaption><code>diff-addition</code><span>#32573a</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#6cb17b"></div>
+        <figcaption><code>diff-addition-text</code><span>#6cb17b</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#783630"></div>
+        <figcaption><code>diff-deletion</code><span>#783630</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#d8847b"></div>
+        <figcaption><code>diff-deletion-text</code><span>#d8847b</span></figcaption>
+      </figure></div></section><section class="group"><h3>状态点</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:#35c264"></div>
+        <figcaption><code>status-dot-success</code><span>#35c264</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#f7796d"></div>
+        <figcaption><code>status-dot-danger</code><span>#f7796d</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#db932e"></div>
+        <figcaption><code>status-dot-warning</code><span>#db932e</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#5caaf6"></div>
+        <figcaption><code>status-dot-running</code><span>#5caaf6</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#a890d5"></div>
+        <figcaption><code>status-merged</code><span>#a890d5</span></figcaption>
+      </figure></div></section><section class="group"><h3>身份色</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:#a392d5"></div>
+        <figcaption><code>identity-violet</code><span>#a392d5</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#6aa6ce"></div>
+        <figcaption><code>identity-sky</code><span>#6aa6ce</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#6cae96"></div>
+        <figcaption><code>identity-emerald</code><span>#6cae96</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#cc8f64"></div>
+        <figcaption><code>identity-orange</code><span>#cc8f64</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#d87da3"></div>
+        <figcaption><code>identity-pink</code><span>#d87da3</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#9299d5"></div>
+        <figcaption><code>identity-indigo</code><span>#9299d5</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#6cacab"></div>
+        <figcaption><code>identity-teal</code><span>#6cacab</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#d88381"></div>
+        <figcaption><code>identity-red</code><span>#d88381</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#b29d64"></div>
+        <figcaption><code>identity-amber</code><span>#b29d64</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#7ba1d5"></div>
+        <figcaption><code>identity-blue</code><span>#7ba1d5</span></figcaption>
+      </figure><figure class="swatch">
+        <div class="chip" style="background:#1F1E1D"></div>
+        <figcaption><code>identity-ink</code><span>#1F1E1D</span></figcaption>
+      </figure></div></section><section class="group"><h3>选区</h3><div class="swatches"><figure class="swatch">
+        <div class="chip" style="background:rgba(255, 255, 255, 0.2)"></div>
+        <figcaption><code>selection</code><span>rgba(255, 255, 255, 0.2)</span></figcaption>
+      </figure></div></section>
+    <section class="group"><h3>文字对比度（实测）</h3>
+    <p class="hint">一、二级对所有承载文字的表面 ≥ 4.5；三级对页面底与容器 ≥ 4.5，对其余表面 ≥ 4.0；四级只用于禁用态与占位符。</p>
+    <table class="contrast"><tr><th>文字档位</th><th>页面底</th><th>容器</th><th>浮层</th><th>面板头</th><th>卡片 hover</th></tr><tr><th>一 · 正文</th><td class="ok">16.62</td><td class="ok">15.55</td><td class="ok">13.88</td><td class="ok">15.55</td><td class="ok">15.55</td></tr><tr><th>二 · 次要</th><td class="ok">6.97</td><td class="ok">6.52</td><td class="ok">5.82</td><td class="ok">6.52</td><td class="ok">6.52</td></tr><tr><th>三 · 三级</th><td class="ok">5.23</td><td class="ok">4.90</td><td class="ok">4.37</td><td class="ok">4.90</td><td class="ok">4.90</td></tr><tr><th>四 · 四级</th><td class="na">2.54</td><td class="na">2.37</td><td class="na">2.12</td><td class="na">2.37</td><td class="na">2.37</td></tr></table></section>
+    <section class="group"><h3>圆角与阴影</h3>
+    <p class="hint">圆角只有 12 / 8 / 4 三档；阴影只有「抬起」和「浮层」两级，静止区块不加阴影。</p>
+    <div class="swatches"><figure class="swatch"><div class="chip radius" style="border-radius:4px"></div>
+        <figcaption><code>xs</code><span>4px</span></figcaption></figure><figure class="swatch"><div class="chip radius" style="border-radius:8px"></div>
+        <figcaption><code>sm</code><span>8px</span></figcaption></figure><figure class="swatch"><div class="chip radius" style="border-radius:12px"></div>
+        <figcaption><code>md</code><span>12px</span></figcaption></figure><figure class="swatch"><div class="chip radius" style="border-radius:12px"></div>
+        <figcaption><code>lg</code><span>12px</span></figcaption></figure><figure class="swatch"><div class="chip" style="background:#1E2120;box-shadow:0 1px 2px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.10)"></div>
+        <figcaption><code>raised</code><span>0 1px 2px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.10)</span></figcaption></figure><figure class="swatch"><div class="chip" style="background:#1E2120;box-shadow:0 4px 10px rgba(0, 0, 0, 0.18), 0 1px 3px rgba(0, 0, 0, 0.10)"></div>
+        <figcaption><code>overlay</code><span>0 4px 10px rgba(0, 0, 0, 0.18), 0 1px 3px rgba(0, 0, 0, 0.10)</span></figcaption></figure></div></section>
+  </section>
+  <section class="scheme" style="background:#F5F4EC;color:#3C3C2C;border-color:#DBD9D0">
+    <section class="group"><h3>字号阶梯（两套方案共用）</h3>
+    <p class="hint">12 / 14 / 16 是 pin 的；16 / 20 / 24 / 30 / 38 由 antd 从 <code>fontSize</code> 派生。行高随字号派生，不要逐块手设。</p>
+    <div class="type-row">
+        <div class="type-meta"><code>caption</code><span>12px / 20px</span></div>
+        <div class="type-sample" style="font-size:12px;line-height:20px">设计规范 · caption</div>
+      </div><div class="type-row">
+        <div class="type-meta"><code>body</code><span>14px / 22px</span></div>
+        <div class="type-sample" style="font-size:14px;line-height:22px">设计规范 · body</div>
+      </div><div class="type-row">
+        <div class="type-meta"><code>subtitle</code><span>16px / 24px</span></div>
+        <div class="type-sample" style="font-size:16px;line-height:24px">设计规范 · subtitle</div>
+      </div><div class="type-row">
+        <div class="type-meta"><code>heading-sm</code><span>20px / 28px</span></div>
+        <div class="type-sample" style="font-size:20px;line-height:28px">设计规范 · heading-sm</div>
+      </div><div class="type-row">
+        <div class="type-meta"><code>heading</code><span>24px / 32px</span></div>
+        <div class="type-sample" style="font-size:24px;line-height:32px">设计规范 · heading</div>
+      </div><div class="type-row">
+        <div class="type-meta"><code>heading-lg</code><span>30px / 38px</span></div>
+        <div class="type-sample" style="font-size:30px;line-height:38px">设计规范 · heading-lg</div>
+      </div><div class="type-row">
+        <div class="type-meta"><code>display</code><span>38px / 46px</span></div>
+        <div class="type-sample" style="font-size:38px;line-height:46px">设计规范 · display</div>
+      </div></section>
+    <section class="group"><h3>间距刻度（4px 栅格）</h3>
+    <p class="hint">工作档位是 8 / 12 / 16；4 只给图标与文字的贴合间距，20 以上只给区块之间与页面留白。组外间距必须大于组内间距。</p>
+    <div class="space-row"><code>XXS</code><span class="bar" style="width:4px"></span><span>4px</span></div><div class="space-row"><code>XS</code><span class="bar" style="width:8px"></span><span>8px</span></div><div class="space-row"><code>SM</code><span class="bar" style="width:12px"></span><span>12px</span></div><div class="space-row"><code>base</code><span class="bar" style="width:16px"></span><span>16px</span></div><div class="space-row"><code>MD</code><span class="bar" style="width:20px"></span><span>20px</span></div><div class="space-row"><code>LG</code><span class="bar" style="width:24px"></span><span>24px</span></div><div class="space-row"><code>XL</code><span class="bar" style="width:32px"></span><span>32px</span></div><div class="space-row"><code>XXL</code><span class="bar" style="width:48px"></span><span>48px</span></div></section>
+  </section>
+</div>
+</body>
+</html>

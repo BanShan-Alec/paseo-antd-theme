@@ -4,7 +4,7 @@ Monorepo for the **Paseo Dark** / **Claude Light** themes for Ant Design v6.
 
 | Path | What lives there |
 | --- | --- |
-| `packages/theme` | The published `paseo-antd-themes` package: themes, `PaseoThemeProvider`, Tailwind export, `DESIGN.md` / `MAPPING.md` |
+| `packages/theme` | The published `paseo-antd-themes` package: themes, `PaseoThemeProvider`, Tailwind export, `DESIGN.md` / `MAPPING.md` / `preview.html` |
 | `packages/demo` | Vite demo that consumes the **built** package |
 | `docs/` | Blog posts and palette material — repo-level content, not published |
 
@@ -17,6 +17,9 @@ pnpm build      # theme + demo (topological order)
 pnpm typecheck
 pnpm test
 pnpm verify:package   # npm pack + publint + attw, run from packages/theme
+pnpm gen:tailwind     # regenerate theme.css / vars.css / preset.cjs
+pnpm gen:mapping      # regenerate MAPPING.md
+pnpm gen:preview      # regenerate preview.html (one-page spec sheet)
 ```
 
 The demo imports `paseo-antd-themes` through its published entry points — themes,

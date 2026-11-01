@@ -46,6 +46,7 @@
     "README.md",
     "DESIGN.md",
     "MAPPING.md",
+    "preview.html",
     "LICENSE",
     "docs"
   ],
@@ -58,6 +59,7 @@
     "build:lib": "vite build --config vite.config.lib.ts && node scripts/fix-dts-extensions.mjs",
     "gen:tailwind": "vite-node scripts/gen-tailwind.ts",
     "gen:mapping": "vite-node scripts/dump-mapping.ts",
+    "gen:preview": "vite-node scripts/gen-preview.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

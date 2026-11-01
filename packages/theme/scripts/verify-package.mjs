@@ -53,6 +53,7 @@ try {
     "README.md",
     "DESIGN.md",
     "MAPPING.md",
+    "preview.html",
     "LICENSE",
     "docs/paseo-dark.png",
     "docs/claude-light.png",
