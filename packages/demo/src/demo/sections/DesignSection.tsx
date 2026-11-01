@@ -39,7 +39,7 @@ export function DesignSection() {
   return (
     <>
       <div className="mb-3 text-xs text-text-tertiary">
-        本页内容即仓库根的 DESIGN.md，随 npm 包一起发布。
+        本页内容即 packages/theme/DESIGN.md，随 npm 包一起发布；配色与刻度总览见包内的 preview.html。
       </div>
       <div className="doc" dangerouslySetInnerHTML={{ __html: html }} />
     </>

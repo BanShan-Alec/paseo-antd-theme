@@ -2,7 +2,7 @@
 
 **Paseo Dark**、**Claude Light** 两套完整主题，加上 **antd 原生亮/暗**，填进一个亮色槽位和一个暗色槽位，自由搭配（例如 antd 原生亮 + Paseo 暗）。共享同一套 token 管线、字体度量和组件级行为。
 
-> **快速预览**：在线 demo 部署在 GitHub Pages —— [https://banshan-alec.github.io/paseo-antd-theme/](https://banshan-alec.github.io/paseo-antd-theme/)，顶部切换器选配对（Antd 原生 / Claude + Paseo / 混搭），侧边栏底部用图标切换亮色 / 暗色 / 跟随系统（默认跟随系统）。
+> **快速预览**：在线 demo 部署在 GitHub Pages —— [https://banshan-alec.github.io/paseo-antd-theme/](https://banshan-alec.github.io/paseo-antd-theme/)，顶部切换器选配对（Antd 原生 / Claude + Paseo / 混搭），侧边栏底部用图标切换亮色 / 暗色 / 跟随系统（默认跟随系统）。不想开 demo 时，安装后直接打开包内的 `preview.html`，一页看完两套配色的色板、字阶、间距、阴影与实测对比度。
 
 ## 安装
 
@@ -17,6 +17,20 @@ npm install paseo-antd-themes
 - `react-dom >= 18`
 
 ## 使用
+
+### 先选入口
+
+| 你的场景 | 用什么 | 看哪节 |
+| --- | --- | --- |
+| React + antd，要完整形态与组件行为 | `PaseoThemeProvider` | 下文「PaseoThemeProvider（推荐）」 |
+| 只用主题、不想换 Provider | 裸 `ThemeConfig` + antd 的 `ConfigProvider` | 下文「裸主题配置」 |
+| 换品牌色 / 改单个 token | `extendTheme` | 下文「从一个内置主题扩展」 |
+| 只要那个 spinner | `PaseoLoadingIcon` | 下文「单独使用 PaseoLoadingIcon」 |
+| Tailwind v4，不装 antd | `paseo-antd-themes/tailwind.css` | 下文「Tailwind v4」 |
+| Tailwind v3 | `tailwind-vars.css` + `tailwind-preset` | 下文「Tailwind v3」 |
+| antd 与 Tailwind 混用 | 上一层 `StyleProvider layer` | 下文「Tailwind v4 + antd v6」 |
+| 不用 Tailwind（Vue / 纯 CSS / CSS-in-JS） | `var(--paseo-*)` | 下文「不用 Tailwind」 |
+| 同一页切换多套配对 | `generateTailwindVariables` | 下文「Tailwind v3」里的「多主题」 |
 
 ### PaseoThemeProvider（推荐）
 
@@ -145,25 +159,37 @@ import { antdDarkTheme, antdLightTheme, paseoDarkTheme } from "paseo-antd-themes
 @import "paseo-antd-themes/tailwind.css";
 ```
 
-之后 `bg-primary`、`text-primary-hover`、`bg-surface-1`、`bg-text-secondary`、`border-split`、`font-sans`、`rounded-md` 等工具类直接可用。完整变量清单见 [MAPPING.md](./MAPPING.md) 的「Tailwind 变量映射」一节。
+之后 `bg-primary`、`text-primary-hover`、`bg-surface-1`、`bg-text-secondary`、`border-split`、`font-sans`、`rounded-md`、`text-body`、`shadow-overlay` 等工具类直接可用。完整变量清单见 [MAPPING.md](./MAPPING.md) 的「Tailwind 变量映射」一节。
 
 一张卡片就能看清 token 的搭配关系——surface 配 border、文字走 text 阶梯、按钮用 primary：
 
 ```tsx
 <div className="rounded-md border border-border bg-bg-container p-4">
   <div className="flex items-center justify-between">
-    <span className="text-sm text-text-secondary">构建 #128</span>
-    <span className="flex items-center gap-1.5 text-xs text-text-tertiary">
+    <span className="text-body text-text-secondary">构建 #128</span>
+    <span className="flex items-center gap-1.5 text-caption text-text-tertiary">
       <span className="size-1.5 rounded-full bg-status-dot-success" />
       通过
     </span>
   </div>
   <p className="mt-2 text-text">feat: 新增 diff 统计</p>
-  <button className="mt-3 rounded-sm bg-primary px-3 py-1.5 text-sm text-text-light-solid hover:bg-primary-hover">
+  <button className="mt-3 rounded-sm bg-primary px-3 py-1.5 text-body text-text-light-solid hover:bg-primary-hover">
     查看详情
   </button>
 </div>
 ```
+
+字阶和阴影也走同一套系统：字号类自带配对行高（`text-body` = 14px / 22px），阴影只有「抬起」和「浮层」两级：
+
+```tsx
+<h2 className="text-heading">Agent 运行记录</h2>   {/* 24px / 32px */}
+
+<div className="rounded-lg bg-surface-2 p-4 shadow-overlay">
+  浮层内容
+</div>
+```
+
+`shadow-raised` 是 hoverable 卡片与默认按钮悬停时的那一层，`shadow-overlay` 给真正浮在页面上的层（Dropdown / Modal / Popover / Notification）；静止的区块不加阴影，靠表面色和边框分层。
 
 ### Tailwind v3（preset + 变量表）
 
@@ -192,9 +218,42 @@ module.exports = {
 preset 里每个 utility 的值都是 `var(--paseo-*)`，所以：
 
 - 单主题：`tailwind-vars.css` 提供 `:root` / `.dark` 两套值，切明暗不需要重新构建。
-- 多主题（同一页面在不同配对之间切换）：不要用 `tailwind-vars.css`，改用包根导出的 `generateTailwindVariables(theme)`，为每套主题各生成一份变量块并挂到不同选择器上（`[data-pair="…"][data-scheme="…"]`）。demo 就是这么做的，切换配对时工具类会跟着变。
+- 多主题（同一页面在不同配对之间切换）：不要用 `tailwind-vars.css`，改用包根导出的 `generateTailwindVariables(theme)`，为每套主题各生成一份变量块并挂到不同选择器上。它只返回「变量名 → 值」，与 v3 / v4 无关；demo 就是用它在 6 个 `[data-pair][data-scheme]` 作用域之间切换。
 
-常用类一行速查：`bg-surface-1`（纸感卡片底）、`border-split`（分隔线）、`font-mono`（等宽）、`rounded-md`（12px 圆角）。
+多主题的生成脚本（构建期跑一次，产物当普通 CSS 引入）：
+
+```ts
+// scripts/theme-scopes.ts
+import { writeFileSync } from "node:fs";
+import {
+  antdDarkTheme,
+  antdLightTheme,
+  claudeLightTheme,
+  generateTailwindVariables,
+  paseoDarkTheme,
+  type ThemeConfig,
+} from "paseo-antd-themes";
+
+const scopes: Record<string, { light: ThemeConfig; dark: ThemeConfig }> = {
+  "claude-paseo": { light: claudeLightTheme, dark: paseoDarkTheme },
+  "antd-antd": { light: antdLightTheme, dark: antdDarkTheme },
+};
+
+const blocks = Object.entries(scopes).flatMap(([pair, slots]) =>
+  (["light", "dark"] as const).map((scheme) => {
+    const body = Object.entries(generateTailwindVariables(slots[scheme]))
+      .map(([name, value]) => `  --paseo-${name}: ${value};`)
+      .join("\n");
+    return `[data-pair="${pair}"][data-scheme="${scheme}"] {\n${body}\n}`;
+  }),
+);
+
+writeFileSync("src/theme-scopes.css", blocks.join("\n\n"));
+```
+
+作用域要挂在 `<html>` 上（`<html data-pair="claude-paseo" data-scheme="dark">`）。挂在内层容器上时，antd 通过 portal 渲染到 `body` 的弹层读不到这批变量。
+
+常用类一行速查：`bg-surface-1`（纸感卡片底）、`border-split`（分隔线）、`font-mono`（等宽）、`rounded-md`（12px 圆角）、`text-body`（14/22 正文）、`shadow-overlay`（浮层阴影）。
 
 暗色下不写 `dark:` 的类会随 `--paseo-*` 变量自动换色；需要浅深用不同 token 时用 `dark:` 变体：
 
@@ -208,10 +267,13 @@ preset 里每个 utility 的值都是 `var(--paseo-*)`，所以：
 
 一个已知别扭点：文字阶梯的键是 `text` / `text-secondary` / `text-tertiary` / `text-quaternary`（沿用 antd 的 `colorText*` 命名），而 Tailwind 的 `text-<x>` 颜色类解析到 `--color-<x>`，所以当颜色用要写 **`text-text-secondary`**、`bg-text-secondary`（键名以 `text-` 开头导致的重复）。若介意，可在项目里加 `@theme { --color-foreground: var(--paseo-text); --color-foreground-secondary: var(--paseo-text-secondary); … }` 起别名，无需改包。
 
-两点有意覆盖，需要回退默认刻度时自行在项目里重定义：
+三点有意覆盖，需要回退默认刻度时自行在项目里重定义：
 
 - `--font-sans` / `--font-mono` 采用 paseo 的系统字体栈（与 antd 主题一致）；
-- `--radius-xs/sm/md/lg` 对齐主题的 4/8/12/12px 圆角形态。
+- `--radius-xs/sm/md/lg` 对齐主题的 4/8/12/12px 圆角形态；
+- 字号与阴影是**增量命名**，不覆盖 Tailwind 自带刻度：`--text-caption/body/subtitle/heading-sm/heading/heading-lg/display`（各带 `--line-height`）与 `--shadow-raised/overlay`。
+
+  两套字号刻度并存，**字号相同、行高不同**：Tailwind 的 `text-sm` 是 14px/20px，本包的 `text-body` 是 14px/22px；`text-xs` 是 12px/16px，`text-caption` 是 12px/20px。本包的字阶对齐 antd 组件的行高（同一屏里 Tailwind 文字和 antd 文字不会一行高一行矮），Tailwind 默认刻度则与生态里已有的写法一致。两套都能用，但**同一屏不要混用**。最大一档同理：`text-4xl` 仍是 36px，主题的 38px 叫 `text-display`。
 
 重新生成（本仓库）：`npm run gen:tailwind`（产物 `src/tailwind/theme.css` 已提交，改动主题后需要重新生成；测试会校验新鲜度）。
 
@@ -273,16 +335,60 @@ import { PaseoThemeProvider } from "paseo-antd-themes";
 
 想系统理解新版概念与覆盖方式，见博客《[从 antd v4 + Tailwind v3 到 antd v6 + Tailwind v4（上）：先搞懂概念，再学会覆盖](https://github.com/BanShan-Alec/paseo-antd-theme/blob/master/docs/antd-v6-tailwind-v4-part1-concepts-and-overrides.md)》。如果你必须留在 Tailwind v3，见《[antd v6 + Tailwind v3 最佳实践：不开 layer，用构建期 token 同步](https://github.com/BanShan-Alec/paseo-antd-theme/blob/master/docs/antd-v6-tailwind-v3-best-practices.md)》。
 
+### 不用 Tailwind（纯 CSS / CSS-in-JS / 其他框架）
+
+`tailwind-vars.css` 本身是一张纯 CSS 自定义属性表：不依赖 Tailwind，也不依赖 antd。任何能读 CSS 变量的地方都能用——Vue / Svelte / 手写 CSS / CSS-in-JS 都行：
+
+```css
+@import "paseo-antd-themes/tailwind-vars.css";
+
+.card {
+  background: var(--paseo-surface-1);
+  color: var(--paseo-text);
+  border: 1px solid var(--paseo-border);
+  border-radius: var(--paseo-radius-md);
+  padding: 16px;
+}
+```
+
+- 变量命名：antd token 去 `color` 前缀转 kebab（`colorPrimary` → `--paseo-primary`），自定义 token 同理（`paseoSurface0` → `--paseo-surface-0`）。
+- 浅色写在 `:root`，深色同时写在 `@media (prefers-color-scheme: dark)` 与 `.dark`，两套策略都不用改这段 CSS。
+- 字号与行高成对给出（`--paseo-text-body` / `--paseo-text-body-lh`）；完整清单与两套配色的取值见 [MAPPING.md](./MAPPING.md)，一页式色板见 `preview.html`。
+- 这张表只负责让非 antd 的标记拿到同一批色值；antd 组件本身仍然要 React——antd 没有其他框架的官方版本。
+
 ## Exports
 
-整个包只有两个入口：
+入口分两类：**JS / CSS 入口**和**随包文档**。
 
 | 入口 | 导出 |
 | --- | --- |
-| `paseo-antd-themes` | `PaseoThemeProvider`、`PaseoLoadingIcon`、`claudeLightTheme`、`paseoDarkTheme`、`antdLightTheme`、`antdDarkTheme`、`extendTheme`、`generateTailwindCss`（构建期），以及 `PaseoThemeProviderProps`、`PaseoBehaviors`、`PaseoThemeMode`、`PaseoThemeSlots`、`ThemeExtension`、`TailwindThemePair` 类型 |
+| `paseo-antd-themes` | `PaseoThemeProvider`、`PaseoLoadingIcon`、`claudeLightTheme`、`paseoDarkTheme`、`antdLightTheme`、`antdDarkTheme`、`extendTheme`、`generateTailwindCss` / `generateTailwindVarsCss` / `generateTailwindPreset` / `generateTailwindVariables`（构建期）、`hexLuminance`，以及 `CLAUDE_LIGHT_TOKEN_MAPPING`、`PASEO_DARK_TOKEN_MAPPING`、`CLAUDE_LIGHT_DERIVED_TOKENS`、`PASEO_DERIVED_TOKENS`（带 provenance 的 token 映射表，供文档、色板与测试使用）。类型：`PaseoThemeProviderProps`、`PaseoBehaviors`、`PaseoThemeMode`、`PaseoThemeSlots`、`ThemeExtension`、`TailwindThemePair`、`TailwindVariable`、`TokenMapping`、`DerivedToken` |
 | `paseo-antd-themes/tailwind.css` | Tailwind v4 样式表（浅色 `:root` + 深色 media/`.dark`，含 `@theme inline`） |
+| `paseo-antd-themes/tailwind-vars.css` | 框架中立的变量表：纯 CSS 自定义属性，v3 preset 与任何手写 CSS 都能用 |
+| `paseo-antd-themes/tailwind-preset` | Tailwind v3 preset（CJS，供 `tailwind.config.js` 引入） |
+| `paseo-antd-themes/DESIGN.md` / `MAPPING.md` | 用法规范 / 逐 token 取值 |
+| `node_modules/paseo-antd-themes/preview.html` | 一页式规格页（色板、字阶、间距、阴影、圆角）。随包发布的静态文件，直接打开即可；因为不是模块，没有登记在 `exports` 里 |
 
-裸 token 表、token 映射、字体算法、Tailwind 变量推导等实现细节不对外导出；具体取值看 [MAPPING.md](./MAPPING.md)，每个 token 该怎么用看 [DESIGN.md](./DESIGN.md)。
+`package.json` 的 `exports` 里另有 `./package.json` 自身。实现细节（`claudeLight` / `paseoDark` 裸 token 对象、字体算法、变量推导逻辑）不对外导出；对外的是上面那张带 provenance 的映射表。具体取值看 [MAPPING.md](./MAPPING.md)，每个 token 该怎么用看 [DESIGN.md](./DESIGN.md)，配色与刻度总览看 `preview.html`。
+
+**给工具用的两个导出**：`CLAUDE_LIGHT_TOKEN_MAPPING` / `PASEO_DARK_TOKEN_MAPPING`（以及两套 `*_DERIVED_TOKENS`）是带 provenance 的映射表，`hexLuminance` 是 WCAG 相对亮度。两者合起来可以在消费者侧复刻本包的对比度检查——比如换过主色之后自检一下：
+
+```ts
+import { hexLuminance, CLAUDE_LIGHT_TOKEN_MAPPING } from "paseo-antd-themes";
+
+const valueOf = (token: string) =>
+  String(CLAUDE_LIGHT_TOKEN_MAPPING.find((row) => row.antdToken === token)!.value);
+
+const ratio = (a: string, b: string) => {
+  const [hi, lo] = [hexLuminance(a), hexLuminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+};
+
+// 浅色三级文字对卡片底：5.44
+ratio(valueOf("colorTextTertiary"), valueOf("colorBgContainer"));
+```
+
+`hexLuminance` 只接受 3 / 6 位 hex；主题里的 `rgba()` 值（遮罩、选区）需要先自行合成到底色上再算。
 
 ## 四套内置主题
 
@@ -324,16 +430,20 @@ import { PaseoThemeProvider } from "paseo-antd-themes";
 npm install
 npm run typecheck
 npm test
-npm run gen:tailwind   # 重生成 src/tailwind/theme.css（主题色值变更后）
+npm run gen:tailwind   # 重生成 src/tailwind/{theme.css,vars.css,preset.cjs}
+npm run gen:mapping    # 重生成 MAPPING.md
+npm run gen:preview    # 重生成 preview.html（一页式规格页）
 npm run build:lib      # 发布产物：ESM + d.ts（相对导入自动补 .js）+ tailwind.css
 npm run build:demo     # demo，输出到 dist-demo/
 npm run verify:package # 打包并校验：exports、CJS 残留、声明解析、publint、attw (esm-only)
 npm run pack:dry       # npm pack --dry-run（触发 prepack 构建）
 ```
 
+三个生成物（`tailwind.*`、`MAPPING.md`、`preview.html`）都随仓库提交，测试会校验它们与生成器一致——改了主题或变量表就重跑对应的 `gen:*`，不要手改。
+
 `npm publish` 流程：`prepublishOnly`（typecheck + test）→ `prepack`（build:lib + verify:package）→ 发布。发布前需要先 `npm login`。
 
-每个 token 的用途与使用规范见 [DESIGN.md](./DESIGN.md)；完整取值与取色来源见 [MAPPING.md](./MAPPING.md)。
+每个 token 的用途与使用规范见 [DESIGN.md](./DESIGN.md)；完整取值与取色来源见 [MAPPING.md](./MAPPING.md)；配色与刻度总览见 `preview.html`。
 
 ## License
 
