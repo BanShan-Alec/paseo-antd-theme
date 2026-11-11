@@ -161,7 +161,7 @@ import { antdDarkTheme, antdLightTheme, paseoDarkTheme } from "paseo-antd-themes
 
 之后 `bg-primary`、`text-primary-hover`、`bg-surface-1`、`bg-text-secondary`、`border-split`、`font-sans`、`rounded-md`、`text-body`、`shadow-overlay` 等工具类直接可用。完整变量清单见 [MAPPING.md](./MAPPING.md) 的「Tailwind 变量映射」一节。
 
-一张卡片就能看清 token 的搭配关系——surface 配 border、文字走 text 阶梯、按钮用 primary：
+一张卡片就能看清 token 的搭配关系——surface 配 border、文字走 text 阶梯、按钮用 primary。Claude Light 的按钮 hover 沿用 Ant Design 亮色算法，白字对比度低于 4.5:1；这是短暂 hover 态的有意例外，静止填充不要复用：
 
 ```tsx
 <div className="rounded-md border border-border bg-bg-container p-4">

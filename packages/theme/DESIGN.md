@@ -24,7 +24,7 @@
 三条总规则，其余章节都是它们的展开：
 
 1. **颜色只从 token 取**：antd 组件吃 `ConfigProvider` 主题，自己的标记吃 Tailwind 类（`bg-surface-1`、`text-text-secondary`）或 `theme.useToken()`。任何 `#` 开头的字面量都是 bug。
-2. **文字对比度按档位设门槛**（见[对比度门槛](#对比度门槛)），非文字图形 ≥ 3:1。内置值已按此校准，并由 `tests/` 里的断言守住；改色必须重新过线。
+2. **文字对比度按档位设门槛**（见[对比度门槛](#对比度门槛)），非文字图形 ≥ 3:1。内置值由 `tests/` 里的断言守住；唯一例外是 Claude Light 主按钮 hover，按用户选择保留 Ant Design 亮色算法原值（白字 3.25:1），只用于瞬时 hover。
 3. **一屏只有一个主操作**。主色是稀缺资源，不是强调色。
 
 ### 形态是怎么定下来的
@@ -110,7 +110,7 @@
 
 | 角色 | antd token | Tailwind | 用途 |
 | --- | --- | --- | --- |
-| 主色 | `colorPrimary` 族 | 背景 / 图形：`bg-primary`、`border-primary`、`*-primary-hover/active`；文字：`text-primary-text` | 主按钮、勾选类控件的选中态、焦点环、进度 |
+| 主色 | `colorPrimary` 族 | `bg-primary`、`border-primary`、`*-primary-hover/active` | 主按钮、勾选类控件的选中态、焦点环、进度 |
 | 链接 | `colorLink` 族 | `text-link`、`text-link-hover`、`text-link-active` | 只有可点击的文字链接，与主色同族 |
 | success | `colorSuccess` 族 | `bg-success`、`text-success` 等 | 成功、通过、新增 |
 | warning | `colorWarning` 族 | `bg-warning` 等 | 警告、待处理 |
@@ -120,10 +120,10 @@
 规则：
 
 - **主色只给「这一屏最重要的那个操作」**。一个区块出现两个 primary 按钮，就等于没有主操作。视图切换、导航选中优先用表面色（`surface-3` / `surface-4`、`surface-2`）；只有带勾选语义的控件（Radio、Checkbox、Select 选项）才用主色。
-- **彩色文字用 `text-primary-text`**（`colorPrimaryText`）。`text-primary` 是主色本身：浅色下当正文只有 3.86:1，深色 3.02:1，只适合大字号或图标、进度这类图形。
-- **链接与主色同族**：浅色取主色的 text 档（4.86 / 5.17），深色取更亮的绿（9.01 / 8.43）。整套界面只有一个品牌色相，不再单独引入链接蓝；hover / active 都在同族内加深。
+- **主色文字用 text-safe clay，不是主色填充**：Claude Light 的 `colorPrimaryText` 取 `accentText`，并与 `colorLink` 共用安全文字阶；主色 hover / active 等交互填充则跟随 antd 亮色算法。普通正文仍用中性色阶。
+- **链接保持 text-safe clay**：浅色 `colorLink` 取 `accentText`（4.86 / 5.17），深色取更亮的绿（9.01 / 8.43）。不另引链接蓝；hover / active 仍在各自色族内变化。
 - **语义色只表达状态**，不做装饰背景、不做分类标签的默认色。分类、图表请用身份色（见下）。
-- 主按钮上的白字是逐档校准过的：浅色 4.53:1、深色 5.74:1，刚好过线。**不要用更浅的品牌装饰色做按钮底色**——那个颜色不在本包 token 里，白字只有 3.1:1。
+- 主按钮白字：主色底浅色 4.53:1、深色 5.74:1；Active 也保持可读。Claude Light 的 Hover 按钮底沿用 Ant Design 亮色算法，白字 3.25:1，是唯一的瞬时 hover 对比度例外；不可把这个 hover 色当作静止按钮底或其他承载文字的填充色。
 - **深色的语义色是文字档，不是填充档**：`colorError` 在深色是浅红（作文字 6.20:1），antd 的实心 danger 按钮会直接拿它当底色；主题为此把标签改成墨字（`Button.dangerColor`，5.95:1），但视觉上仍是一块浅色。确认类操作优先用描边 danger。
 - 需要换品牌色时用 `extendTheme` 覆盖 `colorPrimary`，它会重建整个十槽色族；直接嵌套 `ConfigProvider theme={{ token: { colorPrimary } }}` 会被算法覆盖，详见 README 的「从一个内置主题扩展」。
 
@@ -311,8 +311,8 @@
 | 浮层加 `shadow-overlay` | 给静态卡片叠两层阴影 |
 | `text-body` / `text-heading` 走字阶 | `text-lg`（18）这种系统里没有的字号 |
 | `extendTheme(base, { token })` 换色 | 嵌套 `ConfigProvider` 传 seed token |
-| 用 `text-link` 做链接（主色系 text 档） | 用主色填充色当链接（浅色仅 3.86:1） |
-| 彩色文字用 `text-primary-text` | 用 `text-primary` 写正文 |
+| 用 `text-link` 做链接（text-safe clay） | 用主色填充色当链接（浅色仅 3.86:1） |
+| 正文用中性色阶；链接用 `text-link` | 把 `text-primary-text` / `text-primary` 当正文色 |
 | 深色 diff 行内高亮用正文色 | 深色把 `diff-*-text` 铺回行底（3.2:1） |
 | 换槽位配对后重新生成 `tailwind.css` / `tailwind-vars.css` | 混搭主题 + 默认 Tailwind 产物（工具类会与组件色漂移） |
 
