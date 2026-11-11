@@ -1,7 +1,8 @@
 /**
  * Paseo design tokens, copied verbatim from the paseo monorepo
  * (https://github.com/getpaseo/paseo) so this integration has no dependency
- * on React Native. Provenance:
+ * on React Native. Theme-only semantic aliases are marked at their definitions.
+ * Provenance:
  *   dark surfaces / accents / status — packages/app/src/styles/theme.ts:460-477
  *     (paseoDarkColors, "Paseo — subtle teal-green tint (default)")
  *   status dots  — packages/app/src/styles/theme.ts:204-218
@@ -44,6 +45,8 @@ export const paseoDark = {
   statusDotDanger: "#f7796d",
   statusDotWarning: "#db932e",
   statusDotRunning: "#5caaf6",
+  // Theme-only Info base: a darker, more chromatic blue than the running signal.
+  statusInfo: "#2b76b8",
 
   // Diff line fills. Paseo's original pair (#4ade80 / #ef4444) was tuned as
   // pure signal, but white line text on it only reaches 1.67:1 / 3.61:1.

@@ -12,8 +12,8 @@ Diff 行底已降饱和为 `#32573a` / `#783630`。
 | `colorPrimary` | seed | `#20744A` | `accent` |  |
 | `colorSuccess` | seed | `#6cb17b` | `statusSuccess` |  |
 | `colorWarning` | seed | `#c09664` | `statusWarning` |  |
-| `colorError` | seed | `#d8847b` | `statusDanger` |  |
-| `colorInfo` | seed | `#5caaf6` | `statusDotRunning` | paseo has no info color; its 'running' blue is the only informational hue in the system. |
+| `colorError` | seed | `#c64f43` | `destructive` |  |
+| `colorInfo` | seed | `#2b76b8` | `statusInfo` | Theme-only darker, more chromatic Info blue; status dots retain their separate bright signal token. |
 | `colorTextBase` | seed | `#fafafa` | `foreground` |  |
 | `colorBgBase` | seed | `#181B1A` | `surface0` |  |
 | `colorLink` | seed | `#7ccba0` | `accentBright` | Pinned to accentBright by the wrapped algorithm; the seed keeps derivation in-family. |
@@ -34,11 +34,11 @@ Diff 行底已降饱和为 `#32573a` / `#783630`。
 | `colorTextSecondary` | map | `#A1A5A4` | `foregroundMuted` |  |
 | `colorTextTertiary` | map | `#8A8E8D` | `foregroundExtraMuted` |  |
 | `colorTextQuaternary` | map | `#595B5B` | `surface4` |  |
-| `colorBorder` | map | `#252B2A` | `border` |  |
+| `colorBorder` | map | `#434645` | `surface3` | Raised to the stock dark outline level so default and dashed controls read clearly. |
 | `colorBorderSecondary` | map | `#2F3534` | `borderAccent` |  |
 | `colorFill` | map | `#434645` | `surface3` |  |
 | `colorFillSecondary` | map | `#272A29` | `surface2` |  |
-| `colorFillTertiary` | map | `#1E2120` | `surface1` | Also feeds controlItemBgHover — paseo's sidebar hover step. |
+| `colorFillTertiary` | map | `rgba(255, 255, 255, 0.08)` | `antd dark fill` | Keeps text-button hover and disabled control fills visible across surfaces. |
 | `colorFillQuaternary` | map | `#252B2A` | `border` | Zebra stripes and disabled outlines sit at hairline weight. |
 | `controlHeightSM` | map | `32` | `spacing.8` |  |
 | `controlHeightLG` | map | `48` | `spacing.12` |  |
@@ -134,8 +134,8 @@ hover/active/色阶槽位）。`theme.css` 是 Tailwind v4 导出（`@theme inli
 | `--paseo-primary-active` | `#6E2716` | `#1c5237` | `colorPrimaryActive` |  |
 | `--paseo-primary-bg` | `#FAF1EB` | `#183124` | `colorPrimaryBg` |  |
 | `--paseo-primary-bg-hover` | `#EDE5DF` | `#193f2c` | `colorPrimaryBgHover` |  |
-| `--paseo-primary-border` | `#E0C1AF` | `#183124` | `colorPrimaryBorder` |  |
-| `--paseo-primary-border-hover` | `#D49E83` | `#193f2c` | `colorPrimaryBorderHover` |  |
+| `--paseo-primary-border` | `#E0C1AF` | `#518668` | `colorPrimaryBorder` |  |
+| `--paseo-primary-border-hover` | `#D49E83` | `#347552` | `colorPrimaryBorderHover` |  |
 | `--paseo-primary-text` | `#A34E2D` | `#7ccba0` | `colorPrimaryText` |  |
 | `--paseo-primary-text-hover` | `#7D351D` | `#ecfaf1` | `colorPrimaryTextHover` |  |
 | `--paseo-primary-text-active` | `#571F10` | `#cbdcd2` | `colorPrimaryTextActive` |  |
@@ -159,26 +159,26 @@ hover/active/色阶槽位）。`theme.css` 是 Tailwind v4 导出（`@theme inli
 | `--paseo-warning-text` | `#806340` | `#e0dbd2` | `colorWarningText` |  |
 | `--paseo-warning-text-hover` | `#725839` | `#eeeae0` | `colorWarningTextHover` |  |
 | `--paseo-warning-text-active` | `#654e31` | `#cfc2ae` | `colorWarningTextActive` |  |
-| `--paseo-error` | `#a14b43` | `#d8847b` | `colorError` |  |
-| `--paseo-error-hover` | `#b7554d` | `#d1a099` | `colorErrorHover` |  |
-| `--paseo-error-active` | `#883e38` | `#935d57` | `colorErrorActive` |  |
-| `--paseo-error-bg` | `#f6e7e5` | `#261b1b` | `colorErrorBg` |  |
-| `--paseo-error-bg-hover` | `#f2dbd8` | `#3c2826` | `colorErrorBgHover` |  |
-| `--paseo-error-border` | `#edcbc7` | `#4f3633` | `colorErrorBorder` |  |
-| `--paseo-error-border-hover` | `#e7bbb6` | `#6c4642` | `colorErrorBorderHover` |  |
-| `--paseo-error-text` | `#a14b43` | `#f8ece9` | `colorErrorText` |  |
-| `--paseo-error-text-hover` | `#91423c` | `#faefec` | `colorErrorTextHover` |  |
-| `--paseo-error-text-active` | `#803a34` | `#e7d2ce` | `colorErrorTextActive` |  |
-| `--paseo-info` | `#436c96` | `#5caaf6` | `colorInfo` |  |
-| `--paseo-info-hover` | `#4d7baa` | `#7cb5e8` | `colorInfoHover` |  |
-| `--paseo-info-active` | `#375b7e` | `#4376a7` | `colorInfoActive` |  |
-| `--paseo-info-bg` | `#e3ecf6` | `#18202a` | `colorInfoBg` |  |
-| `--paseo-info-bg-hover` | `#d5e3f2` | `#203043` | `colorInfoBgHover` |  |
-| `--paseo-info-border` | `#c3d7ec` | `#2a4158` | `colorInfoBorder` |  |
-| `--paseo-info-border-hover` | `#b0cbe6` | `#34587a` | `colorInfoBorderHover` |  |
-| `--paseo-info-text` | `#436c96` | `#d3e9f8` | `colorInfoText` |  |
-| `--paseo-info-text-hover` | `#3b6186` | `#ecf4fa` | `colorInfoTextHover` |  |
-| `--paseo-info-text-active` | `#345577` | `#a8d3f3` | `colorInfoTextActive` |  |
+| `--paseo-error` | `#a14b43` | `#c64f43` | `colorError` |  |
+| `--paseo-error-hover` | `#b7554d` | `#c16c61` | `colorErrorHover` |  |
+| `--paseo-error-active` | `#883e38` | `#883a33` | `colorErrorActive` |  |
+| `--paseo-error-bg` | `#f6e7e5` | `#231615` | `colorErrorBg` |  |
+| `--paseo-error-bg-hover` | `#f2dbd8` | `#371c1b` | `colorErrorBgHover` |  |
+| `--paseo-error-border` | `#edcbc7` | `#492622` | `colorErrorBorder` |  |
+| `--paseo-error-border-hover` | `#e7bbb6` | `#642f29` | `colorErrorBorderHover` |  |
+| `--paseo-error-text` | `#a14b43` | `#e6c5bd` | `colorErrorText` |  |
+| `--paseo-error-text-hover` | `#91423c` | `#f5eae7` | `colorErrorTextHover` |  |
+| `--paseo-error-text-active` | `#803a34` | `#d6998e` | `colorErrorTextActive` |  |
+| `--paseo-info` | `#436c96` | `#2b76b8` | `colorInfo` |  |
+| `--paseo-info-hover` | `#4d7baa` | `#4784b2` | `colorInfoHover` |  |
+| `--paseo-info-active` | `#375b7e` | `#23547f` | `colorInfoActive` |  |
+| `--paseo-info-bg` | `#e3ecf6` | `#131a21` | `colorInfoBg` |  |
+| `--paseo-info-bg-hover` | `#d5e3f2` | `#162533` | `colorInfoBgHover` |  |
+| `--paseo-info-border` | `#c3d7ec` | `#1b3145` | `colorInfoBorder` |  |
+| `--paseo-info-border-hover` | `#b0cbe6` | `#1e405e` | `colorInfoBorderHover` |  |
+| `--paseo-info-text` | `#436c96` | `#9ac1d8` | `colorInfoText` |  |
+| `--paseo-info-text-hover` | `#3b6186` | `#c8dce7` | `colorInfoTextHover` |  |
+| `--paseo-info-text-active` | `#345577` | `#6ea3c8` | `colorInfoTextActive` |  |
 | `--paseo-bg-layout` | `#F0EDE2` | `#181B1A` | `colorBgLayout` |  |
 | `--paseo-bg-container` | `#F5F4EC` | `#1E2120` | `colorBgContainer` |  |
 | `--paseo-bg-elevated` | `#FFFFFF` | `#272A29` | `colorBgElevated` |  |
@@ -197,18 +197,18 @@ hover/active/色阶槽位）。`theme.css` 是 Tailwind v4 导出（`@theme inli
 | `--paseo-text-tertiary` | `#65635E` | `#8A8E8D` | `colorTextTertiary` |  |
 | `--paseo-text-quaternary` | `#98978F` | `#595B5B` | `colorTextQuaternary` |  |
 | `--paseo-text-light-solid` | `#FFFFFF` | `#fff` | `colorTextLightSolid` |  |
-| `--paseo-border` | `#DBD9D0` | `#252B2A` | `colorBorder` |  |
+| `--paseo-border` | `#DBD9D0` | `#434645` | `colorBorder` |  |
 | `--paseo-border-secondary` | `#E8E6DF` | `#2F3534` | `colorBorderSecondary` |  |
 | `--paseo-split` | `rgba(28,11,19,0.06)` | `rgba(219,255,254,0.09)` | `colorSplit` |  |
 | `--paseo-fill` | `#D1CCBF` | `#434645` | `colorFill` |  |
 | `--paseo-fill-secondary` | `#D7D2C7` | `#272A29` | `colorFillSecondary` |  |
-| `--paseo-fill-tertiary` | `#DDD9CE` | `#1E2120` | `colorFillTertiary` |  |
+| `--paseo-fill-tertiary` | `#DDD9CE` | `rgba(255, 255, 255, 0.08)` | `colorFillTertiary` |  |
 | `--paseo-fill-quaternary` | `#EDEBE0` | `#252B2A` | `colorFillQuaternary` |  |
-| `--paseo-control-item-bg-hover` | `#DDD9CE` | `#1E2120` | `controlItemBgHover` |  |
+| `--paseo-control-item-bg-hover` | `#DDD9CE` | `rgba(255, 255, 255, 0.08)` | `controlItemBgHover` |  |
 | `--paseo-control-item-bg-active` | `#FAF1EB` | `#183124` | `controlItemBgActive` |  |
 | `--paseo-link` | `#A34E2D` | `#7ccba0` | `colorLink` |  |
-| `--paseo-link-hover` | `#7D351D` | `#deebe3` | `colorLinkHover` |  |
-| `--paseo-link-active` | `#571F10` | `#cbdcd2` | `colorLinkActive` |  |
+| `--paseo-link-hover` | `#7D351D` | `#588b6f` | `colorLinkHover` |  |
+| `--paseo-link-active` | `#571F10` | `#436653` | `colorLinkActive` |  |
 | `--paseo-diff-addition` | `#c1f4ca` | `#32573a` | `paseoDiffAddition` |  |
 | `--paseo-diff-addition-text` | `#3e6947` | `#6cb17b` | `paseoDiffAdditionText` |  |
 | `--paseo-diff-deletion` | `#f3dfdd` | `#783630` | `paseoDiffDeletion` |  |
