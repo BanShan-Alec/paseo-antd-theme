@@ -37,8 +37,8 @@ ${table(FULL_DARK_MAPPING)}
 
 ### Claude 浅色（Claude Light）
 
-Claude 品牌表面 + Claude Code 信号色 + paseo 归一化状态色（OKLCH L*=0.52 / 55% 彩度）。
-主色 clay 的按钮文字为白字（4.53:1）；链接复用主色的 text 档（4.86:1），不再单独引入蓝色。
+Claude 品牌表面 + Ant Design 亮色主色算法 + Claude Code 信号色 + paseo 归一化状态色（OKLCH L*=0.52；常规 55% 彩度，Error 暖鲜红 95%）。
+主色基色的按钮白字为 4.53:1；Hover 沿用 Ant Design 亮色算法原值（白字 3.25:1）；链接继续使用独立的 text-safe clay 色，不引入蓝色。
 
 ${table(CLAUDE_LIGHT_TOKEN_MAPPING)}
 `;

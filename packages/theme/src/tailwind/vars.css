@@ -13,12 +13,12 @@
 :root, :host {
   /* 主色 */
   --paseo-primary: #BA5B37;
-  --paseo-primary-hover: #943F25;
-  --paseo-primary-active: #6E2716;
-  --paseo-primary-bg: #FAF1EB;
-  --paseo-primary-bg-hover: #EDE5DF;
-  --paseo-primary-border: #E0C1AF;
-  --paseo-primary-border-hover: #D49E83;
+  --paseo-primary-hover: #c77c5b;
+  --paseo-primary-active: #943f25;
+  --paseo-primary-bg: #faf1eb;
+  --paseo-primary-bg-hover: #ede5df;
+  --paseo-primary-border: #e0c1af;
+  --paseo-primary-border-hover: #d49e83;
   --paseo-primary-text: #A34E2D;
   --paseo-primary-text-hover: #7D351D;
   --paseo-primary-text-active: #571F10;
@@ -43,16 +43,16 @@
   --paseo-warning-text: #806340;
   --paseo-warning-text-hover: #725839;
   --paseo-warning-text-active: #654e31;
-  --paseo-error: #a14b43;
-  --paseo-error-hover: #b7554d;
-  --paseo-error-active: #883e38;
-  --paseo-error-bg: #f6e7e5;
-  --paseo-error-bg-hover: #f2dbd8;
-  --paseo-error-border: #edcbc7;
-  --paseo-error-border-hover: #e7bbb6;
-  --paseo-error-text: #a14b43;
-  --paseo-error-text-hover: #91423c;
-  --paseo-error-text-active: #803a34;
+  --paseo-error: #c11c0e;
+  --paseo-error-hover: #da2111;
+  --paseo-error-active: #a41509;
+  --paseo-error-bg: #fee5e0;
+  --paseo-error-bg-hover: #fed7d0;
+  --paseo-error-border: #fdc5bb;
+  --paseo-error-border-hover: #fdb2a5;
+  --paseo-error-text: #c11c0e;
+  --paseo-error-text-hover: #ae180b;
+  --paseo-error-text-active: #9a1308;
   --paseo-info: #436c96;
   --paseo-info-hover: #4d7baa;
   --paseo-info-active: #375b7e;
@@ -94,7 +94,7 @@
   --paseo-fill-quaternary: #EDEBE0;
   /* 控件底色 */
   --paseo-control-item-bg-hover: #DDD9CE;
-  --paseo-control-item-bg-active: #FAF1EB;
+  --paseo-control-item-bg-active: #faf1eb;
   /* 链接 */
   --paseo-link: #A34E2D;
   --paseo-link-hover: #7D351D;
@@ -102,11 +102,11 @@
   /* Diff */
   --paseo-diff-addition: #c1f4ca;
   --paseo-diff-addition-text: #3e6947;
-  --paseo-diff-deletion: #f3dfdd;
-  --paseo-diff-deletion-text: #91423c;
+  --paseo-diff-deletion: #f3dfdc;
+  --paseo-diff-deletion-text: #ae180b;
   /* 状态点 */
   --paseo-status-dot-success: #467650;
-  --paseo-status-dot-danger: #a14b43;
+  --paseo-status-dot-danger: #c11c0e;
   --paseo-status-dot-warning: #806340;
   --paseo-status-dot-running: #436c96;
   --paseo-status-merged: #774fb3;

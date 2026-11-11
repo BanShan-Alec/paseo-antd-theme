@@ -14,7 +14,7 @@ const COMPONENT_COVERAGE: { group: string; tokens: string; where: string }[] = [
   { group: "Tabs", tokens: "itemColor / itemSelectedColor / inkBarColor", where: "本页" },
   { group: "Card", tokens: "headerBg", where: "所有卡片" },
   { group: "Alert", tokens: "borderRadius", where: "概览页（补 antd css-var 默认缺失）" },
-  { group: "Input", tokens: "hoverBorderColor / activeBorderColor", where: "概览页表单" },
+  { group: "Input", tokens: "activeBorderColor", where: "概览页表单" },
   { group: "Modal", tokens: "contentBg / headerBg", where: "本页" },
   { group: "Message", tokens: "contentBg", where: "本页" },
   { group: "Notification", tokens: "colorBgElevated", where: "本页" },

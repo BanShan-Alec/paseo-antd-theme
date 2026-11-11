@@ -27,7 +27,7 @@ describe("claude → antd light token mapping", () => {
     expect(light.colorPrimary).toBe("#BA5B37");
     expect(light.colorSuccess).toBe("#467650");
     expect(light.colorWarning).toBe("#806340");
-    expect(light.colorError).toBe("#a14b43");
+    expect(light.colorError).toBe("#c11c0e");
     expect(light.colorInfo).toBe("#436c96");
     expect(light.colorLink).toBe(claudeLight.accentText);
     expect(light.colorText).toBe("#3C3C2C");
@@ -53,15 +53,16 @@ describe("claude → antd light token mapping", () => {
     expect(light.colorBgElevated).toBe(claudeLight.surface2);
   });
 
-  it("derives coherent hover/active states around each pinned base", () => {
-    // Primary solid buttons darken on hover/active so the white label keeps
-    // its contrast; the status families keep the lighter-hover convention.
+  it("uses Ant Design's lighter primary hover and darker active stops", () => {
+    // The primary family follows antd's default light algorithm. Status
+    // families keep the lighter-hover convention as well.
     const primaryBase = light.colorPrimary as string;
     const primaryHover = light.colorPrimaryHover as string;
     const primaryActive = light.colorPrimaryActive as string;
     expect(new Set([primaryBase, primaryHover, primaryActive]).size).toBe(3);
-    expect(luminance(primaryHover)).toBeLessThan(luminance(primaryBase));
-    expect(luminance(primaryActive)).toBeLessThan(luminance(primaryHover));
+    expect(primaryHover).toBe("#c77c5b");
+    expect(luminance(primaryHover)).toBeGreaterThan(luminance(primaryBase));
+    expect(luminance(primaryActive)).toBeLessThan(luminance(primaryBase));
 
     for (const family of ["colorSuccess", "colorWarning", "colorError"]) {
       const base = light[family] as string;
@@ -214,12 +215,14 @@ describe("claude light contrast", () => {
     expect(contrast(claudeLight.foregroundFaint, claudeLight.surface0)).toBeGreaterThanOrEqual(2.2);
   });
 
-  it("uses the sampled claude.ai clay with a white label above 4.5:1", () => {
-    // #BA5B37 is the sampled clay taken one step deeper so white clears 4.5.
+  it("keeps the base and active primary labels readable and uses Ant Design hover", () => {
+    // The transient Ant Design hover stop is intentionally not darkened to
+    // preserve 4.5:1; the sampled base and active stop still clear that floor.
     expect(claudeLight.accent).toBe("#BA5B37");
     expect(claudeLightTheme.components?.Button?.primaryColor).toBe("#FFFFFF");
     expect(contrast("#ffffff", claudeLight.accent)).toBeGreaterThanOrEqual(4.5);
-    expect(contrast("#ffffff", light.colorPrimaryHover as string)).toBeGreaterThanOrEqual(4.5);
+    expect(light.colorPrimaryHover).toBe("#c77c5b");
+    expect(contrast("#ffffff", light.colorPrimaryHover as string)).toBeLessThan(4.5);
     expect(contrast("#ffffff", light.colorPrimaryActive as string)).toBeGreaterThanOrEqual(4.5);
   });
 
@@ -228,9 +231,10 @@ describe("claude light contrast", () => {
     expect(contrast("#ffffff", claudeLight.statusDanger)).toBeGreaterThanOrEqual(4.5);
   });
 
-  it("links reuse the primary text tone and clear 4.5:1", () => {
-    // No separate blue hue: colorLink is the primary family's text slot, so a
-    // link and primary-colored text are the same clay.
+  it("links reuse the text-safe primary clay tone and clear 4.5:1", () => {
+    // Links and primary-colored text both use the safe clay ramp, separate
+    // from Ant Design's lighter primary interaction fill stops.
+    expect(light.colorLink).toBe(claudeLight.accentText);
     expect(light.colorLink).toBe(light.colorPrimaryText);
     for (const key of ["colorLink", "colorLinkHover", "colorLinkActive"] as const) {
       expect(contrast(String(light[key]), claudeLight.surface0), key).toBeGreaterThanOrEqual(4.5);
@@ -238,12 +242,13 @@ describe("claude light contrast", () => {
     }
   });
 
-  it("keeps the primary fill out of body text", () => {
-    // #BA5B37 is a fill: 3.86:1 on the page, fine for graphics and large type
-    // only. Body-size primary text must use colorPrimaryText (#A34E2D).
+  it("keeps primary text on the text-safe clay ramp", () => {
+    // Primary text uses the same safe clay ramp as links; only interaction
+    // fills follow Ant Design's lighter palette slots.
     expect(light.colorPrimaryText).toBe(claudeLight.accentText);
+    expect(light.colorPrimaryTextHover).toBe("#7D351D");
+    expect(contrast(String(light.colorPrimaryText), claudeLight.surface0)).toBeGreaterThanOrEqual(4.5);
     expect(contrast(claudeLight.accent, claudeLight.surface0)).toBeGreaterThanOrEqual(3);
-    expect(contrast(claudeLight.accent, claudeLight.surface0)).toBeLessThan(4.5);
     expect(contrast(claudeLight.accentText, claudeLight.surface0)).toBeGreaterThanOrEqual(4.5);
     expect(contrast(claudeLight.accentText, claudeLight.surface1)).toBeGreaterThanOrEqual(4.5);
   });

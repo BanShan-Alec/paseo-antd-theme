@@ -10,7 +10,7 @@ import {
   type DerivedToken,
   type TokenMapping,
 } from "../../shared/theme";
-import { normalizedLightFamily, type LightFamily } from "../../shared/colors";
+import { normalizedLightFamily } from "../../shared/colors";
 import {
   CLAUDE_LIGHT_STATUS_HUES,
   claudeIdentityInk,
@@ -26,28 +26,15 @@ import { PASEO_FONT_STACK, PASEO_MONO_FONT_STACK } from "../../shared/fonts";
 // antd v6 deletes seed tokens from `theme.token` and derives alias tokens
 // last. Pinning through the algorithm wrapper's return value is the only way
 // the exact Claude hexes survive; the same mechanism the paseo dark theme
-// uses. On top of that, antd's light mapping points `*TextHover` at a lighter
-// ramp slot — for these muted bases that slot drops below 4.5:1, so every
-// text slot is pinned explicitly.
+// uses. Primary interaction slots stay on Ant Design's default light
+// algorithm; text slots stay on the text-safe clay ramp.
 // ---------------------------------------------------------------------------
 
-const primaryPalette: LightFamily = {
-  base: claudeLight.accent,
-  // Parchment-tinted slots derived from the same clay hue; the generate()
-  // light end is too close to the card to make selected states visible.
-  bg: "#FAF1EB",
-  bgHover: "#EDE5DF",
-  border: "#E0C1AF",
-  borderHover: "#D49E83",
-  // The solid primary button carries a white label: 4.53:1 on the sampled
-  // clay. Hover/active darken so white stays well clear (6.6 / 9.1).
-  hover: "#943F25",
-  active: "#6E2716",
-  // Clay as text needs the darker text-safe tone (4.86:1 on the page).
+const linkPalette = {
   text: claudeLight.accentText,
   textHover: "#7D351D",
   textActive: "#571F10",
-};
+} as const;
 
 const success = claudeLightStatusFamilies.success;
 const warning = claudeLightStatusFamilies.warning;
@@ -55,17 +42,22 @@ const danger = claudeLightStatusFamilies.danger;
 const info = normalizedLightFamily(CLAUDE_LIGHT_STATUS_HUES.running);
 
 const pinnedLightColors: AntdToken = {
-  ...familyTokens("colorPrimary", primaryPalette),
+  // Preserve the exact Claude brand seed and Ant Design's interaction ramp.
+  colorPrimary: claudeLight.accent,
+  // Primary text sits on tinted primary surfaces, so keep its text-safe ramp;
+  // only the explicitly accepted, transient colorPrimaryHover uses Ant Design's lighter slot.
+  colorPrimaryText: linkPalette.text,
+  colorPrimaryTextHover: linkPalette.textHover,
+  colorPrimaryTextActive: linkPalette.textActive,
   ...familyTokens("colorSuccess", success),
   ...familyTokens("colorWarning", warning),
   ...familyTokens("colorError", danger),
   ...familyTokens("colorInfo", info),
-  // Links live in the primary family: the fill tone is 3.86:1 on the page, so
-  // links take the text tone (4.86:1) and darken through the same ramp. No
-  // separate blue hue in the palette.
-  colorLink: primaryPalette.text,
-  colorLinkHover: primaryPalette.textHover,
-  colorLinkActive: primaryPalette.textActive,
+  // Links stay in the clay text family rather than using the primary fill;
+  // the text-safe base clears 4.5:1 on the page without adding a link-blue hue.
+  colorLink: linkPalette.text,
+  colorLinkHover: linkPalette.textHover,
+  colorLinkActive: linkPalette.textActive,
   fontFamily: PASEO_FONT_STACK,
   fontFamilyCode: PASEO_MONO_FONT_STACK,
 };
@@ -128,7 +120,7 @@ const lightMappings: readonly TokenMapping[] = [
     kind: "seed",
     value: claudeLight.statusRunning,
     paseoToken: "statusRunning",
-    note: "paseo's 'running' blue is the only informational hue in the system; links stay in the primary family.",
+    note: "paseo's 'running' blue is the only informational hue in the system; links stay in the text-safe clay family.",
   },
   {
     antdToken: "colorTextBase",
@@ -145,9 +137,9 @@ const lightMappings: readonly TokenMapping[] = [
   {
     antdToken: "colorLink",
     kind: "seed",
-    value: primaryPalette.text,
+    value: linkPalette.text,
     paseoToken: "accentText",
-    note: "Links reuse the primary family's text tone (4.86:1 on the page) instead of a separate hue.",
+    note: "Links reuse the text-safe clay tone instead of a separate hue."
   },
   { antdToken: "fontFamily", kind: "seed", value: PASEO_FONT_STACK, paseoToken: "fontFamily.ui" },
   {
@@ -411,16 +403,14 @@ const lightComponents: AntdComponents = {
   // cast only satisfies antd's `number`-typed component-token declaration.
   Alert: { borderRadius: "12px" as unknown as number },
   Input: {
-    hoverBorderColor: claudeLight.accent,
     activeBorderColor: claudeLight.accentText,
   },
   Modal: { contentBg: claudeLight.surface2, headerBg: claudeLight.surface2 },
   Message: { contentBg: claudeLight.surface2 },
   Notification: { colorBgElevated: claudeLight.surface2 },
   Button: {
-    // The one intentional contrast exception: white on #C6613F is 4.05:1
-    // (Claude's site accepts it). Hover/active darken to #B4543A / #A64B32,
-    // where white clears 4.5. Danger keeps white via colorTextLightSolid.
+    // The sampled clay base clears 4.5:1. Ant Design's lighter hover stop is
+    // intentionally kept as-is; Danger keeps white via colorTextLightSolid.
     primaryColor: "#FFFFFF",
     // The dark scheme labels its solid danger button with ink because its
     // error red is a pastel; here the fill is dark enough for white (5.3:1).

@@ -13,23 +13,21 @@
  *     diff line fills #69DB7C / #FFA8B4, selection #B4D5FF. The CLI defines
  *     no canvas background (the terminal supplies it), which is why the
  *     surfaces above come from the brand palette instead. One deliberate
- *     departure: links do not take the suggestion blue — they reuse the
- *     primary family's text tone so the whole interface stays clay.
+ *     departure: links do not take the suggestion blue — they use the
+ *     text-safe clay tone so the whole interface stays in the brand hue.
  *
- * The status family deliberately does NOT copy Claude Code's values: this
- * scheme keeps paseo's normalized status rule (one perceived lightness, one
- * chroma fraction, hue carries the meaning), re-solved for a light surface at
- * L*=0.52. Claude Code's own status hues are copied only when they are used
- * as a hue source in the notes above; the final values come from
- * `normalizedLightFamily` so the family stays equal-loudness.
+ * The status families deliberately do NOT copy Claude Code's values. Most
+ * keep paseo's normalized rule at L*=0.52 and 55% gamut chroma. Danger is the
+ * exception: a warm scarlet at 30° and 95% chroma so it reads distinctly from
+ * the clay primary. Every family still comes from `normalizedLightFamily`.
  */
 
 import { maxChroma, normalizedLightFamily, oklchHex } from "../../shared/colors";
 
-/** Paseo's status hues (OKLCH degrees) — only the hue is borrowed. */
+/** Claude Light status hue anchors (OKLCH degrees). */
 export const CLAUDE_LIGHT_STATUS_HUES = {
   success: 149.9,
-  danger: 26.6,
+  danger: 30,
   warning: 70.6,
   merged: 299.8,
   running: 249.7,
@@ -37,7 +35,7 @@ export const CLAUDE_LIGHT_STATUS_HUES = {
 
 const status = {
   success: normalizedLightFamily(CLAUDE_LIGHT_STATUS_HUES.success),
-  danger: normalizedLightFamily(CLAUDE_LIGHT_STATUS_HUES.danger),
+  danger: normalizedLightFamily(CLAUDE_LIGHT_STATUS_HUES.danger, 0.52, 0.95),
   warning: normalizedLightFamily(CLAUDE_LIGHT_STATUS_HUES.warning),
   merged: normalizedLightFamily(CLAUDE_LIGHT_STATUS_HUES.merged),
   running: normalizedLightFamily(CLAUDE_LIGHT_STATUS_HUES.running),

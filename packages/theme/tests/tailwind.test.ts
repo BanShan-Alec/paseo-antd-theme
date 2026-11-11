@@ -123,7 +123,7 @@ describe("tailwind css artifact", () => {
     expect(light.primary).toBe("#BA5B37");
     expect(dark.primary).toBe("#20744A");
     // Derived (algorithm) values, not just pinned ones:
-    expect(light["primary-hover"]).toBe("#943F25");
+    expect(light["primary-hover"]).toBe("#c77c5b");
     expect(dark["primary-hover"]).toBe("#347552");
     // claude-only concepts with a documented dark substitute:
     expect(light["surface-head"]).toBe("#E0DDD0");
