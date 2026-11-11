@@ -34,15 +34,21 @@ describe("paseo → antd dark token mapping", () => {
     expect(dark.colorPrimary).toBe(paseoDark.accent);
     expect(dark.colorSuccess).toBe(paseoDark.statusSuccess);
     expect(dark.colorWarning).toBe(paseoDark.statusWarning);
-    expect(dark.colorError).toBe(paseoDark.statusDanger);
-    expect(dark.colorInfo).toBe(paseoDark.statusDotRunning);
+    expect(dark.colorError).toBe(paseoDark.destructive);
+    expect(dark.colorInfo).toBe(paseoDark.statusInfo);
+    expect(dark.paseoStatusDotRunning).toBe(paseoDark.statusDotRunning);
+    expect(dark.colorBorderDisabled).toBe("#424242");
+    expect(dark.colorPrimaryBorder).toBe("#518668");
+    expect(dark.colorPrimaryBorderHover).toBe("#347552");
+    expect(paseoDarkTheme.components?.Slider).toBeUndefined();
+    expect(paseoDarkTheme.components?.Button?.borderColorDisabled).toBeUndefined();
     expect(dark.colorLink).toBe(paseoDark.accentBright);
   });
 
   it("keeps the paseo surface ladder distinct through the dark algorithm", () => {
     // The fill ramp deliberately reuses container/border levels — antd's
-    // alias derivations expect that — but the five paseo surfaces must all
-    // be present and nothing else may leak in.
+    // alias derivations expect that — while tertiary fill follows antd's
+    // translucent dark-neutral treatment.
     const ladder = [
       dark.colorBgLayout,
       dark.colorBgContainer,
@@ -59,8 +65,10 @@ describe("paseo → antd dark token mapping", () => {
         paseoDark.surface2,
         paseoDark.surface3,
         paseoDark.border,
+        "rgba(255, 255, 255, 0.08)",
       ]),
     );
+    expect(dark.colorFillTertiary).toBe("rgba(255, 255, 255, 0.08)");
     expect(dark.colorBgLayout).toBe(paseoDark.surface0);
     expect(dark.colorBgContainer).toBe(paseoDark.surface1);
     expect(dark.colorBgElevated).toBe(paseoDark.surface2);

@@ -307,8 +307,8 @@
     --paseo-primary-active: #1c5237;
     --paseo-primary-bg: #183124;
     --paseo-primary-bg-hover: #193f2c;
-    --paseo-primary-border: #183124;
-    --paseo-primary-border-hover: #193f2c;
+    --paseo-primary-border: #518668;
+    --paseo-primary-border-hover: #347552;
     --paseo-primary-text: #7ccba0;
     --paseo-primary-text-hover: #ecfaf1;
     --paseo-primary-text-active: #cbdcd2;
@@ -333,26 +333,26 @@
     --paseo-warning-text: #e0dbd2;
     --paseo-warning-text-hover: #eeeae0;
     --paseo-warning-text-active: #cfc2ae;
-    --paseo-error: #d8847b;
-    --paseo-error-hover: #d1a099;
-    --paseo-error-active: #935d57;
-    --paseo-error-bg: #261b1b;
-    --paseo-error-bg-hover: #3c2826;
-    --paseo-error-border: #4f3633;
-    --paseo-error-border-hover: #6c4642;
-    --paseo-error-text: #f8ece9;
-    --paseo-error-text-hover: #faefec;
-    --paseo-error-text-active: #e7d2ce;
-    --paseo-info: #5caaf6;
-    --paseo-info-hover: #7cb5e8;
-    --paseo-info-active: #4376a7;
-    --paseo-info-bg: #18202a;
-    --paseo-info-bg-hover: #203043;
-    --paseo-info-border: #2a4158;
-    --paseo-info-border-hover: #34587a;
-    --paseo-info-text: #d3e9f8;
-    --paseo-info-text-hover: #ecf4fa;
-    --paseo-info-text-active: #a8d3f3;
+    --paseo-error: #c64f43;
+    --paseo-error-hover: #c16c61;
+    --paseo-error-active: #883a33;
+    --paseo-error-bg: #231615;
+    --paseo-error-bg-hover: #371c1b;
+    --paseo-error-border: #492622;
+    --paseo-error-border-hover: #642f29;
+    --paseo-error-text: #e6c5bd;
+    --paseo-error-text-hover: #f5eae7;
+    --paseo-error-text-active: #d6998e;
+    --paseo-info: #2b76b8;
+    --paseo-info-hover: #4784b2;
+    --paseo-info-active: #23547f;
+    --paseo-info-bg: #131a21;
+    --paseo-info-bg-hover: #162533;
+    --paseo-info-border: #1b3145;
+    --paseo-info-border-hover: #1e405e;
+    --paseo-info-text: #9ac1d8;
+    --paseo-info-text-hover: #c8dce7;
+    --paseo-info-text-active: #6ea3c8;
     /* 表面 */
     --paseo-bg-layout: #181B1A;
     --paseo-bg-container: #1E2120;
@@ -374,21 +374,21 @@
     --paseo-text-quaternary: #595B5B;
     --paseo-text-light-solid: #fff;
     /* 边框与分隔 */
-    --paseo-border: #252B2A;
+    --paseo-border: #434645;
     --paseo-border-secondary: #2F3534;
     --paseo-split: rgba(219,255,254,0.09);
     /* 填充 */
     --paseo-fill: #434645;
     --paseo-fill-secondary: #272A29;
-    --paseo-fill-tertiary: #1E2120;
+    --paseo-fill-tertiary: rgba(255, 255, 255, 0.08);
     --paseo-fill-quaternary: #252B2A;
     /* 控件底色 */
-    --paseo-control-item-bg-hover: #1E2120;
+    --paseo-control-item-bg-hover: rgba(255, 255, 255, 0.08);
     --paseo-control-item-bg-active: #183124;
     /* 链接 */
     --paseo-link: #7ccba0;
-    --paseo-link-hover: #deebe3;
-    --paseo-link-active: #cbdcd2;
+    --paseo-link-hover: #588b6f;
+    --paseo-link-active: #436653;
     /* Diff */
     --paseo-diff-addition: #32573a;
     --paseo-diff-addition-text: #6cb17b;
@@ -450,8 +450,8 @@
   --paseo-primary-active: #1c5237;
   --paseo-primary-bg: #183124;
   --paseo-primary-bg-hover: #193f2c;
-  --paseo-primary-border: #183124;
-  --paseo-primary-border-hover: #193f2c;
+  --paseo-primary-border: #518668;
+  --paseo-primary-border-hover: #347552;
   --paseo-primary-text: #7ccba0;
   --paseo-primary-text-hover: #ecfaf1;
   --paseo-primary-text-active: #cbdcd2;
@@ -476,26 +476,26 @@
   --paseo-warning-text: #e0dbd2;
   --paseo-warning-text-hover: #eeeae0;
   --paseo-warning-text-active: #cfc2ae;
-  --paseo-error: #d8847b;
-  --paseo-error-hover: #d1a099;
-  --paseo-error-active: #935d57;
-  --paseo-error-bg: #261b1b;
-  --paseo-error-bg-hover: #3c2826;
-  --paseo-error-border: #4f3633;
-  --paseo-error-border-hover: #6c4642;
-  --paseo-error-text: #f8ece9;
-  --paseo-error-text-hover: #faefec;
-  --paseo-error-text-active: #e7d2ce;
-  --paseo-info: #5caaf6;
-  --paseo-info-hover: #7cb5e8;
-  --paseo-info-active: #4376a7;
-  --paseo-info-bg: #18202a;
-  --paseo-info-bg-hover: #203043;
-  --paseo-info-border: #2a4158;
-  --paseo-info-border-hover: #34587a;
-  --paseo-info-text: #d3e9f8;
-  --paseo-info-text-hover: #ecf4fa;
-  --paseo-info-text-active: #a8d3f3;
+  --paseo-error: #c64f43;
+  --paseo-error-hover: #c16c61;
+  --paseo-error-active: #883a33;
+  --paseo-error-bg: #231615;
+  --paseo-error-bg-hover: #371c1b;
+  --paseo-error-border: #492622;
+  --paseo-error-border-hover: #642f29;
+  --paseo-error-text: #e6c5bd;
+  --paseo-error-text-hover: #f5eae7;
+  --paseo-error-text-active: #d6998e;
+  --paseo-info: #2b76b8;
+  --paseo-info-hover: #4784b2;
+  --paseo-info-active: #23547f;
+  --paseo-info-bg: #131a21;
+  --paseo-info-bg-hover: #162533;
+  --paseo-info-border: #1b3145;
+  --paseo-info-border-hover: #1e405e;
+  --paseo-info-text: #9ac1d8;
+  --paseo-info-text-hover: #c8dce7;
+  --paseo-info-text-active: #6ea3c8;
   /* 表面 */
   --paseo-bg-layout: #181B1A;
   --paseo-bg-container: #1E2120;
@@ -517,21 +517,21 @@
   --paseo-text-quaternary: #595B5B;
   --paseo-text-light-solid: #fff;
   /* 边框与分隔 */
-  --paseo-border: #252B2A;
+  --paseo-border: #434645;
   --paseo-border-secondary: #2F3534;
   --paseo-split: rgba(219,255,254,0.09);
   /* 填充 */
   --paseo-fill: #434645;
   --paseo-fill-secondary: #272A29;
-  --paseo-fill-tertiary: #1E2120;
+  --paseo-fill-tertiary: rgba(255, 255, 255, 0.08);
   --paseo-fill-quaternary: #252B2A;
   /* 控件底色 */
-  --paseo-control-item-bg-hover: #1E2120;
+  --paseo-control-item-bg-hover: rgba(255, 255, 255, 0.08);
   --paseo-control-item-bg-active: #183124;
   /* 链接 */
   --paseo-link: #7ccba0;
-  --paseo-link-hover: #deebe3;
-  --paseo-link-active: #cbdcd2;
+  --paseo-link-hover: #588b6f;
+  --paseo-link-active: #436653;
   /* Diff */
   --paseo-diff-addition: #32573a;
   --paseo-diff-addition-text: #6cb17b;

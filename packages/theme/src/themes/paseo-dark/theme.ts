@@ -35,6 +35,9 @@ import { paseoDark, paseoIdentityDark, paseoIdentityInk, paseoInk } from "./toke
 
 const primary = darkFamily(paseoDark.accent);
 const primaryBright = darkFamily(paseoDark.accentBright);
+// Info UI uses a darker, more chromatic blue; status dots keep their brighter
+// running signal color via the separate custom token.
+const infoFamily = darkFamily(paseoDark.statusInfo);
 
 // Claude.ai's soft elevation, black-tinted for the dark scheme. The original
 // paseo chrome was flat; Q14 syncs the full dark scheme to the same form
@@ -52,6 +55,13 @@ const DARK_SHADOW = {
 
 const pinnedDarkColors: AntdToken = {
   ...familyTokens("colorPrimary", primary),
+  // Use the same neutral disabled outline as Ant Design dark, independent of
+  // Paseo's tinted base surface.
+  colorBorderDisabled: "#424242",
+  // Keep global primary-border states paired: Slider normal uses the lighter
+  // border stop and hover intentionally steps darker, without changing fills.
+  colorPrimaryBorder: primary.raw[7],
+  colorPrimaryBorderHover: primary.raw[6],
   // Primary-colored *text* on a dark surface takes paseo's bright accent —
   // the same substitution paseo itself makes wherever the deep accent would
   // be unreadable.
@@ -60,13 +70,12 @@ const pinnedDarkColors: AntdToken = {
   colorPrimaryTextActive: primaryBright.raw[7],
   ...familyTokens("colorSuccess", darkFamily(paseoDark.statusSuccess)),
   ...familyTokens("colorWarning", darkFamily(paseoDark.statusWarning)),
-  ...familyTokens("colorError", darkFamily(paseoDark.statusDanger)),
-  ...familyTokens("colorInfo", darkFamily(paseoDark.statusDotRunning)),
-  // Links: the deep accent is ~2.4:1 on the dark background, so links take
-  // accentBright (4.5:1+) — the same call paseo's own design makes.
+  ...familyTokens("colorError", darkFamily(paseoDark.destructive)),
+  ...familyTokens("colorInfo", infoFamily),
+  // Links use darker stops on hover/active instead of lifting toward white.
   colorLink: paseoDark.accentBright,
-  colorLinkHover: primaryBright.raw[8],
-  colorLinkActive: primaryBright.raw[7],
+  colorLinkHover: primaryBright.raw[4],
+  colorLinkActive: primaryBright.raw[3],
 };
 
 /**
@@ -108,15 +117,15 @@ const darkMappings: readonly TokenMapping[] = [
   {
     antdToken: "colorError",
     kind: "seed",
-    value: paseoDark.statusDanger,
-    paseoToken: "statusDanger",
+    value: paseoDark.destructive,
+    paseoToken: "destructive",
   },
   {
     antdToken: "colorInfo",
     kind: "seed",
-    value: paseoDark.statusDotRunning,
-    paseoToken: "statusDotRunning",
-    note: "paseo has no info color; its 'running' blue is the only informational hue in the system.",
+    value: paseoDark.statusInfo,
+    paseoToken: "statusInfo",
+    note: "Theme-only darker, more chromatic Info blue; status dots retain their separate bright signal token.",
   },
   { antdToken: "colorTextBase", kind: "seed", value: paseoDark.foreground, paseoToken: "foreground" },
   { antdToken: "colorBgBase", kind: "seed", value: paseoDark.surface0, paseoToken: "surface0" },
@@ -194,11 +203,22 @@ const darkMappings: readonly TokenMapping[] = [
     value: paseoDark.foregroundExtraMuted,
     paseoToken: "foregroundExtraMuted",
   },
-  { antdToken: "colorTextQuaternary", kind: "map", value: paseoDark.surface4, paseoToken: "surface4" },
+  {
+    antdToken: "colorTextQuaternary",
+    kind: "map",
+    value: paseoDark.surface4,
+    paseoToken: "surface4",
+  },
 
-  // Borders and fills — paseo's border pair, then the surface ladder inverted
-  // into antd's fill ramp (colorFill is the strongest, quaternary the weakest).
-  { antdToken: "colorBorder", kind: "map", value: paseoDark.border, paseoToken: "border" },
+  // Borders and fills — use the visible dark-control outline and antd's
+  // translucent tertiary fill for hover/disabled surfaces.
+  {
+    antdToken: "colorBorder",
+    kind: "map",
+    value: paseoDark.surface3,
+    paseoToken: "surface3",
+    note: "Raised to the stock dark outline level so default and dashed controls read clearly.",
+  },
   {
     antdToken: "colorBorderSecondary",
     kind: "map",
@@ -210,9 +230,9 @@ const darkMappings: readonly TokenMapping[] = [
   {
     antdToken: "colorFillTertiary",
     kind: "map",
-    value: paseoDark.surface1,
-    paseoToken: "surface1",
-    note: "Also feeds controlItemBgHover — paseo's sidebar hover step.",
+    value: "rgba(255, 255, 255, 0.08)",
+    paseoToken: "antd dark fill",
+    note: "Keeps text-button hover and disabled control fills visible across surfaces.",
   },
   {
     antdToken: "colorFillQuaternary",
